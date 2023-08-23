@@ -16,12 +16,28 @@ export const OrgModule = ({ stateCode, userType, tenants }) => {
   });
 
 
+
   if (isLoading) {
     return <Loader />;
   }
   return <EmployeeApp path={path} stateCode={stateCode} userType={userType} tenants={tenants} />;
 };
+export const OrgLinks = ({ matchPath, userType }) => {
+  const { t } = useTranslation();
 
+
+  const links = [
+
+    {
+      link: `${matchPath}/works`,
+      i18nKey: t("Create Organisation"),
+    },
+
+
+  ];
+
+  return <CitizenHomeCard header={t("BirthRegistration")} links={links} Icon={() => <PTIcon className="fill-path-primary-main" />} />;
+};
 const componentsToRegister = {
   WorksModule: OrgModule,
   WorksCard: OrgCard

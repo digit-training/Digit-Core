@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
+
+
 export const newConfig = [
   {
     head: "Organisation Details",
@@ -20,7 +22,7 @@ export const newConfig = [
       },
       {
         label: "Application Status",
-        isMandatory: true,
+        isMandatory: false,
         type: "text",
         disable: false,
         populators: {
@@ -30,7 +32,7 @@ export const newConfig = [
       },
       {
         label: "External Reference Number",
-        isMandatory: true,
+        isMandatory: false,
         type: "text",
         disable: false,
         populators: {
@@ -57,7 +59,7 @@ export const newConfig = [
     body: [
       {
         label: "Door No",
-        isMandatory: true,
+        isMandatory: false,
         type: "text",
         disable: false,
         populators: {
@@ -68,7 +70,7 @@ export const newConfig = [
       },
       {
         label: "Plot No",
-        isMandatory: true,
+        isMandatory: false,
         type: "text",
         disable: false,
         populators: {
@@ -79,7 +81,7 @@ export const newConfig = [
       },
       {
         label: "Landmark",
-        isMandatory: true,
+        isMandatory: false,
         type: "text",
         disable: false,
         populators: {
@@ -109,7 +111,7 @@ export const newConfig = [
       },
       {
         label: "Region",
-        isMandatory: true,
+        isMandatory: false,
         type: "text",
         disable: false,
         populators: {
@@ -266,6 +268,8 @@ export const newConfig = [
 ];
 
 const Create = () => {
+  var Digit = window.Digit || {};
+  console.log(Digit, " ddddddddddddddddd")
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { t } = useTranslation();
   const history = useHistory();
@@ -273,6 +277,124 @@ const Create = () => {
   const onSubmit = (data) => {
     // Handle form submission
     console.log(data, "data");
+    const transformedData = {
+      organisations: [
+        {
+          tenantId: tenantId,
+          name: data.name,
+          applicationStatus: data.applicationStatus,
+          externalRefNumber: data.externalRefNumber,
+          dateOfIncorporation: new Date().getTime(), // Replace with actual date
+
+          orgAddress: [
+            {
+              tenantId: tenantId,
+              doorNo: data.doorNo,
+              plotNo: data.plotNo,
+              landmark: data.landmark,
+              city: data.city,
+              district: data.district,
+              region: data.region,
+              state: data.state,
+              country: data.country,
+              pincode: data.pincode,
+              additionDetails: data.additionDetails,
+              buildingName: data.buildingName,
+              street: data.street,
+              boundaryType: data.boundaryType,
+              boundaryCode: data.boundaryCode,
+              geoLocation: {
+                latitude: parseFloat(data.latitude),
+                longitude: parseFloat(data.longitude),
+                additionalDetails: {
+                  geoLocation: "test-additionalDetails",
+                },
+              },
+            },
+          ],
+
+          contactDetails: [
+            {
+              contactName: data.contactName,
+              contactMobileNumber: data.contactMobileNumber,
+              contactEmail: data.contactEmail,
+            },
+          ],
+
+          identifiers: [
+            {
+              type: data.identifierType,
+              value: data.identifierValue,
+              additionalDetails: {
+                identifiers: "test-additionalDetails",
+              },
+            },
+          ],
+
+          functions: [
+            {
+              type: data.functionType,
+              category: data.functionCategory,
+              class: data.functionClass,
+              validFrom: new Date().getTime(), // Replace with actual date
+              validTo: new Date().getTime() + 86400000, // Replace with actual date + 1 day
+              wfStatus: "string",
+              documents: [
+                {
+                  documentType: "PDF",
+                  fileStore: data.funcFileStore,
+                  documentUid: data.funcDocumentUid,
+                  additionalDetails: {
+                    "documents-func": "test-additionalDetails",
+                  },
+                },
+              ],
+              additionalDetails: {
+                func: "test-additionalDetails",
+              },
+            },
+          ],
+
+          jurisdiction: [
+            {
+              code: data.jurisdictionCode,
+              additionalDetails: {
+                jurisdiction: "test-additionalDetails",
+              },
+            },
+          ],
+
+          isActive: true,
+
+          documents: [
+            {
+              documentType: "PDF",
+              fileStore: data.orgFileStore,
+              documentUid: data.orgDocumentUid,
+              additionalDetails: {
+                "documents-org": "test-additionalDetails",
+              },
+            },
+          ],
+
+          additionalDetails: {
+            org: "test-additionalDetails",
+          },
+        },
+      ],
+    };
+    console.log(transformedData, " tttttttttttttttttttttt")
+
+    /* use customiseCreateFormData hook to make some chnages to the Employee object */
+    Digit.ORGService.create(transformedData, tenantId).then((result, err) => {
+      let getdata = { ...transformedData, get: result }
+      console.log("daaaa", getdata);
+      history.push({
+        pathname: "/works-ui/employee/works/response",
+        state: { responseData: getdata }, // Pass the responseData to the state
+      });
+
+    })
   };
 
   const configs = newConfig ? newConfig : [];

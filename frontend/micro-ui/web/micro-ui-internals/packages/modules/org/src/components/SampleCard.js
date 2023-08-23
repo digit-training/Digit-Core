@@ -8,7 +8,7 @@ const OrgCard = () => {
 
   const propsForModuleCard = {
     Icon: <PropertyHouse />,
-    moduleName: t("Org"),
+    moduleName: t("Organisation"),
     kpis: [
 
     ],

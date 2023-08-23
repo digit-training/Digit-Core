@@ -30,6 +30,7 @@ import { GetServiceDefinitions } from "./services/molecules/ServiceDefinitions";
 import { ULBService } from "./services/molecules/Ulb";
 import { ComponentRegistryService } from "./services/elements/ComponentRegistry";
 import StoreData from "./services/molecules/StoreData";
+import { ORGService } from "./services/elements/Organisation";
 
 import Contexts from "./contexts";
 import Hooks from "./hooks";
@@ -69,6 +70,7 @@ const initLibraries = () => {
   setupLibraries("ComponentRegistryService", ComponentRegistryService);
   setupLibraries("StoreData", StoreData);
   setupLibraries("EventsServices", EventsServices);
+  setupLibraries("ORGService", ORGService);
 
   setupLibraries("InboxGeneral", InboxGeneral);
   setupLibraries("ShareFiles", ShareFiles);
