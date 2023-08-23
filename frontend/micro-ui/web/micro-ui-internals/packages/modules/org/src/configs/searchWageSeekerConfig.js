@@ -1,115 +1,123 @@
-const searchWageSeekerConfig = () => {
+const searchOrganisationConfig = () => {
   return {
-    label: "WORKS_SEARCH_WAGESEEKERS",
+    label: "WORKS_SEARCH_ORGANISATION",
     type: "search",
-    actionLabel: "WORKS_ADD_WAGESEEKER",
-    actionRole: "INDIVIDUAL_CREATOR",
-    actionLink: "masters/create-wageseeker",
+    actionLabel: "MASTERS_ADD_NEW_ORGANISATION",
+    actionRole: "MUKTA_ADMIN",
+    actionLink: "masters/create-organization",
     apiDetails: {
-      serviceName: "/individual/v1/_search",
+      serviceName: "/org-services/organisation/v1/_search",
       requestParam: {},
       requestBody: {
         apiOperation: "SEARCH",
-        Individual: {},
+        SearchCriteria: {},
       },
       minParametersForSearchForm: 1,
       masterName: "commonUiConfig",
-      moduleName: "SearchWageSeekerConfig",
-      tableFormJsonPath: "requestParam",
-      filterFormJsonPath: "requestBody.Individual",
-      searchFormJsonPath: "requestBody.Individual",
+      moduleName: "SearchOrganisationConfig",
+      tableFormJsonPath: "requestBody.Pagination",
+      filterFormJsonPath: "requestBody.SearchCriteria",
+      searchFormJsonPath: "requestBody.SearchCriteria",
     },
     sections: {
       search: {
         uiConfig: {
           headerStyle: null,
-          formClassName:"custom-both-clear-search",
           primaryLabel: "ES_COMMON_SEARCH",
           secondaryLabel: "ES_COMMON_CLEAR_SEARCH",
           minReqFields: 1,
           defaultValues: {
-            wardCode: "",
-            individualId: "",
+            boundaryCode: "",
+            orgNumber: "",
             name: "",
-            socialCategory: "",
-            mobileNumber: "",
+            type: "",
+            applicationStatus: "",
             createdFrom: "",
             createdTo: "",
           },
           fields: [
             {
-              "label": "COMMON_WARD",
-              "type": "locationdropdown",
-              "isMandatory": false,
-              "disable": false,
-              "populators": {
-                  "name": "wardCode",
-                  "type": "ward",
-                "optionsKey": "i18nKey",
-                  "defaultText": "COMMON_SELECT_WARD",
-                  "selectedText": "COMMON_SELECTED",
-                  "allowMultiSelect": false
-              }
-          },
+              label: "COMMON_WARD",
+              type: "locationdropdown",
+              isMandatory: false,
+              disable: false,
+              populators: {
+                name: "boundaryCode",
+                type: "ward",
+                optionsKey: "i18nKey",
+                optionsCustomStyle: {
+                  top: "2.3rem",
+                },
+                defaultText: "COMMON_SELECT_WARD",
+                selectedText: "COMMON_SELECTED",
+                allowMultiSelect: false,
+              },
+            },
             {
-              label: "MASTERS_WAGESEEKER_NAME",
+              label: "MASTERS_ORGANISATION_TYPE",
+              type: "dropdown",
+              isMandatory: false,
+              disable: false,
+              populators: {
+                name: "type",
+                optionsKey: "name",
+                optionsCustomStyle: {
+                  top: "2.3rem",
+                },
+                mdmsConfig: {
+                  masterName: "OrgType",
+                  moduleName: "common-masters",
+                  filter: "[?(@.active==true)].parent",
+                  localePrefix: "COMMON_MASTERS_ORG",
+                  select:
+                    "(data)=>{ return Array.isArray(data['common-masters'].OrgType) && Digit.Utils.getUnique(data['common-masters'].OrgType).map(ele=>({code:ele,name:'COMMON_MASTERS_ORG_'+ele}))}",
+                },
+              },
+            },
+
+            {
+              label: "MASTERS_NAME_OF_ORGN",
               type: "text",
               isMandatory: false,
               disable: false,
               populators: { name: "name", validation: { pattern: /^[^{0-9}^\$\"<>?\\\\~!@#$%^()+={}\[\]*,/_:;“”‘’]{1,50}$/i, maxlength: 140 } },
             },
+
             {
-              label: "MASTERS_WAGESEEKER_ID",
+              label: "Tenant Id",
               type: "text",
               isMandatory: false,
               disable: false,
               populators: {
-                name: "individualId",
-                error: `PROJECT_PATTERN_ERR_MSG`,
-                validation: {  minlength: 2 },
+                name: "tenantId",
+                // error: `PROJECT_PATTERN_ERR_MSG`
+                // validation: { minlength: 2 },
               },
             },
             {
-              label: "CORE_COMMON_PROFILE_MOBILE_NUMBER",
-              type: "mobileNumber",
+              label: "Organisation Number",
+              type: "text",
               isMandatory: false,
               disable: false,
               populators: {
-                name: "mobileNumber",
+                name: "orgNumber",
                 error: `PROJECT_PATTERN_ERR_MSG`,
-                validation: { pattern: /^[a-z0-9\/-@# ]*$/i, minlength: 2 },
+                validation: { minlength: 2 },
               },
             },
-            {
-              label: "MASTERS_SOCIAL_CATEGORY",
-              type: "dropdown",
-              isMandatory: false,
-              disable: false,
-              populators: {
-                name: "socialCategory",
-                optionsKey: "code",
-                optionsCustomStyle: {
-                  top: "2.3rem",
-                },
-                mdmsConfig: {
-                  masterName: "SocialCategory",
-                  moduleName: "common-masters",
-                  localePrefix: "MASTERS",
-                },
-              },
-            },
+
             {
               label: "CREATED_FROM_DATE",
               type: "date",
               isMandatory: false,
               disable: false,
-              key : "createdFrom",
-              preProcess : {
-                updateDependent : ["populators.max"]
+              key: "createdFrom",
+              preProcess: {
+                updateDependent: ["populators.max"]
               },
               populators: {
                 name: "createdFrom",
-                max : "currentDate"
+                max: "currentDate"
               },
             },
             {
@@ -117,14 +125,14 @@ const searchWageSeekerConfig = () => {
               type: "date",
               isMandatory: false,
               disable: false,
-              key : "createdTo",
-              preProcess : {
-                updateDependent : ["populators.max"]
+              key: "createdTo",
+              preProcess: {
+                updateDependent: ["populators.max"]
               },
               populators: {
                 name: "createdTo",
                 error: "DATE_VALIDATION_MSG",
-                max : "currentDate"
+                max: "currentDate"
               },
               additionalValidation: {
                 type: "date",
@@ -142,42 +150,38 @@ const searchWageSeekerConfig = () => {
         uiConfig: {
           columns: [
             {
-              label: "MASTERS_WAGESEEKER_ID",
-              jsonPath: "individualId",
-              additionalCustomization: true,
-            },
-            {
-              label: "MASTERS_WAGESEEKER_NAME",
-              jsonPath: "name.givenName",
-            },
-            {
-              label: "MASTERS_FATHER_NAME",
-              jsonPath: "fatherName",
-            },
-            {
-              label: "MASTERS_SOCIAL_CATEGORY",
-              jsonPath: "additionalFields.fields[0].value",
+              label: "Orgnisation Number",
+              jsonPath: "orgNumber",
               // additionalCustomization: true,
             },
             {
-              label: "CORE_COMMON_PROFILE_CITY",
-              jsonPath: "address[0].tenantId",
-              additionalCustomization: true,
+              label: "MASTERS_NAME_OF_ORGN",
+              jsonPath: "name",
             },
             {
-              label: "MASTERS_WARD",
-              jsonPath: "address[0].ward.code",
-              additionalCustomization: true,
+              label: "MASTERS_ORGANISATION_TYPE",
+              jsonPath: "functions[0].type",
+              // additionalCustomization: true,
             },
             {
-              label: "MASTERS_LOCALITY",
-              jsonPath: "address[0].locality.code",
-              additionalCustomization: true,
+              label: "MASTERS_ORGANISATION_SUB_TYPE",
+              jsonPath: "functions[0].category",
+              // additionalCustomization: true,
+            },
+            {
+              label: "MASTERS_ADDRESS",
+              jsonPath: "orgAddress[0].boundaryCode",
+              // additionalCustomization: true,
+            },
+            {
+              label: "CORE_COMMON_STATUS",
+              jsonPath: "applicationStatus",
+              // additionalCustomization: true,
             },
           ],
           enableGlobalSearch: false,
           enableColumnSort: true,
-          resultsJsonPath: "Individual",
+          resultsJsonPath: "organisations",
         },
         children: {},
         show: true,
@@ -187,4 +191,4 @@ const searchWageSeekerConfig = () => {
   };
 };
 
-export default searchWageSeekerConfig;
+export default searchOrganisationConfig;

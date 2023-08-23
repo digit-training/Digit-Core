@@ -1,51 +1,51 @@
 import React, { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Header, InboxSearchComposer, Loader, Button, AddFilled } from "@egovernments/digit-ui-react-components";
-import searchWageSeekerConfig from "../../configs/searchWageSeekerConfig";
+import searchOrganisationConfig from "../../configs/searchWageSeekerConfig";
 import { useHistory, useLocation } from "react-router-dom";
 
-const SearchWageSeeker = () => {
+const SearchOrganisation = () => {
   const { t } = useTranslation();
   const history = useHistory()
   const location = useLocation()
 
-  const wageSeekerSession = Digit.Hooks.useSessionStorage("WAGE_SEEKER_CREATE", {});
-  const [sesionFormData, clearSessionFormData] = wageSeekerSession;
+  const orgSession = Digit.Hooks.useSessionStorage("ORG_CREATE", {});
+  const [sessionFormData, clearSessionFormData] = orgSession;
 
-  //const indConfigs = searchWageSeekerConfig();
+  const orgConfigs = searchOrganisationConfig();
   const configModuleName = Digit.Utils.getConfigModuleName()
   const tenant = Digit.ULBService.getStateId();
   const { isLoading, data } = Digit.Hooks.useCustomMDMS(
-      tenant,
-      configModuleName,
-   [
-    {
-      name: "SearchIndividualConfig",
-    },
-  ]);
+    tenant,
+    configModuleName,
+    [
+      {
+        name: "SearchOrganisationConfig",
+      },
+    ]);
 
-  const indConfigs = data?.[configModuleName]?.SearchIndividualConfig?.[0]
+  // const orgConfigs = data?.[configModuleName]?.searchOrganisationConfig?.[0]
 
   let configs = useMemo(
-    () => Digit.Utils.preProcessMDMSConfigInboxSearch(t, indConfigs, "sections.search.uiConfig.fields",{
-      updateDependent : [
+    () => Digit.Utils.preProcessMDMSConfigInboxSearch(t, orgConfigs, "sections.search.uiConfig.fields", {
+      updateDependent: [
         {
-          key : "createdFrom",
-          value : [new Date().toISOString().split("T")[0]]
+          key: "createdFrom",
+          value: [new Date().toISOString().split("T")[0]]
         },
         {
-          key : "createdTo",
-          value : [new Date().toISOString().split("T")[0]]
+          key: "createdTo",
+          value: [new Date().toISOString().split("T")[0]]
         }
       ]
     }
-    ),[indConfigs]);
+    ), [orgConfigs]);
 
   useEffect(() => {
-    if (!window.location.href.includes("modify-wageseeker") && sesionFormData && Object.keys(sesionFormData) != 0) {
+    if (!window.location.href.includes("create-organization") && sessionFormData && Object.keys(sessionFormData) != 0) {
       clearSessionFormData();
     }
-  }, [location])
+  }, [location]);
 
   if (isLoading) return <Loader />;
   return (
@@ -58,7 +58,7 @@ const SearchWageSeeker = () => {
             variation="secondary"
             icon={<AddFilled />}
             onButtonClick={() => {
-              history.push(`/${window?.contextPath}/employee/${configs?.actionLink}`)
+              history.push(`/${window?.contextPath}/employee/works/create`)
             }}
             type="button"
           />
@@ -71,4 +71,4 @@ const SearchWageSeeker = () => {
   );
 };
 
-export default SearchWageSeeker;
+export default SearchOrganisation;

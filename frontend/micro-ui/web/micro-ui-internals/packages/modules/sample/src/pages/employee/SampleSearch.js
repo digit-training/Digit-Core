@@ -16,30 +16,30 @@ const SearchWageSeeker = () => {
   const configModuleName = Digit.Utils.getConfigModuleName()
   const tenant = Digit.ULBService.getStateId();
   const { isLoading, data } = Digit.Hooks.useCustomMDMS(
-      tenant,
-      configModuleName,
-   [
-    {
-      name: "SearchIndividualConfig",
-    },
-  ]);
+    tenant,
+    configModuleName,
+    [
+      {
+        name: "SearchIndividualConfig",
+      },
+    ]);
 
   const indConfigs = data?.[configModuleName]?.SearchIndividualConfig?.[0]
 
   let configs = useMemo(
-    () => Digit.Utils.preProcessMDMSConfigInboxSearch(t, indConfigs, "sections.search.uiConfig.fields",{
-      updateDependent : [
+    () => Digit.Utils.preProcessMDMSConfigInboxSearch(t, indConfigs, "sections.search.uiConfig.fields", {
+      updateDependent: [
         {
-          key : "createdFrom",
-          value : [new Date().toISOString().split("T")[0]]
+          key: "createdFrom",
+          value: [new Date().toISOString().split("T")[0]]
         },
         {
-          key : "createdTo",
-          value : [new Date().toISOString().split("T")[0]]
+          key: "createdTo",
+          value: [new Date().toISOString().split("T")[0]]
         }
       ]
     }
-    ),[indConfigs]);
+    ), [indConfigs]);
 
   useEffect(() => {
     if (!window.location.href.includes("modify-wageseeker") && sesionFormData && Object.keys(sesionFormData) != 0) {
