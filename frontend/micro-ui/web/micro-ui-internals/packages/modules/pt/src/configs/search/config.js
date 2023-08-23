@@ -35,7 +35,7 @@ const searchWageSeekerConfig = () => {
           },
           fields: [
             {
-              label: "CORE_COMMON_PROFILE_ID",
+              label: "PROPERTY_ID",
               type: "text",
               isMandatory: false,
               disable: false,
@@ -46,7 +46,7 @@ const searchWageSeekerConfig = () => {
               },
             },
             {
-              label: "CORE_COMMON_PROFILE_MOBILE_NUMBER",
+              label: "MOBILE NUMBER",
               type: "mobileNumber",
               isMandatory: false,
               disable: false,
@@ -93,6 +93,10 @@ const searchWageSeekerConfig = () => {
             {
               label: "status",
               jsonPath: "status",
+            },
+            {
+              label: "MOBILE_NUMBER",
+              jsonPath: "owners[0].mobileNumber",
             },
           ],
           enableGlobalSearch: false,
