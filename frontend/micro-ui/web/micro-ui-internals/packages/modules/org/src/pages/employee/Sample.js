@@ -326,7 +326,7 @@ export const newConfig = [
       //   }
       // },
       {
-        "label": "MASTERS_NAME_OF_ORGN",
+        "label": "Organisation Name",
         "isMandatory": true,
         "key": "basicDetails_orgName",
         "type": "text",
@@ -383,7 +383,7 @@ export const newConfig = [
       //   }
       // },
       {
-        "label": "MASTERS_DATE_OF_INCORPORATION",
+        "label": "Date Of Incorporation",
         "isMandatory": true,
         "key": "basicDetails_dateOfIncorporation",
         "type": "date",
@@ -404,12 +404,12 @@ export const newConfig = [
     ]
   },
   {
-    "head": "MASTERS_FUNCTIONAL_DETAILS",
+    "head": "Functional Details",
     "subHead": "",
     "body": [
       {
         "key": "funDetails_orgType",
-        "label": "MASTERS_ORGANISATION_TYPE",
+        "label": "Organisation Type",
         "isMandatory": true,
         "type": "dropdown",
         "disable": false,
@@ -459,7 +459,7 @@ export const newConfig = [
       // },
       {
         "key": "funDetails_category",
-        "label": "ES_COMMON_CATEGORY",
+        "label": "Category",
         "isMandatory": true,
         "type": "dropdown",
         "disable": false,
@@ -503,7 +503,7 @@ export const newConfig = [
       //   }
       // },
       {
-        "label": "ES_COMMON_VALID_FROM",
+        "label": "Valid From",
         "isMandatory": true,
         "key": "funDetails_validFrom",
         "type": "date",
@@ -520,7 +520,7 @@ export const newConfig = [
         }
       },
       {
-        "label": "ES_COMMON_VALID_TO",
+        "label": "Valid To",
         "isMandatory": false,
         "key": "funDetails_validTo",
         "type": "date",

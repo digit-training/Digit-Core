@@ -36,8 +36,26 @@ const searchOrganisationConfig = () => {
             createdTo: "",
           },
           fields: [
+            // {
+            //   label: "COMMON_WARD",
+            //   type: "locationdropdown",
+            //   isMandatory: false,
+            //   disable: false,
+            //   populators: {
+            //     name: "boundaryCode",
+            //     type: "ward",
+            //     optionsKey: "i18nKey",
+            //     optionsCustomStyle: {
+            //       top: "2.3rem",
+            //     },
+            //     defaultText: "COMMON_SELECT_WARD",
+            //     selectedText: "COMMON_SELECTED",
+            //     allowMultiSelect: false
+            //     // options: [{ "i18nKey": "Ward 1" }]
+            //   },
+            // },
             {
-              label: "MASTERS_ORGANISATION_TYPE",
+              label: "Organisation Type",
               type: "dropdown",
               isMandatory: false,
               disable: false,
@@ -59,7 +77,7 @@ const searchOrganisationConfig = () => {
             },
 
             {
-              label: "MASTERS_NAME_OF_ORGN",
+              label: "Organisation Name",
               type: "text",
               isMandatory: false,
               disable: false,
@@ -90,7 +108,7 @@ const searchOrganisationConfig = () => {
             },
 
             {
-              label: "CREATED_FROM_DATE",
+              label: "Created From Date",
               type: "date",
               isMandatory: false,
               disable: false,
@@ -104,7 +122,7 @@ const searchOrganisationConfig = () => {
               },
             },
             {
-              label: "CREATED_TO_DATE",
+              label: "Created To Date",
               type: "date",
               isMandatory: false,
               disable: false,
@@ -138,26 +156,26 @@ const searchOrganisationConfig = () => {
               // additionalCustomization: true,
             },
             {
-              label: "MASTERS_NAME_OF_ORGN",
+              label: "Organisation Name",
               jsonPath: "name",
             },
             {
-              label: "MASTERS_ORGANISATION_TYPE",
+              label: "Organisation Type",
               jsonPath: "functions[0].type",
               // additionalCustomization: true,
             },
             {
-              label: "MASTERS_ORGANISATION_SUB_TYPE",
+              label: "Organisation Subtype",
               jsonPath: "functions[0].category",
               // additionalCustomization: true,
             },
             {
-              label: "MASTERS_ADDRESS",
+              label: "Boundary Code",
               jsonPath: "orgAddress[0].boundaryCode",
               // additionalCustomization: true,
             },
             {
-              label: "CORE_COMMON_STATUS",
+              label: "Application Status",
               jsonPath: "applicationStatus",
               // additionalCustomization: true,
             },
