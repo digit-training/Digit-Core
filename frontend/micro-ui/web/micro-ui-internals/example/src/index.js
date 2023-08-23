@@ -9,9 +9,10 @@ import { initEngagementComponents } from "@egovernments/digit-ui-module-engageme
 import { initHRMSComponents } from "@egovernments/digit-ui-module-hrms";
 import { initUtilitiesComponents } from "@egovernments/digit-ui-module-utilities";
 import { initSampleComponents } from "@egovernments/digit-ui-module-sample";
-import {initWorkbenchComponents} from "@egovernments/digit-ui-module-workbench";
+import { initWorkbenchComponents } from "@egovernments/digit-ui-module-workbench";
 
 import { initMuktaCustomisations } from "@egovernments/digit-ui-customisation-mukta";
+import { initPTComponents } from "@egovernments/digit-ui-module-pt";
 
 import "@egovernments/digit-ui-custom-css/example/index.css";
 
@@ -25,11 +26,11 @@ const enabledModules = [
   //  "Engagement", "NDSS","QuickPayLinks", "Payment",
   "Utilities",
   //added to check fsm
-  // "FSM"
+  "WS",
   "Mukta",
   "Sample",
   // "Workbench"
-
+  "PT",
 ];
 
 const initTokens = (stateCode) => {
@@ -67,6 +68,7 @@ const initDigitUI = () => {
     PaymentLinks,
   });
 
+  initPTComponents();
   initDSSComponents();
   initHRMSComponents();
   initEngagementComponents();

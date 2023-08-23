@@ -186,7 +186,6 @@ import {
   LocateIcon,
 
   /* Works Management  */
-
   NoResultsFoundIcon,
   WorksMgmtIcon,
   BioMetricIcon,
@@ -274,7 +273,7 @@ import Paragraph from "./atoms/Paragraph";
 import CitizenConsentForm from "./atoms/CitizenConsentForm";
 
 // Importing From SVG Library
-import {SVG} from "./atoms/SVG";
+import { SVG } from "./atoms/SVG";
 
 export {
   InputTextAmount,
@@ -537,7 +536,6 @@ export {
   CreateEstimateIcon,
   GotoInboxIcon,
   LocateIcon,
-
   /* Works Management  */
 
   NoResultsFoundIcon,
@@ -557,8 +555,6 @@ export {
   PaymentIcon,
   HistoryIcon,
   WarningIcon,
-
-
   // Exported all svgs from svg-component library
-  SVG
+  SVG,
 };

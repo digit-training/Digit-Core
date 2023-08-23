@@ -24,12 +24,12 @@ import HrmsService from "./services/elements/HRMS";
 import { InboxGeneral } from "./services/elements/InboxService";
 import EventsServices from "./services/elements/Events";
 
-
 import ShareFiles from "./services/molecules/ShareFiles";
 import { GetServiceDefinitions } from "./services/molecules/ServiceDefinitions";
 import { ULBService } from "./services/molecules/Ulb";
 import { ComponentRegistryService } from "./services/elements/ComponentRegistry";
 import StoreData from "./services/molecules/StoreData";
+import PTService from "./services/elements/PropertyTax";
 
 import Contexts from "./contexts";
 import Hooks from "./hooks";
@@ -69,6 +69,7 @@ const initLibraries = () => {
   setupLibraries("ComponentRegistryService", ComponentRegistryService);
   setupLibraries("StoreData", StoreData);
   setupLibraries("EventsServices", EventsServices);
+  setupLibraries("PTService", PTService);
 
   setupLibraries("InboxGeneral", InboxGeneral);
   setupLibraries("ShareFiles", ShareFiles);
