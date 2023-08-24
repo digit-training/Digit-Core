@@ -18,7 +18,7 @@ const searchWageSeekerConfig = () => {
       masterName: "commonUiConfig",
       moduleName: "SearchWageSeekerConfig",
       tableFormJsonPath: "requestParam",
-      filterFormJsonPath: "requestBody.Individual",
+      filterFormJsonPath: "requestParam",
       searchFormJsonPath: "requestParam",
     },
     sections: {

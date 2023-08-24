@@ -123,7 +123,7 @@ export const newConfig = [
         isMandatory: true,
         type: "mobileNumber",
         disable: false,
-        populators: { name: "mobileNumber", error: "sample error message", validation: { min: 5999999999, max: 9999999999 } },
+        populators: { name: "mobileNumber", error: "Specify the phone number", validation: { min: 5999999999, max: 9999999999 } },
       },
 
       {
@@ -132,7 +132,7 @@ export const newConfig = [
         isMandatory: true,
         type: "text",
         disable: false,
-        populators: { name: "name", error: "Required", validation: { pattern: /^[A-Za-z]+$/i } },
+        populators: { name: "name", error: "Required Name", validation: { pattern: /^[A-Za-z]+$/i } },
       },
       {
         isMandatory: true,
@@ -143,7 +143,7 @@ export const newConfig = [
         populators: {
           name: "gender",
           optionsKey: "name",
-          error: "sample required message",
+          error: "Specify Gender",
           required: true,
           mdmsConfig: {
             masterName: "GenderType",
@@ -159,7 +159,7 @@ export const newConfig = [
         isMandatory: true,
         type: "text",
         disable: false,
-        populators: { name: "fatherOrHusbandName", error: "Required", validation: { pattern: /^[A-Za-z]+$/i } },
+        populators: { name: "fatherOrHusbandName", error: "Required Specify Guardian name", validation: { pattern: /^[A-Za-z]+$/i } },
       },
       {
         isMandatory: false,
@@ -170,7 +170,7 @@ export const newConfig = [
         populators: {
           name: "relationship",
           optionsKey: "name",
-          error: "sample required message",
+          error: "Please Specify the relationship",
           required: true,
           options: [
             {
@@ -193,7 +193,7 @@ export const newConfig = [
         populators: {
           name: "applicantCategory",
           optionsKey: "name",
-          error: "sample required message",
+          error: "Please fill Applicant Category",
           required: true,
           options: [
             {
@@ -215,7 +215,7 @@ export const newConfig = [
         description: "address details",
         type: "textarea",
         disable: false,
-        populators: { name: "address", error: "Required", validation: { pattern: /^[A-Za-z]+$/i } },
+        populators: { name: "address", error: "Required" },
       },
     ],
   },
