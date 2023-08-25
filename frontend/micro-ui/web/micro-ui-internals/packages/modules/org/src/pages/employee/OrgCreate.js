@@ -25,321 +25,16 @@ const navConfig = [
 
 
 const Create = () => {
-  const [currentDate, setCurrentDate] = useState(new Date()); // State to hold current date
 
-  useEffect(() => {
-    setCurrentDate(new Date()); // Update the current date when the component mounts
-    console.log(currentDate, " cccccccccccccc")
-  }, []);
   var Digit = window.Digit || {};
-  // console.log(Digit, " ddddddddddddddddd")
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { t } = useTranslation();
   const history = useHistory();
   const newConfig = [
-    // {
-    //   head: "Organisation Details",
-    //   body: [
-    //     {
-    //       label: "Name",
-    //       isMandatory: true,
-    //       type: "text",
-    //       disable: false,
-    //       populators: {
-    //         name: "name",
-    //         error: "Required",
-    //         validation: { pattern: /^[A-Za-z]+$/i },
-    //       },
-    //     },
-    //     {
-    //       label: "Application Status",
-    //       isMandatory: false,
-    //       type: "text",
-    //       disable: false,
-    //       populators: {
-    //         name: "applicationStatus",
-    //         error: "Required",
-    //       },
-    //     },
-    //     {
-    //       label: "External Reference Number",
-    //       isMandatory: false,
-    //       type: "text",
-    //       disable: false,
-    //       populators: {
-    //         name: "externalRefNumber",
-    //         error: "Required",
-    //       },
-    //     },
-    //     {
-    //       label: "Date of Incorporation",
-    //       isMandatory: true,
-    //       type: "date",
-    //       disable: false,
-    //       populators: {
-    //         name: "dateOfIncorporation",
-    //         error: "Required",
-    //         validation: { required: true },
-    //       },
-    //     },
-    //     // Add more fields based on the JSON structure
-    //   ],
-    // },
-    // {
-    //   head: "Organisation Address",
-    //   body: [
-    //     {
-    //       label: "Door No",
-    //       isMandatory: false,
-    //       type: "text",
-    //       disable: false,
-    //       populators: {
-    //         name: "doorNo",
-    //         error: "Required",
-    //         validation: { pattern: /^[A-Za-z0-9\s]+$/i },
-    //       },
-    //     },
-    //     {
-    //       label: "Plot No",
-    //       isMandatory: false,
-    //       type: "text",
-    //       disable: false,
-    //       populators: {
-    //         name: "plotNo",
-    //         error: "Required",
-    //         validation: { pattern: /^[A-Za-z0-9\s]+$/i },
-    //       },
-    //     },
-    //     {
-    //       label: "Landmark",
-    //       isMandatory: false,
-    //       type: "text",
-    //       disable: false,
-    //       populators: {
-    //         name: "landmark",
-    //         error: "Required",
-    //       },
-    //     },
-    //     {
-    //       label: "City",
-    //       isMandatory: true,
-    //       type: "text",
-    //       disable: false,
-    //       populators: {
-    //         name: "city",
-    //         error: "Required",
-    //       },
-    //     },
-    //     {
-    //       label: "District",
-    //       isMandatory: true,
-    //       type: "text",
-    //       disable: false,
-    //       populators: {
-    //         name: "district",
-    //         error: "Required",
-    //       },
-    //     },
-    //     {
-    //       label: "Region",
-    //       isMandatory: false,
-    //       type: "text",
-    //       disable: false,
-    //       populators: {
-    //         name: "region",
-    //         error: "Required",
-    //       },
-    //     },
-    //     {
-    //       label: "State",
-    //       isMandatory: true,
-    //       type: "text",
-    //       disable: false,
-    //       populators: {
-    //         name: "state",
-    //         error: "Required",
-    //       },
-    //     },
-    //     {
-    //       label: "Country",
-    //       isMandatory: true,
-    //       type: "text",
-    //       disable: false,
-    //       populators: {
-    //         name: "country",
-    //         error: "Required",
-    //       },
-    //     },
-    //     {
-    //       label: "Pincode",
-    //       isMandatory: true,
-    //       type: "text",
-    //       disable: false,
-    //       populators: {
-    //         name: "pincode",
-    //         error: "Required",
-    //       },
-    //     },
-    //     {
-    //       label: "Additional Details",
-    //       isMandatory: true,
-    //       type: "text",
-    //       disable: false,
-    //       populators: {
-    //         name: "additionDetails",
-    //         error: "Required",
-    //       },
-    //     },
-    //     {
-    //       label: "Building Name",
-    //       isMandatory: true,
-    //       type: "text",
-    //       disable: false,
-    //       populators: {
-    //         name: "buildingName",
-    //         error: "Required",
-    //       },
-    //     },
-    //     {
-    //       label: "Street",
-    //       isMandatory: true,
-    //       type: "text",
-    //       disable: false,
-    //       populators: {
-    //         name: "street",
-    //         error: "Required",
-    //       },
-    //     },
-    //     {
-    //       label: "Boundary Type",
-    //       isMandatory: true,
-    //       type: "text",
-    //       disable: false,
-    //       populators: {
-    //         name: "boundaryType",
-    //         error: "Required",
-    //       },
-    //     },
-    //     {
-    //       "label": "CORE_COMMON_CITY",
-    //       "isMandatory": true,
-    //       "key": "locDetails_city",
-    //       "type": "radioordropdown",
-    //       "disable": true,
-    //       "preProcess": {
-    //         "updateDependent": [
-    //           "populators.options"
-    //         ]
-    //       },
-    //       "populators": {
-    //         "name": "locDetails_city",
-    //         "optionsKey": "i18nKey",
-    //         "error": "WORKS_REQUIRED_ERR",
-    //         "optionsCustomStyle": {
-    //           "top": "2.3rem"
-    //         },
-    //         "options": []
-    //       }
-    //     },
-    //     {
-    //       label: "Boundary Code",
-    //       isMandatory: true,
-    //       type: "text",
-    //       disable: false,
-    //       populators: {
-    //         name: "boundaryCode",
-    //         error: "Required",
-    //       },
-    //     },
-    //     {
-    //       label: "Latitude",
-    //       isMandatory: true,
-    //       type: "number",
-    //       disable: false,
-    //       populators: {
-    //         name: "latitude",
-    //         error: "Required",
-    //       },
-    //     },
-    //     {
-    //       label: "Longitude",
-    //       isMandatory: true,
-    //       type: "number",
-    //       disable: false,
-    //       populators: {
-    //         name: "longitude",
-    //         error: "Required",
-    //       },
-    //     },
-    //     // Add more fields based on the JSON structure
-    //   ],
-    // },
-    // {
-    //   head: "Contact Details",
-    //   body: [
-    //     {
-    //       label: "Contact Name",
-    //       isMandatory: true,
-    //       type: "text",
-    //       disable: false,
-    //       populators: {
-    //         name: "contactName",
-    //         error: "Required",
-    //         validation: { pattern: /^[A-Za-z\s]+$/i },
-    //       },
-    //     },
-    //     {
-    //       label: "Contact Mobile Number",
-    //       isMandatory: true,
-    //       type: "mobileNumber",
-    //       disable: false,
-    //       populators: {
-    //         name: "contactMobileNumber",
-    //         error: "Required",
-    //         validation: { min: 5999999999, max: 9999999999 },
-    //       },
-    //     },
-    //     {
-    //       label: "Contact Email",
-    //       isMandatory: true,
-    //       type: "text",
-    //       disable: false,
-    //       populators: {
-    //         name: "contactEmail",
-    //         error: "Required",
-    //         validation: {
-    //           required: true,
-    //           pattern: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$/
-    //         },
-
-    //       },
-    //     },
-    //     // Add more fields based on the JSON structure
-    //   ],
-    // },
     {
       "head": "Organisation Details",
       "subHead": "",
       "body": [
-        // {
-        //   "label": "MASTERS_ORGANISATION_ID",
-        //   "isMandatory": false,
-        //   "key": "basicDetails_orgId",
-        //   "type": "text",
-        //   "disable": true,
-        //   "preProcess": {
-        //     "updateDependent": [
-        //       "populators.customStyle.display"
-        //     ]
-        //   },
-        //   "populators": {
-        //     "name": "basicDetails_orgId",
-        //     "customStyle": {
-        //       "display": "none"
-        //     },
-        //     "customClass": "field-value-no-border"
-        //   }
-        // },
         {
           "label": "Organisation Name",
           "isMandatory": true,
@@ -361,42 +56,7 @@ const Create = () => {
             }
           }
         },
-        // {
-        //   "label": "MASTERS_REGISTERED_BY_DEPT",
-        //   "isMandatory": false,
-        //   "key": "basicDetails_regDept",
-        //   "type": "text",
-        //   "disable": false,
-        //   "preProcess": {
-        //     "convertStringToRegEx": ["populators.validation.pattern"]
-        //   },
-        //   "populators": {
-        //     "name": "basicDetails_regDept",
-        //     "error": "ORG_VALIDATION_ERROR_DEPT",
-        //     "validation": { "pattern": "^[a-zA-Z0-9 .\\-_@\\']*$", "minlength": 2, "maxlength": 64 }
-        //   }
-        // },
-        // {
-        //   "label": "MASTERS_REGISTRATION_NUMBER",
-        //   "isMandatory": false,
-        //   "key": "basicDetails_regDeptNo",
-        //   "type": "text",
-        //   "disable": false,
-        //   "preProcess": {
-        //     "convertStringToRegEx": [
-        //       "populators.validation.pattern"
-        //     ]
-        //   },
-        //   "populators": {
-        //     "name": "basicDetails_regDeptNo",
-        //     "error": "MASTERS_PATTERN_ERR_MSG_ORG_DETAILS",
-        //     "validation": {
-        //       "pattern": "^[a-zA-Z0-9 .\\-_@\\']*$",
-        //       "minlength": 2,
-        //       "maxlength": 64
-        //     }
-        //   }
-        // },
+
         {
           "label": "Date Of Incorporation",
           "isMandatory": true,
@@ -412,7 +72,7 @@ const Create = () => {
             "name": "basicDetails_dateOfIncorporation",
             "error": "WORKS_REQUIRED_ERR",
             "validation": {
-              "max": currentDate
+              "max": new Date().toISOString().split("T")[0]
             }
           }
         }
@@ -451,27 +111,7 @@ const Create = () => {
           }
         },
 
-        // {
-        //   "key": "funDetails_orgSubType",
-        //   "label": "MASTERS_ORGANISATION_SUB_TYPE",
-        //   "isMandatory": true,
-        //   "type": "dropdown",
-        //   "disable": false,
-        //   "preProcess": {
-        //     "updateDependent": [
-        //       "populators.options"
-        //     ]
-        //   },
-        //   "populators": {
-        //     "name": "funDetails_orgSubType",
-        //     "optionsKey": "name",
-        //     "error": "WORKS_REQUIRED_ERR",
-        //     "optionsCustomStyle": {
-        //       "top": "2.3rem"
-        //     },
-        //     "options": []
-        //   }
-        // },
+
         {
           "key": "funDetails_category",
           "label": "Category",
@@ -497,26 +137,7 @@ const Create = () => {
             ]
           }
         },
-        // {
-        //   "key": "funDetails_classRank",
-        //   "label": "MASTERS_CLASS_RANK",
-        //   "isMandatory": true,
-        //   "type": "dropdown",
-        //   "disable": false,
-        //   "populators": {
-        //     "name": "funDetails_classRank",
-        //     "optionsKey": "name",
-        //     "error": "WORKS_REQUIRED_ERR",
-        //     "optionsCustomStyle": {
-        //       "top": "2.3rem"
-        //     },
-        //     "mdmsConfig": {
-        //       "masterName": "OrgFunctionClass",
-        //       "moduleName": "common-masters",
-        //       "localePrefix": "COMMON_MASTERS_CLASS"
-        //     }
-        //   }
-        // },
+
         {
           "label": "Valid From",
           "isMandatory": true,
@@ -525,13 +146,15 @@ const Create = () => {
           "disable": false,
           "preProcess": {
             "updateDependent": [
-              "populators.max"
+              "populators.validation.max"
             ]
           },
           "populators": {
             "name": "funDetails_validFrom",
             "error": "WORKS_REQUIRED_ERR",
-            "max": "currentDate"
+            "validation": {
+              "max": new Date().toISOString().split("T")[0]
+            }
           }
         },
         {
@@ -542,18 +165,19 @@ const Create = () => {
           "disable": false,
           "preProcess": {
             "updateDependent": [
-              "populators.min"
+              "populators.validation.min"
             ]
           },
           "populators": {
             "name": "funDetails_validTo",
-            "min": "currentDate"
+            "validation": {
+              "min": new Date().toISOString().split("T")[0]
+            }
           }
         }
       ]
     },
     {
-      // "navLink": "location_details",
       "head": "Organisation Address",
       "body": [
         {
@@ -664,8 +288,6 @@ const Create = () => {
       ]
     },
     {
-      // "navLink": "contact_Details",
-      // "sectionFormCategory": "contactDetails",
       "head": "Contact Details",
       "body": [
         {
@@ -727,118 +349,6 @@ const Create = () => {
         }
       ]
     }
-    // {
-    //   // "navLink": "financial_Details",
-    //   // "sectionFormCategory": "termsAndConditions",
-    //   "head": "",
-    //   "body": [
-    //     {
-    //       "label": "ES_COMMON_ACCOUNT_HOLDER_NAME",
-    //       "isMandatory": true,
-    //       "key": "financeDetails_accountHolderName",
-    //       "type": "text",
-    //       "disable": false,
-    //       "preProcess": {
-    //         "convertStringToRegEx": [
-    //           "populators.validation.pattern"
-    //         ]
-    //       },
-    //       "populators": {
-    //         "name": "financeDetails_accountHolderName",
-    //         "error": "WORKS_REQUIRED_ERR",
-    //         "validation": {
-    //           "pattern": "^[a-zA-Z0-9 .\\-_@\\']*$",
-    //           "minlength": 2,
-    //           "maxlength": 64
-    //         }
-    //       }
-    //     },
-    //     {
-    //       "label": "MASTERS_BANK_ACCOUNT_TYPE",
-    //       "isMandatory": true,
-    //       "key": "financeDetails_accountType",
-    //       "type": "radioordropdown",
-    //       "populators": {
-    //         "name": "financeDetails_accountType",
-    //         "optionsKey": "name",
-    //         "error": "WORKS_REQUIRED_ERR",
-    //         "optionsCustomStyle": {
-    //           "top": "2.3rem"
-    //         },
-    //         "mdmsConfig": {
-    //           "masterName": "BankAccType",
-    //           "moduleName": "works",
-    //           "localePrefix": "MASTERS"
-    //         }
-    //       }
-    //     },
-    //     {
-    //       "label": "MASTERS_ACC_NO",
-    //       "isMandatory": true,
-    //       "key": "financeDetails_accountNumber",
-    //       "type": "text",
-    //       "disable": false,
-    //       "preProcess": {
-    //         "convertStringToRegEx": [
-    //           "populators.validation.pattern"
-    //         ]
-    //       },
-    //       "populators": {
-    //         "name": "financeDetails_accountNumber",
-    //         "error": "BANK_ACCOUNT_VALIDATION",
-    //         "validation": {
-    //           "pattern": "^[0-9]{9,18}$",
-    //           "minlength": 9,
-    //           "maxlength": 18
-    //         }
-    //       }
-    //     },
-    //     // {
-    //     //   "type": "component",
-    //     //   "component": "TransferCodeTable",
-    //     //   "withoutLabel": true,
-    //     //   "key": "transferCodes",
-    //     //   "customProps": {
-    //     //     "isMandatory": true
-    //     //   }
-    //     // },
-    //     {
-    //       "label": "MASTERS_BANK_NAME",
-    //       "isMandatory": false,
-    //       "key": "financeDetails_bankName",
-    //       "type": "text",
-    //       "disable": true,
-    //       "populators": {
-    //         "name": "financeDetails_bankName",
-    //         "validation": {
-    //           "minlength": 2
-    //         }
-    //       }
-    //     },
-    //     {
-    //       "label": "MASTERS_BRANCH_NAME",
-    //       "isMandatory": false,
-    //       "key": "financeDetails_branchName",
-    //       "type": "text",
-    //       "disable": true,
-    //       "populators": {
-    //         "name": "financeDetails_branchName",
-    //         "validation": {
-    //           "minlength": 2
-    //         }
-    //       }
-    //     },
-    //     // {
-    //     //   "type": "component",
-    //     //   "component": "TransferCodeTable",
-    //     //   "withoutLabel": true,
-    //     //   "key": "taxIdentifier",
-    //     //   "customProps": {
-    //     //     "isMandatory": false
-    //     //   }
-    //     // }
-    //   ]
-    // }
   ];
   const onSubmit = (input_data) => {
     // Handle form submission
@@ -922,9 +432,6 @@ const Create = () => {
             const validFromField = config.body.find(
               (field) => field.key === "funDetails_validFrom"
             );
-            if (validFromField?.populators?.validation) {
-              validFromField.populators.validation.max = currentDate; // Set the max value to the current date
-            }
           }
           return {
             ...config,
