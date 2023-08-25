@@ -23,7 +23,7 @@ const searchWageSeekerConfig = () => {
       search: {
         uiConfig: {
           headerStyle: null,
-          formClassName:"custom-both-clear-search",
+          formClassName: "custom-both-clear-search",
           primaryLabel: "ES_COMMON_SEARCH",
           secondaryLabel: "ES_COMMON_CLEAR_SEARCH",
           minReqFields: 1,
@@ -43,14 +43,14 @@ const searchWageSeekerConfig = () => {
               "isMandatory": false,
               "disable": false,
               "populators": {
-                  "name": "wardCode",
-                  "type": "ward",
+                "name": "wardCode",
+                "type": "ward",
                 "optionsKey": "i18nKey",
-                  "defaultText": "COMMON_SELECT_WARD",
-                  "selectedText": "COMMON_SELECTED",
-                  "allowMultiSelect": false
+                "defaultText": "COMMON_SELECT_WARD",
+                "selectedText": "COMMON_SELECTED",
+                "allowMultiSelect": false
               }
-          },
+            },
             {
               label: "MASTERS_WAGESEEKER_NAME",
               type: "text",
@@ -66,7 +66,7 @@ const searchWageSeekerConfig = () => {
               populators: {
                 name: "individualId",
                 error: `PROJECT_PATTERN_ERR_MSG`,
-                validation: {  minlength: 2 },
+                validation: { minlength: 2 },
               },
             },
             {
@@ -103,13 +103,13 @@ const searchWageSeekerConfig = () => {
               type: "date",
               isMandatory: false,
               disable: false,
-              key : "createdFrom",
-              preProcess : {
-                updateDependent : ["populators.max"]
+              key: "createdFrom",
+              preProcess: {
+                updateDependent: ["populators.max"]
               },
               populators: {
                 name: "createdFrom",
-                max : "currentDate"
+                max: "currentDate"
               },
             },
             {
@@ -117,14 +117,14 @@ const searchWageSeekerConfig = () => {
               type: "date",
               isMandatory: false,
               disable: false,
-              key : "createdTo",
-              preProcess : {
-                updateDependent : ["populators.max"]
+              key: "createdTo",
+              preProcess: {
+                updateDependent: ["populators.max"]
               },
               populators: {
                 name: "createdTo",
                 error: "DATE_VALIDATION_MSG",
-                max : "currentDate"
+                max: "currentDate"
               },
               additionalValidation: {
                 type: "date",

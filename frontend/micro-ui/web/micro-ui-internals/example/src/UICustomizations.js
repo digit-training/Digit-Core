@@ -340,7 +340,7 @@ export const UICustomizations = {
         boundaryCode = data?.body?.SearchCriteria?.boundaryCode[0]?.code;
       }
 
-      if (boundaryCode === "B1" || boundaryCode === "B2" || boundaryCode === "B3") {
+      if (boundaryCode === "B1" || boundaryCode === "B2" || boundaryCode === "B3" || boundaryCode === "B4") {
         // Update boundaryCode and boundaryType within SearchCriteria
         data.body.SearchCriteria = {
           ...data.body.SearchCriteria,
@@ -348,9 +348,6 @@ export const UICustomizations = {
           boundaryType: "WARD"
         };
       }
-
-      console.log(data, " dataaaaaaaaaaaaaaaaaaaaaa");
-
       return data;
     },
 

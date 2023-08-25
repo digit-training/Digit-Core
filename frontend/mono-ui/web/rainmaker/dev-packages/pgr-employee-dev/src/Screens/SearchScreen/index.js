@@ -54,7 +54,7 @@ class SearchScreen extends Component {
     let inputType = document.getElementsByTagName("input");
     for (let input in inputType) {
       if (inputType[input].type === "number") {
-        inputType[input].addEventListener("mousewheel", function() {
+        inputType[input].addEventListener("mousewheel", function () {
           this.blur();
         });
       }
@@ -299,11 +299,11 @@ const mapStateToProps = state => {
   const { userInfo } = state.auth;
   const role =
     roleFromUserInfo(userInfo.roles, "GRO") ||
-    roleFromUserInfo(userInfo.roles, "DGRO")
+      roleFromUserInfo(userInfo.roles, "DGRO")
       ? "ao"
       : roleFromUserInfo(userInfo.roles, "CSR")
-      ? "csr"
-      : "employee";
+        ? "csr"
+        : "employee";
   let transformedComplaints = transformComplaintForComponent(
     complaints,
     role,
