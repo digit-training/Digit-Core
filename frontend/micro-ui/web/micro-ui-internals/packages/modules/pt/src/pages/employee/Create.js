@@ -68,19 +68,21 @@ const Create = () => {
     // history.push("/digit-ui/employee/pt/response");
   };
   return (
-    <FormComposerV2
-      heading={t("Create Property(on new application)")}
-      label={t("Submit")}
-      config={configs.map((config) => {
-        return {
-          ...config,
-          body: config.body.filter((a) => !a.hideInEmployee),
-        };
-      })}
-      defaultValues={{}}
-      onSubmit={onSubmit}
-      fieldStyle={{ marginRight: 0 }}
-    />
+    <div>
+      <div style={{ fontSize: "50px", margin: "10px", fontWeight: "bold" }}>Create Property(On New Connection)</div>
+      <FormComposerV2
+        label={t("Submit")}
+        config={configs.map((config) => {
+          return {
+            ...config,
+            body: config.body.filter((a) => !a.hideInEmployee),
+          };
+        })}
+        defaultValues={{}}
+        onSubmit={onSubmit}
+        fieldStyle={{ marginRight: 0 }}
+      />
+    </div>
   );
 };
 
