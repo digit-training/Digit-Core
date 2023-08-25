@@ -9,6 +9,7 @@
     "start": "react-scripts start"
   },
   "devDependencies": {
+    "@egovernments/digit-ui-module-death": "1.0.0",
     "@egovernments/digit-ui-module-dss": "1.5.37",
     "@egovernments/digit-ui-module-core": "1.5.42",
     "@egovernments/digit-ui-module-common": "1.5.30",
@@ -17,9 +18,9 @@
     "@egovernments/digit-ui-module-engagement": "1.5.20",
     "@egovernments/digit-ui-react-components": "1.5.28",
     "@egovernments/digit-ui-svg-components": "0.0.1",
-    "@egovernments/digit-ui-libraries": "1.5.7", 
+    "@egovernments/digit-ui-libraries": "1.5.7",
     "@egovernments/digit-ui-module-sample": "0.0.1",
-    "@egovernments/digit-ui-module-workbench":"0.0.1",
+    "@egovernments/digit-ui-module-workbench": "0.0.1",
     "@egovernments/digit-ui-customisation-mukta": "0.0.1",
     "http-proxy-middleware": "^1.0.5",
     "react": "17.0.2",

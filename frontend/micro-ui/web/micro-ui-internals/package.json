@@ -17,6 +17,8 @@
     "node": ">=14"
   },
   "scripts": {
+    "dev:death": "cd packages/modules/death && yarn start",
+    "build:death": "cd packages/modules/death && yarn build",
     "start": "SKIP_PREFLIGHT_CHECK=true run-s build start:dev",
     "sprint": "SKIP_PREFLIGHT_CHECK=true run-s start:script",
     "start:dev": "run-p dev:**",

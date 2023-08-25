@@ -62,9 +62,9 @@ const translate = (config, index, inputIndex, t) => {
 
     let input = config?.form[index].body[inputIndex];
     //iterate all translate keys and handle translation
-    for(let toTranslate = 0; toTranslate<config?.form[index].body[inputIndex]?.preProcess?.translate?.length; toTranslate++) {
+    for (let toTranslate = 0; toTranslate < config?.form[index].body[inputIndex]?.preProcess?.translate?.length; toTranslate++) {
         let keyToTranslate = config?.form[index].body[inputIndex]?.preProcess?.translate[toTranslate];
-        _.set(input, keyToTranslate, t(_.get(input, keyToTranslate)));    
+        _.set(input, keyToTranslate, t(_.get(input, keyToTranslate)));
     }
 
     return config;
@@ -73,9 +73,9 @@ const translate = (config, index, inputIndex, t) => {
 const updateDependent = (config, index, inputIndex, inputKey, dependencyConfig) => {
     let input = config?.form[index].body[inputIndex];
     //iterate all update options keys and add options as params
-    for(let toUpdate = 0; toUpdate<config?.form[index].body[inputIndex]?.preProcess?.updateDependent?.length; toUpdate++) {
+    for (let toUpdate = 0; toUpdate < config?.form[index].body[inputIndex]?.preProcess?.updateDependent?.length; toUpdate++) {
         let keyToUpdate = config?.form[index].body[inputIndex]?.preProcess?.updateDependent[toUpdate];
-        _.set(input, keyToUpdate, (dependencyConfig?.updateDependent?.filter(dependent=>dependent?.key === inputKey)?.[0]?.value?.[toUpdate]));    
+        _.set(input, keyToUpdate, (dependencyConfig?.updateDependent?.filter(dependent => dependent?.key === inputKey)?.[0]?.value?.[toUpdate]));
     }
 
     return config;
@@ -85,13 +85,13 @@ const convertStringToRegEx = (config, index, inputIndex) => {
 
     let input = config?.form[index].body[inputIndex];
     //iterate all translate keys and handle translation
-    for(let toValidate = 0; toValidate<config?.form[index].body[inputIndex]?.preProcess?.convertStringToRegEx?.length; toValidate++) {
+    for (let toValidate = 0; toValidate < config?.form[index].body[inputIndex]?.preProcess?.convertStringToRegEx?.length; toValidate++) {
         let keyToValidate = config?.form[index].body[inputIndex]?.preProcess?.convertStringToRegEx[toValidate];
         let regex = _.get(input, keyToValidate);
-        if(typeof(regex) === "string") {
-            regex =  new RegExp(regex);
+        if (typeof (regex) === "string") {
+            regex = new RegExp(regex);
         }
-        _.set(input, keyToValidate, regex);    
+        _.set(input, keyToValidate, regex);
     }
 
     return config;
@@ -100,26 +100,26 @@ const convertStringToRegEx = (config, index, inputIndex) => {
 const transform = (preProcesses, config, index, inputIndex, inputKey, t, dependencyConfig) => {
     //Do not loop preProcess object, to avoid unnecessary 'translate' and 'updateDependent' calls
     //To add any new transform object, simply add a new if statement
-    if(preProcesses?.translate) {
+    if (preProcesses?.translate) {
         config = translate(config, index, inputIndex, t);
     }
-    if(preProcesses?.updateDependent) {
+    if (preProcesses?.updateDependent) {
         config = updateDependent(config, index, inputIndex, inputKey, dependencyConfig);
     }
-    if(preProcesses?.convertStringToRegEx) {
+    if (preProcesses?.convertStringToRegEx) {
         config = convertStringToRegEx(config, index, inputIndex, inputKey);
     }
-    return config;  
+    return config;
 }
 
 const preProcessMDMSConfig = (t, config, dependencyConfig) => {
-    config?.form?.map((section, index)=>{
-        section?.body?.map((input, inputIndex)=>{
-        let preProcesses = input?.preProcess;
-        if(preProcesses){
-            config = transform(preProcesses, config, index, inputIndex, input?.key, t, dependencyConfig);
-        }
-       })
+    config?.form?.map((section, index) => {
+        section?.body?.map((input, inputIndex) => {
+            let preProcesses = input?.preProcess;
+            if (preProcesses) {
+                config = transform(preProcesses, config, index, inputIndex, input?.key, t, dependencyConfig);
+            }
+        })
     })
     return config;
 }

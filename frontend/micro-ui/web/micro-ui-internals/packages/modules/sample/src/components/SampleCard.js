@@ -3,7 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 const SampleCard = () => {
- 
+
   const { t } = useTranslation();
 
   const propsForModuleCard = {
@@ -13,10 +13,10 @@ const SampleCard = () => {
 
     ],
     links: [
-   
+
       {
         label: t("Create"),
-        link: `/${window?.contextPath}/employee/sample/create`,
+        link: `/${window?.contextPath}/employee/ws/create`,
       },
       {
         label: t("Inbox"),

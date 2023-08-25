@@ -1,4 +1,4 @@
-import { AppContainer, BreadCrumb,PrivateRoute } from "@egovernments/digit-ui-react-components";
+import { AppContainer, BreadCrumb, PrivateRoute } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Route, Switch } from "react-router-dom";
@@ -33,9 +33,9 @@ const App = ({ path, stateCode, userType, tenants }) => {
           <ProjectBreadCrumb location={location} />
         </React.Fragment>
         <PrivateRoute path={`${path}/create`} component={() => <Sample></Sample>} />
-          <PrivateRoute path={`${path}/inbox`} component={() => <SampleInbox></SampleInbox>} />
-          <PrivateRoute path={`${path}/search`} component={() => <SampleSearch></SampleSearch>} />
-        </AppContainer>
+        <PrivateRoute path={`${path}/inbox`} component={() => <SampleInbox></SampleInbox>} />
+        <PrivateRoute path={`${path}/search`} component={() => <SampleSearch></SampleSearch>} />
+      </AppContainer>
     </Switch>
   );
 };

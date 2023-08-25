@@ -34,15 +34,15 @@ const Urls = {
   Shortener: "/egov-url-shortening/shortener",
 
   works: {
-    create:"/loi-service/v1/_create",
-    estimateSearch:"/estimate-service/estimate/v1/_search",
-    loiSearch:"/loi-service/v1/_search",
-    createEstimate:"/estimate-service/estimate/v1/_create",
-    approvedEstimateSearch:"/estimate-service/estimate/v1/_search",
-    searchEstimate:"/estimate-service/estimate/v1/_search",
-    updateLOI:"/loi-service/v1/_update",
-    updateEstimate:"/estimate-service/estimate/v1/_update",
-    download_pdf:"/egov-pdf/download/WORKSESTIMATE/estimatepdf"
+    create: "/loi-service/v1/_create",
+    estimateSearch: "/estimate-service/estimate/v1/_search",
+    loiSearch: "/loi-service/v1/_search",
+    createEstimate: "/estimate-service/estimate/v1/_create",
+    approvedEstimateSearch: "/estimate-service/estimate/v1/_search",
+    searchEstimate: "/estimate-service/estimate/v1/_search",
+    updateLOI: "/loi-service/v1/_update",
+    updateEstimate: "/estimate-service/estimate/v1/_update",
+    download_pdf: "/egov-pdf/download/WORKSESTIMATE/estimatepdf"
   },
 
   fsm: {
@@ -178,7 +178,7 @@ const Urls = {
     wns_group_bill: "/egov-pdf/download/WNS/wnsgroupbill",
     cancel_group_bill: "/pdf-service/v1/_cancelProcess",
     wns_generate_pdf: "/egov-pdf/download/WNS/wnsbill",
-    water_applyAdhocTax : "/ws-calculator/waterCalculator/_applyAdhocTax",
+    water_applyAdhocTax: "/ws-calculator/waterCalculator/_applyAdhocTax",
     sewerage_applyAdhocTax: "/sw-calculator/sewerageCalculator/_applyAdhocTax",
     getSearchDetails: "/inbox/v1/dss/_search",
   },
@@ -200,6 +200,12 @@ const Urls = {
     },
   },
 
+  death: {
+    create: "/birth-death-services/common/savedeathimport?",
+    search: "/birth-death-services/death/_search"
+
+  },
+
   attendencemgmt: {
     mustorRoll: {
       estimate: "/muster-roll/v1/_estimate",
@@ -215,8 +221,8 @@ const Urls = {
   reports: {
     reportSearch: "/report/",
   },
-  bills:{
-    cancelBill:"/billing-service/bill/v2/_cancelbill"
+  bills: {
+    cancelBill: "/billing-service/bill/v2/_cancelbill"
   },
   access_control: "/access/v1/actions/mdms/_get",
   billgenie: "/egov-searcher",

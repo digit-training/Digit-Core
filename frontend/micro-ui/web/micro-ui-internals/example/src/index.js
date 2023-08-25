@@ -9,7 +9,11 @@ import { initEngagementComponents } from "@egovernments/digit-ui-module-engageme
 import { initHRMSComponents } from "@egovernments/digit-ui-module-hrms";
 import { initUtilitiesComponents } from "@egovernments/digit-ui-module-utilities";
 import { initSampleComponents } from "@egovernments/digit-ui-module-sample";
-import {initWorkbenchComponents} from "@egovernments/digit-ui-module-workbench";
+//import { initDeathComponents } from "../../packages/modules/death/dist";
+import { initDeathComponents } from "@egovernments/digit-ui-module-death";
+//import { initDeathComponents } from "../../packages/modules/death/dist";
+//import { initDeathComponents } from "../../packages/modules/death/dist/index.modern";
+import { initWorkbenchComponents } from "@egovernments/digit-ui-module-workbench";
 
 import { initMuktaCustomisations } from "@egovernments/digit-ui-customisation-mukta";
 
@@ -25,7 +29,9 @@ const enabledModules = [
   //  "Engagement", "NDSS","QuickPayLinks", "Payment",
   "Utilities",
   //added to check fsm
-  // "FSM"
+  "Death",
+  "WS",
+  "SW",
   "Mukta",
   "Sample",
   // "Workbench"
@@ -72,6 +78,7 @@ const initDigitUI = () => {
   initEngagementComponents();
   initUtilitiesComponents();
   initSampleComponents();
+  initDeathComponents();
   initWorkbenchComponents();
 
   const moduleReducers = (initData) => initData;
