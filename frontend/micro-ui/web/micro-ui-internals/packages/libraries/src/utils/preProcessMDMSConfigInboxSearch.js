@@ -95,6 +95,7 @@ const transform = (preProcesses, target, inputIndex, inputKey, t, dependencyConf
 
 const preProcessMDMSConfigInboxSearch = (t, config, jsonpath, dependencyConfig) => {
     let targetConfig = _.get(config, jsonpath);
+    console.log(targetConfig);
     let updatedConfig = [];
     //Iterate the entire jsonpath array and push the updated objects in the new res array.
     //Set the updated res in place of the targetConfig

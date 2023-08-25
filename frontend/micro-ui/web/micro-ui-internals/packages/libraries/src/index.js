@@ -23,6 +23,7 @@ import { UserService } from "./services/elements/User";
 import HrmsService from "./services/elements/HRMS";
 import { InboxGeneral } from "./services/elements/InboxService";
 import EventsServices from "./services/elements/Events";
+import { MCollectService } from "./services/elements/MCollect";
 
 
 import ShareFiles from "./services/molecules/ShareFiles";
@@ -79,6 +80,8 @@ const initLibraries = () => {
   setupLibraries("Download", Download);
 
   setupLibraries("AccessControlService", AccessControlService);
+
+  setupLibraries("MCollectService", MCollectService);
 
   return new Promise((resolve) => {
     initI18n(resolve);
