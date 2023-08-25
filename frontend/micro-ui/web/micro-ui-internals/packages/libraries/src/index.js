@@ -23,6 +23,7 @@ import { UserService } from "./services/elements/User";
 import HrmsService from "./services/elements/HRMS";
 import { InboxGeneral } from "./services/elements/InboxService";
 import EventsServices from "./services/elements/Events";
+import BRService from "./services/atoms/BRService";
 
 
 import ShareFiles from "./services/molecules/ShareFiles";
@@ -77,6 +78,7 @@ const initLibraries = () => {
   setupLibraries("Customizations", {});
   setupLibraries("Utils", Utils);
   setupLibraries("Download", Download);
+  setupLibraries("BRService", BRService);
 
   setupLibraries("AccessControlService", AccessControlService);
 

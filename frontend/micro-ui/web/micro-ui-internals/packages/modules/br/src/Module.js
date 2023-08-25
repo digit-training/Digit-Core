@@ -2,12 +2,13 @@ import { Loader} from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useRouteMatch } from "react-router-dom";
 import { default as EmployeeApp } from "./pages/employee";
-import SampleCard from "./components/SampleCard";
+//import SampleCard from "./components/SampleCard";
+import BRCard from "./components/BrCard";
 
-export const SampleModule = ({ stateCode, userType, tenants }) => {
+export const BRModule = ({ stateCode, userType, tenants }) => {
   const { path, url } = useRouteMatch();
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  const moduleCode = ["sample", "common","workflow", tenantId];
+  const moduleCode = ["br", "common","workflow", tenantId];
   const language = Digit.StoreData.getCurrentLanguage();
   const { isLoading, data: store } = Digit.Services.useStore({
     stateCode,
@@ -22,11 +23,11 @@ export const SampleModule = ({ stateCode, userType, tenants }) => {
 };
 
 const componentsToRegister = {
-  WSModule:SampleModule,
-  WSCard:SampleCard
+  SWModule:BRModule,
+  SWCard:BRCard
 };
 //init <modulename >component
-export const initSampleComponents = () => {
+export const initBRComponents = () => {
   Object.entries(componentsToRegister).forEach(([key, value]) => {
     Digit.ComponentRegistryService.setComponent(key, value);
   });

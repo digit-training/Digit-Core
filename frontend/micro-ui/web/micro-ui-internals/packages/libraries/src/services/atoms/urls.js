@@ -209,6 +209,12 @@ const Urls = {
     }
   },
 
+  br: {
+    create: "/birth-death-services/common/savebirthimport",
+    search: "/birth-death-services/birth/_search"
+    
+  },
+
   noc: {
     nocSearch: "/noc-services/v1/noc/_search",
   },

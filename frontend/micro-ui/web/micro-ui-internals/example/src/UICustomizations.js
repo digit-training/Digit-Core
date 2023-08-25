@@ -323,7 +323,7 @@ export const UICustomizations = {
       };
     },
   },
-  SearchWageSeekerConfig:  {
+  SearchBrConfig:  {
     customValidationCheck: (data) => {
       //checking both to and from date are present
       const { createdFrom, createdTo } = data;
@@ -370,11 +370,42 @@ export const UICustomizations = {
           }
           return acc;
         }, {});
-
-      data.body.Individual = { ...Individual };
+        const convertToDdmmyy = (dateString) => {
+          const parts = dateString.split("-");
+          console.log(parts.length, "llllllllllllllllll")
+          if (parts.length === 3) {
+            const [year, month, day] = parts;
+            if (day.length == 2) {
+              return `${day}-${month}-${year}`;
+            }
+          }
+          return dateString; // If the format is not recognized, return the original date string
+        };
+        data.body.Individual = { ...Individual };
+        console.log(data, " dataaaa111111111111111111")
+        // Modify the fromDate and toDate in params
+        if (data.params.fromDate !== undefined && data.params.fromDate !== null) {
+          console.log(data.params.fromDate, "fromDate before applying conversion");
+          data.params.fromDate = convertToDdmmyy(data.params.fromDate);
+          console.log(data.params.fromDate, "fromDate after applying conversion");
+        }
+        if (data.params.toDate !== undefined && data.params.toDate !== null) {
+          data.params.toDate = convertToDdmmyy(data.params.toDate);
+        }
+        // Modify the fromDate and toDate in state.searchForm
+        if (data.state.searchForm.fromDate !== undefined && data.state.searchForm.fromDate !== null) {
+          data.state.searchForm.fromDate = convertToDdmmyy(data.state.searchForm.fromDate);
+        }
+        if (data.state.searchForm.toDate !== undefined && data.state.searchForm.toDate !== null) {
+          data.state.searchForm.toDate = convertToDdmmyy(data.state.searchForm.toDate);
+        }
+      //data.body.Individual = { ...Individual };
+      console.log(data, "ddddddddddddddd")
       return data;
     },
     additionalCustomizations: (row, key, column, value, t, searchResult) => {
+      // console.log(key, "kkkkkkkkkkkkkkkk")
+      // console.log(row, "rrrrrrrrrrrr")
       //here we can add multiple conditions
       //like if a cell is link then we return link
       //first we can identify which column it belongs to then we can return relevant result
@@ -393,6 +424,24 @@ export const UICustomizations = {
 
         case "CORE_COMMON_PROFILE_CITY":
           return value ? <span style={{ whiteSpace: "nowrap" }}>{String(t(Digit.Utils.locale.getCityLocale(value)))}</span> : t("ES_COMMON_NA");
+
+        case "RegistrationNo":
+          return <span style={{ whiteSpace: "nowrap" }}>{row?.registrationno}</span> ;
+
+        case "Name":
+          return <span style={{ whiteSpace: "nowrap" }}>{row?.fullName}</span> ;
+
+        case "Gender":
+          return <span style={{ whiteSpace: "nowrap" }}>{row?.genderStr}</span> ;
+
+        case "HospitalName":
+          return <span style={{ whiteSpace: "nowrap" }}>{row?.hospitalname}</span> ;
+
+        case "FathersName":
+          return <span style={{ whiteSpace: "nowrap" }}>{row?.birthFatherInfo.fullName}</span> ;
+
+        case "MothersName":
+          return <span style={{ whiteSpace: "nowrap" }}>{row?.birthMotherInfo.fullName}</span> ;
 
         case "MASTERS_WARD":
           return value ? (
