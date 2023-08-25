@@ -73,6 +73,8 @@ export const Request = async ({
    
     data.RequestInfo = {
       apiId: "Rainmaker",
+      ver : ".01",
+      action : ""
     };
     if (auth || !!Digit.UserService.getUser()?.access_token) {
       data.RequestInfo = { ...data.RequestInfo, ...requestInfo() };
