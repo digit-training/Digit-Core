@@ -23,6 +23,7 @@ import { UserService } from "./services/elements/User";
 import HrmsService from "./services/elements/HRMS";
 import { InboxGeneral } from "./services/elements/InboxService";
 import EventsServices from "./services/elements/Events";
+import FireNOCService from "./services/elements/FireNOC";
 
 
 import ShareFiles from "./services/molecules/ShareFiles";
@@ -69,6 +70,7 @@ const initLibraries = () => {
   setupLibraries("ComponentRegistryService", ComponentRegistryService);
   setupLibraries("StoreData", StoreData);
   setupLibraries("EventsServices", EventsServices);
+  setupLibraries("FireNOCService", FireNOCService);
 
   setupLibraries("InboxGeneral", InboxGeneral);
   setupLibraries("ShareFiles", ShareFiles);
