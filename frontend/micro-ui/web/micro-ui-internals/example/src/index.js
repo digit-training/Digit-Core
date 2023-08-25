@@ -17,6 +17,8 @@ import "@egovernments/digit-ui-custom-css/example/index.css";
 
 import { pgrCustomizations } from "./pgr";
 import { UICustomizations } from "./UICustomizations";
+// import { initpgromponents } from "../../packages/modules/pgr/src/Module";
+import { initpgrComponents } from "@egovernments/digit-ui-module-pgr";
 
 var Digit = window.Digit || {};
 
@@ -26,6 +28,7 @@ const enabledModules = [
   "Utilities",
   //added to check fsm
   // "FSM"
+  "WS",
   "Mukta",
   "Sample",
   // "Workbench"
@@ -72,6 +75,7 @@ const initDigitUI = () => {
   initEngagementComponents();
   initUtilitiesComponents();
   initSampleComponents();
+  initpgrComponents();
   initWorkbenchComponents();
 
   const moduleReducers = (initData) => initData;

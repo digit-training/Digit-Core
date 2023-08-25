@@ -256,6 +256,8 @@ export const UICustomizations = {
       }
     },
     additionalCustomizations: (row, key, column, value, t, searchResult) => {
+      console.log(key, "kkkkkkkkkkkk")
+      console.log(row, "rrrrrrrrrrrr")
       if (key === "ATM_MUSTER_ROLL_ID") {
         return (
           <span className="link">
@@ -290,7 +292,6 @@ export const UICustomizations = {
       if (key === "COMMON_WORKFLOW_STATES") {
         return <span>{t(`WF_MUSTOR_${value}`)}</span>
       }
-      //added this in case we change the key and not updated here , it'll throw that nothing was returned from cell error if that case is not handled here. To prevent that error putting this default
       return <span>{t(`CASE_NOT_HANDLED`)}</span>
     },
     MobileDetailsOnClick: (row, tenantId) => {
@@ -323,9 +324,8 @@ export const UICustomizations = {
       };
     },
   },
-  SearchWageSeekerConfig:  {
+  searchPGRConfig:{
     customValidationCheck: (data) => {
-      //checking both to and from date are present
       const { createdFrom, createdTo } = data;
       if ((createdFrom === "" && createdTo !== "") || (createdFrom !== "" && createdTo === ""))
         return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
@@ -375,9 +375,7 @@ export const UICustomizations = {
       return data;
     },
     additionalCustomizations: (row, key, column, value, t, searchResult) => {
-      //here we can add multiple conditions
-      //like if a cell is link then we return link
-      //first we can identify which column it belongs to then we can return relevant result
+ 
       switch (key) {
         case "MASTERS_WAGESEEKER_ID":
           return (
@@ -388,27 +386,26 @@ export const UICustomizations = {
             </span>
           );
 
-        case "MASTERS_SOCIAL_CATEGORY":
-          return value ? <span style={{ whiteSpace: "nowrap" }}>{String(t(`MASTERS_${value}`))}</span> : t("ES_COMMON_NA");
+        case "Service Request ID":
+        return <span style={{ whiteSpace: "nowrap" }}>{String(row?.service?.serviceRequestId)}</span> 
 
-        case "CORE_COMMON_PROFILE_CITY":
-          return value ? <span style={{ whiteSpace: "nowrap" }}>{String(t(Digit.Utils.locale.getCityLocale(value)))}</span> : t("ES_COMMON_NA");
+        case "Service Code":
+        return <span style={{ whiteSpace: "nowrap" }}>{String(row?.service?.serviceCode)}</span> 
 
-        case "MASTERS_WARD":
-          return value ? (
-            <span style={{ whiteSpace: "nowrap" }}>{String(t(Digit.Utils.locale.getMohallaLocale(value, row?.tenantId)))}</span>
-          ) : (
-            t("ES_COMMON_NA")
-          );
+        case "Source":
+        return <span style={{ whiteSpace: "nowrap" }}>{String(row?.service?.source)}</span> 
 
-        case "MASTERS_LOCALITY":
-          return value ? (
-            <span style={{ whiteSpace: "break-spaces" }}>{String(t(Digit.Utils.locale.getMohallaLocale(value, row?.tenantId)))}</span>
-          ) : (
-            t("ES_COMMON_NA")
-          );
-        default:
-          return t("ES_COMMON_NA");
+        case "City":
+        return <span style={{ whiteSpace: "nowrap" }}>{String(row?.service?.address?.city)}</span> 
+
+        case "Action":
+        return <span style={{ whiteSpace: "nowrap" }}>{String(row?.workflow?.action)}</span> 
+
+        case "Mobile Number":
+        return <span style={{ whiteSpace: "nowrap" }}>{String(row?.service?.citizen?.mobileNumber)}</span> 
+
+        case "Name":
+        return <span style={{ whiteSpace: "nowrap" }}>{String(row?.service?.citizen?.name)}</span> 
       }
     },
     MobileDetailsOnClick: (row, tenantId) => {
@@ -424,5 +421,5 @@ export const UICustomizations = {
         return data[keys.start] && data[keys.end] ? () => new Date(data[keys.start]).getTime() <= new Date(data[keys.end]).getTime() : true;
       }
     }
-  },
+  }
 };
