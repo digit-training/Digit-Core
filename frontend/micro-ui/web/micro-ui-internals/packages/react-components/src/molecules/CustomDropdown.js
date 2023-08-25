@@ -71,6 +71,7 @@ const CustomDropdown = ({ t, config, inputRef, label, onChange, value, errorStyl
     select: config?.mdmsConfig?.select
       ? Digit.Utils.createFunction(config?.mdmsConfig?.select)
       : (data) => {
+        debugger;
           const optionsData = _.get(data, `${config?.mdmsConfig?.moduleName}.${config?.mdmsConfig?.masterName}`, []);
           return optionsData
             .filter((opt) => (opt?.hasOwnProperty("active") ? opt.active : true))

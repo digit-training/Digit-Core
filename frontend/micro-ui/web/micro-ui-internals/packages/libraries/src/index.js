@@ -36,6 +36,7 @@ import Hooks from "./hooks";
 import Utils from "./utils";
 import { subFormRegistry } from "./subFormRegistry";
 import AccessControlService from "./services/elements/Access";
+import IndividualService from "./services/elements/IndividualService";
 
 const setupLibraries = (Library, props) => {
   window.Digit = window.Digit || {};
@@ -79,6 +80,7 @@ const initLibraries = () => {
   setupLibraries("Download", Download);
 
   setupLibraries("AccessControlService", AccessControlService);
+  setupLibraries("IndividualService",IndividualService);
 
   return new Promise((resolve) => {
     initI18n(resolve);

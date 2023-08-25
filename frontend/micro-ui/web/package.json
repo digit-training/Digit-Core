@@ -42,9 +42,9 @@
     "clean": "rm -rf node_modules"
   },
   "eslintConfig": {
-    "extends": [
+    "extends": 
       "react-app"
-    ]
+    
   },
   "browserslist": {
     "production": [

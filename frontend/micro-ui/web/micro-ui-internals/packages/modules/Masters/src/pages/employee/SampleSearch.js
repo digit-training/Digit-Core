@@ -47,7 +47,7 @@ const SearchWageSeeker = () => {
     }
   }, [location])
 
-  if (isLoading) return <Loader />;
+  // if (isLoading) return <Loader />;
   return (
     <React.Fragment>
       <div className="jk-header-btn-wrapper">

@@ -208,7 +208,12 @@ const Urls = {
       search: "/muster-roll/v1/_search"
     }
   },
+  Masters:{
+    create:"/individual/v1/_create",
+    search:"individual/v1/_search"
 
+
+  },
   noc: {
     nocSearch: "/noc-services/v1/noc/_search",
   },
