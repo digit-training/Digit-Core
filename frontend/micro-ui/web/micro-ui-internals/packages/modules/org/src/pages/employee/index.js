@@ -2,10 +2,10 @@ import { AppContainer, BreadCrumb, PrivateRoute } from "@egovernments/digit-ui-r
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Route, Switch } from "react-router-dom";
-import Sample from "./Sample";
-import SampleInbox from "./SampleInbox";
-import SampleSearch from "./SampleSearch";
-import OrgResponse from "./SampleResponse";
+import OrgCreate from "./OrgCreate";
+import OrgInbox from "./OrgInbox";
+import OrgSearch from "./OrgSearch";
+import OrgResponse from "./OrgResponse";
 
 const ProjectBreadCrumb = ({ location }) => {
   const { t } = useTranslation();
@@ -33,10 +33,10 @@ const App = ({ path, stateCode, userType, tenants }) => {
         <React.Fragment>
           <ProjectBreadCrumb location={location} />
         </React.Fragment>
-        <PrivateRoute path={`${path}/create`} component={() => <Sample></Sample>} />
-        <PrivateRoute path={`${path}/inbox`} component={() => <SampleInbox></SampleInbox>} />
+        <PrivateRoute path={`${path}/create`} component={() => <OrgCreate></OrgCreate>} />
+        <PrivateRoute path={`${path}/inbox`} component={() => <OrgInbox></OrgInbox>} />
         <PrivateRoute path={`${path}/response`} component={() => <OrgResponse></OrgResponse>} />
-        <PrivateRoute path={`${path}/search`} component={() => <SampleSearch></SampleSearch>} />
+        <PrivateRoute path={`${path}/search`} component={() => <OrgSearch></OrgSearch>} />
       </AppContainer>
     </Switch>
   );

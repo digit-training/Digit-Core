@@ -1,3 +1,4 @@
+var Digit = window.Digit || {};
 const searchOrganisationConfig = () => {
   return {
     label: "WORKS_SEARCH_ORGANISATION",
@@ -10,7 +11,9 @@ const searchOrganisationConfig = () => {
       requestParam: {},
       requestBody: {
         apiOperation: "SEARCH",
-        SearchCriteria: {},
+        SearchCriteria: {
+          // tenantId: Digit.ULBService.getCurrentTenantId()
+        },
       },
       minParametersForSearchForm: 1,
       masterName: "commonUiConfig",
@@ -36,24 +39,24 @@ const searchOrganisationConfig = () => {
             createdTo: "",
           },
           fields: [
-            // {
-            //   label: "COMMON_WARD",
-            //   type: "locationdropdown",
-            //   isMandatory: false,
-            //   disable: false,
-            //   populators: {
-            //     name: "boundaryCode",
-            //     type: "ward",
-            //     optionsKey: "i18nKey",
-            //     optionsCustomStyle: {
-            //       top: "2.3rem",
-            //     },
-            //     defaultText: "COMMON_SELECT_WARD",
-            //     selectedText: "COMMON_SELECTED",
-            //     allowMultiSelect: false
-            //     // options: [{ "i18nKey": "Ward 1" }]
-            //   },
-            // },
+            {
+              label: "COMMON_WARD",
+              type: "locationdropdown",
+              isMandatory: false,
+              disable: false,
+              populators: {
+                name: "boundaryCode",
+                type: "ward",
+                optionsKey: "i18nKey",
+                optionsCustomStyle: {
+                  top: "2.3rem",
+                },
+                defaultText: "COMMON_SELECT_WARD",
+                selectedText: "COMMON_SELECTED",
+                allowMultiSelect: false
+                // options: [{ "i18nKey": "Ward 1" }]
+              },
+            },
             {
               label: "Organisation Type",
               type: "dropdown",
@@ -84,17 +87,18 @@ const searchOrganisationConfig = () => {
               populators: { name: "name", validation: { pattern: /^[^{0-9}^\$\"<>?\\\\~!@#$%^()+={}\[\]*,/_:;“”‘’]{1,50}$/i, maxlength: 140 } },
             },
 
-            {
-              label: "Tenant Id",
-              type: "text",
-              isMandatory: false,
-              disable: false,
-              populators: {
-                name: "tenantId",
-                // error: `PROJECT_PATTERN_ERR_MSG`
-                // validation: { minlength: 2 },
-              },
-            },
+            // {
+            //   label: "Tenant Id",
+            //   type: "text",
+            //   isMandatory: false,
+            //   disable: false,
+            //   populators: {
+            //     name: "tenantId",
+
+            //     // error: `PROJECT_PATTERN_ERR_MSG`
+            //     // validation: { minlength: 2 },
+            //   },
+            // },
             {
               label: "Organisation Number",
               type: "text",

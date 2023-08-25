@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Header, InboxSearchComposer, Loader, Button, AddFilled } from "@egovernments/digit-ui-react-components";
-import searchOrganisationConfig from "../../configs/searchWageSeekerConfig";
+import searchOrganisationConfig from "../../configs/SearchOrganisationConfig";
 import { useHistory, useLocation } from "react-router-dom";
 
 const SearchOrganisation = () => {
