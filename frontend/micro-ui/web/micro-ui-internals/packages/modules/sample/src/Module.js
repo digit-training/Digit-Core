@@ -2,7 +2,7 @@ import { Loader} from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useRouteMatch } from "react-router-dom";
 import { default as EmployeeApp } from "./pages/employee";
-import SampleCard from "./components/SampleCard";
+import WSCard from "./components/SampleCard";
 
 export const SampleModule = ({ stateCode, userType, tenants }) => {
   const { path, url } = useRouteMatch();
@@ -22,8 +22,8 @@ export const SampleModule = ({ stateCode, userType, tenants }) => {
 };
 
 const componentsToRegister = {
-  SampleModule,
-  SampleCard
+ WSModule:SampleModule,
+  WSCard
 };
 //init <modulename >component
 export const initSampleComponents = () => {

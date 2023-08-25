@@ -2,7 +2,7 @@ import { HRIcon, EmployeeModuleCard, AttendanceIcon, PropertyHouse } from "@egov
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-const SampleCard = () => {
+const WSCard = () => {
  
   const { t } = useTranslation();
 
@@ -32,4 +32,4 @@ const SampleCard = () => {
   return <EmployeeModuleCard {...propsForModuleCard} />;
 };
 
-export default SampleCard;
+export default WSCard;
