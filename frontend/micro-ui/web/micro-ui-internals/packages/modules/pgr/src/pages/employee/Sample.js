@@ -212,26 +212,8 @@ export const newConfig = [
     ]
   },
   {
-    head: "Application Subheading",
+    head: "Complaint Summary",
     body: [
-      {
-        isMandatory: true,
-        key: "genders",
-        type: "radioordropdown",
-        label: "Enter name",
-        disable: false,
-        populators: {
-          name: "genders",
-          optionsKey: "name",
-          error: "sample required message",
-          required: true,
-          mdmsConfig: {
-            masterName: "ServiceDefs",
-            moduleName: "RAINMAKER-PGR",
-            localePrefix: "No streetlight",
-          },
-        },
-      },
       {
         "type": "component",
         "component": "SampleComponent",
