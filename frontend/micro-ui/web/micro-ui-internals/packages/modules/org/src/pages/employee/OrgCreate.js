@@ -24,8 +24,8 @@ const navConfig = [
 
 
 
-const Create = () => {
-
+const Create = ({ sessionFormData }) => {
+  const [selectedWard, setSelectedWard] = useState(sessionFormData?.locDetails_ward?.code || '')
   var Digit = window.Digit || {};
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { t } = useTranslation();
@@ -184,7 +184,7 @@ const Create = () => {
           "label": "CORE_COMMON_CITY",
           "isMandatory": true,
           "key": "locDetails_city",
-          "type": "radioordropdown",
+          "type": "dropdown",
           "disable": false,
           "preProcess": {
             "updateDependent": [
@@ -205,7 +205,7 @@ const Create = () => {
           "label": "COMMON_WARD",
           "isMandatory": true,
           "key": "locDetails_ward",
-          "type": "radioordropdown",
+          "type": "dropdown",
           "disable": false,
           "preProcess": {
             "updateDependent": [
@@ -226,7 +226,7 @@ const Create = () => {
           "label": "COMMON_LOCALITY",
           "isMandatory": true,
           "key": "locDetails_locality",
-          "type": "radioordropdown",
+          "type": "dropdown",
           "disable": false,
           "preProcess": {
             "updateDependent": [
@@ -419,12 +419,17 @@ const Create = () => {
 
     })
   };
+  const onChange = (data) => {
+    console.log(data, " 00000000000000000");
+  }
 
   const configs = newConfig ? newConfig : [];
 
   return (
     <div>
+      <h1 style={{ fontSize: "35px", fontWeight: "bold", margin: "10px" }}>Create Organisation</h1>
       <FormComposerV2
+        // heading={t("Application Heading")}
         label={t("Submit Bar")}
         config={configs.map((config) => {
           if (config.head === "Functional Details") {
@@ -439,6 +444,7 @@ const Create = () => {
         })}
         defaultValues={{}}
         onSubmit={onSubmit}
+        onChange={onChange}
         fieldStyle={{ marginRight: 0 }}
       />
     </div>
