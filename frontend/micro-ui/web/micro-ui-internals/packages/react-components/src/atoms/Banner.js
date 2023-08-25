@@ -12,21 +12,39 @@ const Successful = (props) => {
     <div className={user_type === "citizen" ? "success-wrap" : "emp-success-wrap"} style={props?.props?.style ? props?.props?.style : {}}>
       <header style={props?.props?.headerStyles ? props?.props?.headerStyles : {}}>{props.props.message}</header>
       <div>
-        {props.props.whichSvg==="tick"? <div><TickMark fillColor="green" /><br /><br /> </div>: (props?.props?.svg || <SuccessSvg />) } 
-        {/* {props?.props?.svg || <SuccessSvg />} */}
-        {(props?.props?.complaintNumber || props.props.info) && <h2 style={props?.props?.infoStyles ? props?.props?.infoStyles : {}}>{props?.props?.complaintNumber ? t("CS_PGR_COMPLAINT_NUMBER") : props.props.info}</h2>}
-        {(props?.props?.complaintNumber || props?.props?.applicationNumber) &&<p style={props?.props?.applicationNumberStyles ? props?.props?.applicationNumberStyles : {}}>{props?.props?.complaintNumber ? props?.props?.complaintNumber : props?.props?.applicationNumber}</p>}
-        {props?.props?.applicationNumberOne ? <h2 style={props?.props?.infoOneStyles ? props?.props?.infoOneStyles : {}}>{props.props.infoOne}</h2> : null}
-        {props?.props?.applicationNumberOne ? <p style={props?.props?.applicationNumberStyles ? props?.props?.applicationNumberStyles : {}}>{props?.props?.applicationNumberOne}</p> : null}
-        {props?.props?.multipleResponseIDs && 
-          <div className="banner-multiple-ids-wrapper">
-            {
-              props?.props?.multipleResponseIDs.map(responseIDs=>(
-                <p>{responseIDs}</p>
-              ))
-            }
+        {props.props.whichSvg === "tick" ? (
+          <div>
+            <TickMark fillColor="green" />
+            <br />
+            <br />{" "}
           </div>
-        }
+        ) : (
+          props?.props?.svg || <SuccessSvg />
+        )}
+        {/* {props?.props?.svg || <SuccessSvg />} */}
+        {(props?.props?.complaintNumber || props.props.info) && (
+          <h2 style={props?.props?.infoStyles ? props?.props?.infoStyles : {}}>
+            {props?.props?.complaintNumber ? t("CS_PGR_COMPLAINT_NUMBER") : props.props.info}
+          </h2>
+        )}
+        {(props?.props?.complaintNumber || props?.props?.applicationNumber) && (
+          <p style={props?.props?.applicationNumberStyles ? props?.props?.applicationNumberStyles : {}}>
+            {props?.props?.complaintNumber ? props?.props?.complaintNumber : props?.props?.applicationNumber}
+          </p>
+        )}
+        {props?.props?.applicationNumberOne ? (
+          <h2 style={props?.props?.infoOneStyles ? props?.props?.infoOneStyles : {}}>{props.props.infoOne}</h2>
+        ) : null}
+        {props?.props?.applicationNumberOne ? (
+          <p style={props?.props?.applicationNumberStyles ? props?.props?.applicationNumberStyles : {}}>{props?.props?.applicationNumberOne}</p>
+        ) : null}
+        {props?.props?.multipleResponseIDs && (
+          <div className="banner-multiple-ids-wrapper">
+            {props?.props?.multipleResponseIDs.map((responseIDs) => (
+              <p>{responseIDs}</p>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -41,17 +59,19 @@ const Error = (props) => {
       <header style={props?.props?.headerStyles ? props?.props?.headerStyles : {}}>{props.props.message}</header>
       <ErrorSvg />
       {/* <img src={error} alt="error while submition"/> */}
-      <h2 style={props?.props?.infoStyles ? props?.props?.infoStyles : {}}>{props?.props?.complaintNumber ? t("CS_PGR_COMPLAINT_NUMBER") : props.props.info}</h2>
-      <p style={props?.props?.applicationNumberStyles ? props?.props?.applicationNumberStyles : {}}>{props?.props?.complaintNumber ? props?.props?.complaintNumber : props?.props?.applicationNumber}</p>
-      {props?.props?.multipleResponseIDs && 
-          <div className="banner-multiple-ids-wrapper">
-            {
-              props?.props?.multipleResponseIDs.map(responseIDs=>(
-                <p>{responseIDs}</p>
-              ))
-            }
-          </div>
-      }
+      <h2 style={props?.props?.infoStyles ? props?.props?.infoStyles : {}}>
+        {props?.props?.complaintNumber ? t("CS_PGR_COMPLAINT_NUMBER") : props.props.info}
+      </h2>
+      <p style={props?.props?.applicationNumberStyles ? props?.props?.applicationNumberStyles : {}}>
+        {props?.props?.complaintNumber ? props?.props?.complaintNumber : props?.props?.applicationNumber}
+      </p>
+      {props?.props?.multipleResponseIDs && (
+        <div className="banner-multiple-ids-wrapper">
+          {props?.props?.multipleResponseIDs.map((responseIDs) => (
+            <p>{responseIDs}</p>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
@@ -72,7 +92,8 @@ Banner.propTypes = {
   /**
    * If banner is successful, then show the complaint number
    */
-  complaintNumber: PropTypes.any,
+  // complaintNumber: PropTypes.any,
+  applicationNumber: PropTypes.any,
 };
 
 Banner.defaultProps = {
