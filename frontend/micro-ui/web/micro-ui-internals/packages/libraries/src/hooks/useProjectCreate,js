@@ -1,0 +1,9 @@
+import { useQuery, useMutation } from "react-query";
+
+import ProjectService from "../services/elements/ProjectService"
+
+export const useProjectCreate = (tenantId, config = {}) => {
+  return useMutation((data) => ProjectService.create(data, tenantId));
+};
+
+export default useProjectCreate;

@@ -45,6 +45,11 @@ const Urls = {
     download_pdf:"/egov-pdf/download/WORKSESTIMATE/estimatepdf"
   },
 
+  project: {
+    search: "/project/v1/_search",
+    create: "/project/v1/_create"
+  },
+
   fsm: {
     search: "/fsm/v1/_search",
     create: "/fsm/v1/_create",
