@@ -8,22 +8,18 @@ import { LinkLabel } from "@egovernments/digit-ui-react-components";
 // these functions will act as middlewares
 var Digit = window.Digit || {};
 
-
-
 export const UICustomizations = {
- 
   AttendanceInboxConfig: {
     preProcess: (data) => {
-      
       //set tenantId
       data.body.inbox.tenantId = Digit.ULBService.getCurrentTenantId();
       data.body.inbox.processSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
 
       const musterRollNumber = data?.body?.inbox?.moduleSearchCriteria?.musterRollNumber?.trim();
-      if(musterRollNumber) data.body.inbox.moduleSearchCriteria.musterRollNumber = musterRollNumber
+      if (musterRollNumber) data.body.inbox.moduleSearchCriteria.musterRollNumber = musterRollNumber;
 
       const attendanceRegisterName = data?.body?.inbox?.moduleSearchCriteria?.attendanceRegisterName?.trim();
-      if(attendanceRegisterName) data.body.inbox.moduleSearchCriteria.attendanceRegisterName = attendanceRegisterName
+      if (attendanceRegisterName) data.body.inbox.moduleSearchCriteria.attendanceRegisterName = attendanceRegisterName;
 
       // deleting them for now(assignee-> need clarity from pintu,ward-> static for now,not implemented BE side)
       const assignee = _.clone(data.body.inbox.moduleSearchCriteria.assignee);
@@ -34,11 +30,11 @@ export const UICustomizations = {
 
       //cloning locality and workflow states to format them
       // let locality = _.clone(data.body.inbox.moduleSearchCriteria.locality ? data.body.inbox.moduleSearchCriteria.locality : []);
-      
-      let selectedOrg =  _.clone(data.body.inbox.moduleSearchCriteria.orgId ? data.body.inbox.moduleSearchCriteria.orgId : null);
+
+      let selectedOrg = _.clone(data.body.inbox.moduleSearchCriteria.orgId ? data.body.inbox.moduleSearchCriteria.orgId : null);
       delete data.body.inbox.moduleSearchCriteria.orgId;
-      if(selectedOrg) {
-         data.body.inbox.moduleSearchCriteria.orgId = selectedOrg?.[0]?.applicationNumber;
+      if (selectedOrg) {
+        data.body.inbox.moduleSearchCriteria.orgId = selectedOrg?.[0]?.applicationNumber;
       }
 
       // let selectedWard =  _.clone(data.body.inbox.moduleSearchCriteria.ward ? data.body.inbox.moduleSearchCriteria.ward : null);
@@ -56,11 +52,10 @@ export const UICustomizations = {
       // locality = locality?.map((row) => row?.code);
       states = Object.keys(states)?.filter((key) => states[key]);
       ward = ward?.map((row) => row?.code);
-      
-      
+
       // //adding formatted data to these keys
       // if (locality.length > 0) data.body.inbox.moduleSearchCriteria.locality = locality;
-      if (states.length > 0) data.body.inbox.moduleSearchCriteria.status = states;  
+      if (states.length > 0) data.body.inbox.moduleSearchCriteria.status = states;
       if (ward.length > 0) data.body.inbox.moduleSearchCriteria.ward = ward;
       const projectType = _.clone(data.body.inbox.moduleSearchCriteria.projectType ? data.body.inbox.moduleSearchCriteria.projectType : {});
       if (projectType?.code) data.body.inbox.moduleSearchCriteria.projectType = projectType.code;
@@ -68,10 +63,10 @@ export const UICustomizations = {
       //adding tenantId to moduleSearchCriteria
       data.body.inbox.moduleSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
 
-      //setting limit and offset becoz somehow they are not getting set in muster inbox 
-      data.body.inbox .limit = data.state.tableForm.limit
-      data.body.inbox.offset = data.state.tableForm.offset
-      delete data.state
+      //setting limit and offset becoz somehow they are not getting set in muster inbox
+      data.body.inbox.limit = data.state.tableForm.limit;
+      data.body.inbox.offset = data.state.tableForm.offset;
+      delete data.state;
       return data;
     },
     postProcess: (responseArray, uiConfig) => {
@@ -90,7 +85,9 @@ export const UICustomizations = {
         return (
           <span className="link">
             <Link
-              to={`/${window.contextPath}/employee/attendencemgmt/view-attendance?tenantId=${Digit.ULBService.getCurrentTenantId()}&musterRollNumber=${value}`}
+              to={`/${
+                window.contextPath
+              }/employee/attendencemgmt/view-attendance?tenantId=${Digit.ULBService.getCurrentTenantId()}&musterRollNumber=${value}`}
             >
               {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
             </Link>
@@ -108,7 +105,7 @@ export const UICustomizations = {
         return <div>{value?.length}</div>;
       }
 
-      if(key === "ATM_AMOUNT_IN_RS"){
+      if (key === "ATM_AMOUNT_IN_RS") {
         return <span>{value ? Digit.Utils.dss.formatterWithoutRound(value, "number") : t("ES_COMMON_NA")}</span>;
       }
       if (key === "ATM_SLA") {
@@ -119,11 +116,11 @@ export const UICustomizations = {
         );
       }
       if (key === "COMMON_WORKFLOW_STATES") {
-        return <span>{t(`WF_MUSTOR_${value}`)}</span>
+        return <span>{t(`WF_MUSTOR_${value}`)}</span>;
       }
 
       //added this in case we change the key and not updated here , it'll throw that nothing was returned from cell error if that case is not handled here. To prevent that error putting this default
-      return <span>{t(`CASE_NOT_HANDLED`)}</span>
+      return <span>{t(`CASE_NOT_HANDLED`)}</span>;
     },
     MobileDetailsOnClick: (row, tenantId) => {
       let link;
@@ -134,7 +131,6 @@ export const UICustomizations = {
       return link;
     },
     populateReqCriteria: () => {
-      
       const tenantId = Digit.ULBService.getCurrentTenantId();
 
       return {
@@ -143,9 +139,9 @@ export const UICustomizations = {
         body: {
           SearchCriteria: {
             tenantId: tenantId,
-            functions : {
-              type : "CBO"
-            }
+            functions: {
+              type: "CBO",
+            },
           },
         },
         config: {
@@ -157,8 +153,7 @@ export const UICustomizations = {
       };
     },
   },
- 
-  
+
   SearchWageSeekerConfig: {
     customValidationCheck: (data) => {
       //checking both to and from date are present
@@ -183,7 +178,7 @@ export const UICustomizations = {
         wardCode: "wardCode[0].code",
         socialCategory: "socialCategory.code",
       };
-      const textConfig = ["name", "individualId"]
+      const textConfig = ["name", "individualId"];
       let Individual = Object.keys(requestBody)
         .map((key) => {
           if (selectConfig[key]) {
@@ -191,7 +186,7 @@ export const UICustomizations = {
           } else if (typeof requestBody[key] == "object") {
             requestBody[key] = requestBody[key]?.code;
           } else if (textConfig?.includes(key)) {
-            requestBody[key] = requestBody[key]?.trim()
+            requestBody[key] = requestBody[key]?.trim();
           }
           return key;
         })
@@ -219,7 +214,7 @@ export const UICustomizations = {
           return (
             <span className="link">
               <Link to={`/${window.contextPath}/employee/masters/view-wageseeker?tenantId=${row?.tenantId}&individualId=${value}`}>
-                 {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+                {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
               </Link>
             </span>
           );
@@ -259,7 +254,153 @@ export const UICustomizations = {
       if (type === "date") {
         return data[keys.start] && data[keys.end] ? () => new Date(data[keys.start]).getTime() <= new Date(data[keys.end]).getTime() : true;
       }
-    }
+    },
   },
- 
+
+  SearchFireNocConfig: {
+    preProcess: (data) => {
+      var createdFrom, createdTo, name;
+      if (data.body.FireNOCs != undefined) {
+        createdFrom = Digit.Utils.pt.convertDateToEpoch(data.body.FireNOCs[0]?.createdFrom, "daystart");
+        createdTo = Digit.Utils.pt.convertDateToEpoch(data.body.FireNOCs[0]?.createdTo);
+        name = data.body.FireNOCs[0]?.name?.trim();
+        let projectNumber = data.body.FireNOCs[0]?.projectNumber?.trim();
+        delete data.body.FireNOCs[0]?.createdFrom;
+        delete data.body.FireNOCs[0]?.createdTo;
+
+        data.body.FireNOCs[0] = {
+          ...data.body.FireNOCs[0],
+          tenantId: Digit.ULBService.getCurrentTenantId(),
+          projectNumber,
+          // projectType,
+          name,
+          // address: { boundary: ward },
+        };
+      }
+
+      // const projectType = data.body.FireNOCs[0]?.projectType?.code;
+      // const ward = data.body.FireNOCs[0]?.ward?.[0]?.code;
+      data.params = { ...data.params, tenantId: Digit.ULBService.getCurrentTenantId(), createdFrom, createdTo };
+
+      return data;
+    },
+    postProcess: (responseArray) => {
+      const listOfUuids = responseArray?.map((row) => row.auditDetails.createdBy);
+      const uniqueUuids = listOfUuids?.filter(function (item, i, ar) {
+        return ar.indexOf(item) === i;
+      });
+      const tenantId = Digit.ULBService.getCurrentTenantId();
+      const reqCriteria = {
+        url: "/user/_search",
+        params: {},
+        body: { tenantId, pageSize: 100, uuid: [...uniqueUuids] },
+        config: {
+          enabled: responseArray?.length > 0 ? true : false,
+          select: (data) => {
+            const usersResponse = data?.user;
+            responseArray?.forEach((row) => {
+              const uuid = row?.auditDetails?.createdBy;
+              const user = usersResponse?.filter((user) => user.uuid === uuid);
+              row.createdBy = user?.[0].name;
+            });
+            return responseArray;
+          },
+        },
+      };
+      const { isLoading: isPostProcessLoading, data: combinedResponse, isFetching: isPostProcessFetching } = Digit.Hooks.useCustomAPIHook(
+        reqCriteria
+      );
+
+      return {
+        isPostProcessFetching,
+        isPostProcessLoading,
+        combinedResponse,
+      };
+    },
+    customValidationCheck: (data) => {
+      //checking both to and from date are present
+      const { createdFrom, createdTo } = data;
+      if (createdTo !== "" && createdFrom === "") return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+      else if (createdTo === "" && createdFrom !== "") return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+
+      return false;
+    },
+    additionalCustomizations: (row, key, column, value, t, searchResult) => {
+      //here we can add multiple conditions
+      //like if a cell is link then we return link
+      //first we can identify which column it belongs to then we can return relevant result
+      console.log(searchResult, " sssssssssssssssssssssssss");
+      console.log(key, " kkkkkkkkkkkkkkkkk");
+
+      switch (key) {
+        case "Application no.":
+          return (
+            <span className="link">
+              <Link to={`/${window.contextPath}/employee/project/project-details?tenantId=${row?.tenantId}&projectNumber=${value}`}>
+                {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+              </Link>
+            </span>
+          );
+
+        // case "WORKS_PARENT_PROJECT_ID":
+        //   return value ? (
+        //     <span className="link">
+        //       <Link to={`/${window.contextPath}/employee/project/project-details?tenantId=${row?.tenantId}&projectNumber=${value}`}>
+        //         {String(value ? value : t("ES_COMMON_NA"))}
+        //       </Link>
+        //     </span>
+        //   ) : (
+        //     t("ES_COMMON_NA")
+        //   );
+
+        // case "WORKS_PROJECT_NAME": {
+        //   let currentProject = searchResult?.filter((result) => result?.id === row?.id)[0];
+        //   return (
+        //     <div class="tooltip">
+        //       <span class="textoverflow" style={{ "--max-width": `${column?.maxLength}ch` }}>
+        //         {String(t(value))}
+        //       </span>
+        //       {/* check condtion - if length greater than 20 */}
+        //       <span class="tooltiptext" style={{ whiteSpace: "nowrap" }}>
+        //         {currentProject?.description}
+        //       </span>
+        //     </div>
+        //   );
+        // }
+
+        // case "PROJECT_ESTIMATED_COST_IN_RS":
+        //   return <Amount customStyle={{ textAlign: "right" }} value={value} t={t}></Amount>;
+
+        // case "ES_COMMON_LOCATION": {
+        //   let currentProject = searchResult?.filter((result) => result?.id === row?.id)[0];
+        //   const headerLocale = Digit.Utils.locale.getTransformedLocale(row?.tenantId);
+        //   if (currentProject) {
+        //     let locality = currentProject?.address?.boundary ? t(`${headerLocale}_ADMIN_${currentProject?.address?.boundary}`) : "";
+        //     let ward = currentProject?.additionalDetails?.ward ? t(`${headerLocale}_ADMIN_${currentProject?.additionalDetails?.ward}`) : "";
+        //     let city = currentProject?.address?.city
+        //       ? t(`TENANT_TENANTS_${Digit.Utils.locale.getTransformedLocale(currentProject?.address?.city)}`)
+        //       : "";
+        //     return <p>{`${locality ? locality + ", " : ""}${ward ? ward + ", " : ""}${city}`}</p>;
+        //   }
+        //   return <p>{"NA"}</p>;
+        // }
+
+        default:
+          return t("ES_COMMON_NA");
+      }
+    },
+    additionalValidations: (type, data, keys) => {
+      if (type === "date") {
+        return data[keys.start] && data[keys.end] ? () => new Date(data[keys.start]).getTime() <= new Date(data[keys.end]).getTime() : true;
+      }
+    },
+    MobileDetailsOnClick: (row, tenantId) => {
+      let link;
+      Object.keys(row).map((key) => {
+        if (key === "WORKS_PROJECT_ID")
+          link = `/${window.contextPath}/employee/project/project-details?tenantId=${tenantId}&projectNumber=${row[key]}`;
+      });
+      return link;
+    },
+  },
 };
