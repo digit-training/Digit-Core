@@ -76,7 +76,6 @@ export const FormComposer = (props) => {
     trigger,
     control,
     formState,
-    handleOnChange,
     errors,
     setError,
     clearErrors,
@@ -118,10 +117,6 @@ export const FormComposer = (props) => {
 
   function onSubmit(data) {
     props.onSubmit(data);
-  }
-
-  function onChange(data) {
-    props.onChange(data);
   }
 
   function onSecondayActionClick(data) {
@@ -370,15 +365,6 @@ export const FormComposer = (props) => {
       case "select":
       case "radio":
       case "dropdown":
-        return (
-          <Controller
-            render={(props) => (
-              <CustomDropdown
-                onChange={props.onChange}
-              />
-            )}
-          />
-        );
       case "radioordropdown":
         return (
           <Controller
@@ -843,7 +829,7 @@ export const FormComposer = (props) => {
   );
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} onChange={handleOnChange(onChange)} onKeyDown={(e) => checkKeyDown(e)} id={props.formId} className={props.className}>
+    <form onSubmit={handleSubmit(onSubmit)} onKeyDown={(e) => checkKeyDown(e)} id={props.formId} className={props.className}>
       {props?.showMultipleCardsWithoutNavs ? (
         props?.config?.map((section, index, array) => {
           return !section.navLink && (
