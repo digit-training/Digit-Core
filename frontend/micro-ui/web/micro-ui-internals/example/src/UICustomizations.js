@@ -348,8 +348,20 @@ export const UICustomizations = {
           boundaryType: "WARD"
         };
       }
+
+      // Check if type is "VEN" or "CBO" and add it to functions accordingly
+      if (data.body.SearchCriteria.type) {
+        const typeCode = data.body.SearchCriteria.type.code;
+        if (typeCode === "VEN" || typeCode === "CBO") {
+          data.body.SearchCriteria.functions = {
+            type: typeCode
+          };
+        }
+      }
+
       return data;
     },
+
 
     additionalCustomizations: (row, key, column, value, t, searchResult) => {
       //here we can add multiple conditions
