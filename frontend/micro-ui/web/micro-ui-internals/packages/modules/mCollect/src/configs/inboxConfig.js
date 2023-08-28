@@ -1,6 +1,6 @@
 const inboxConfig = () => {
   return {
-    label: "ES_COMMON_INBOX",
+    label: "Search Challan",
     postProcessResult: true,
     type: "inbox",
     apiDetails: {

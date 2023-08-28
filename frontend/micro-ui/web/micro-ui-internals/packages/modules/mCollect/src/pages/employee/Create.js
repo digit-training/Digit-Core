@@ -1,37 +1,69 @@
 import { FormComposerV2 } from "@egovernments/digit-ui-react-components";
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { createModifiedData } from "./modifyData";
-
+import options from "../../../data";
 
 const Create = () => {
   const { t } = useTranslation();
   const history = useHistory();
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  console.log(tenantId);
+ 
+
+  const { isLoading:isFetching, data:data1 } = Digit.Hooks.useCustomMDMS(
+    tenantId,
+    "BillingService",
+    [{name: "TaxHeadMaster"}],
+    { // all configs supported by the usequery 
+      select: (data) => {
+  
+    
+
+        var arr = data?.BillingService?.TaxHeadMaster.map((data)=>{
+          return data?.service;
+        })
+
+        arr = [... new Set(arr)];
+
+        var newArr = arr.map((data)=>{
+          return {code:data,name:data};
+        })
+        
+        configs[1]['body'][1].populators.options = newArr;
+        // console.log( JSON.stringify({options:[...newArr]}) );
+        // console.log(typeof (configs[1]['body'][0].populators.options) )
+        // console.log(configs[1]['body'][1].populators.options);
+        // console.log(configs);
+        return newArr;
+      }
+    });
+
+
+
+ 
   const onSubmit = (data) => {
 
     const modifiedData = createModifiedData(data);
 
-    Digit.MCollectService.create(modifiedData, tenantId).then((result,err)=>{
+    Digit.MCollectService.create(modifiedData, tenantId).then((result, err) => {
       localStorage.setItem("mCollectResponse", JSON.stringify(result));
-      let getdata = {...data , get: result }
+      let getdata = { ...data, get: result }
       console.log(result);
       onSelect("", getdata, "", true);
-      console.log("daaaa",getdata);
+      console.log("daaaa", getdata);
     })
-    .catch((e) => {
-    console.log("err");
-   });
-   history.push(
-    "/digit-ui/employee/mCollect/response"
-  );
-  
+      .catch((e) => {
+        console.log("err");
+      });
+    history.push(
+      "/digit-ui/employee/mCollect/response"
+    );
+
     console.log(data, "data");
   };
-  
-  
+
+
   const configs = [
     {
       head: "Consumer Details",
@@ -83,7 +115,7 @@ const Create = () => {
           disable: false,
           populators: { name: "Challan.address.pincode", error: "Required" },
         },
-       
+
         {
           label: "Locality/Mohalla",
           type: "locationdropdown",
@@ -94,7 +126,7 @@ const Create = () => {
             name: "locality",
             type: "ward",
             optionsKey: "name",
-            
+
             allowMultiSelect: false,
             mdmsConfig: {
               masterName: "TenantBoundary",
@@ -157,26 +189,6 @@ const Create = () => {
     {
       head: "Service Details",
       body: [
-        // {
-        //   isMandatory: true,
-        //   key: "Challan.businessService",
-        //   type: "radioordropdown",
-        //   label: "Business Service",
-        //   disable: false,
-        //   populators: {
-        //     name: "Challan.businessService",
-        //     optionsKey: "businessService",
-        //     error: "Required",
-        //     required: true,
-        //     mdmsConfig: {
-        //       masterName: "TaxHeadMaster",
-        //       moduleName: "BillingService",
-        //       localePrefix: "",
-        //     },
-        //   },
-        // },
-
-
         {
           isMandatory: true,
           key: "Challan.businessService",
@@ -188,7 +200,6 @@ const Create = () => {
             optionsKey: "code",
             error: "required",
             required: true,
-         
             mdmsConfig: {
               masterName: "TaxHeadMaster",
               moduleName: "BillingService",
@@ -196,28 +207,7 @@ const Create = () => {
             },
           },
         },
-        // {
-        //   isMandatory: true,
-        //   key: "Challan.consumerType",
-        //   type: "radioordropdown",
-        //   label: "Consumer Type",
-        //   disable: false,
-        //   populators: {
-        //     name: "Challan.consumerType",
-        //     optionsKey: "consumerType",
-        //     error: "Required",
-        //     required: true,
-        //     mdmsConfig: {
-        //       masterName: "TaxHeadMaster",
-        //       moduleName: "BillingService",
-        //       localePrefix: "",
-        //     },
-        //   },
-        // },
-
-     
-  
-         {
+        {
           isMandatory: true,
           key: "Challan.consumerType",
           type: "radioordropdown",
@@ -225,18 +215,17 @@ const Create = () => {
           disable: false,
           populators: {
             name: "Challan.consumerType",
-            optionsKey: "service",
+            optionsKey: "name",
             error: "Required",
             required: true,
-         
-            mdmsConfig: {
-              masterName: "TaxHeadMaster",
-              moduleName: "BillingService",
-              localePrefix: "",
-            },
+            options:options.options
+            // mdmsConfig: {
+            //   masterName: "TaxHeadMaster",
+            //   moduleName: "BillingService",
+            //   localePrefix: "",
+            // },
           },
         },
-  
         {
           inline: true,
           label: "From Date",
@@ -263,18 +252,20 @@ const Create = () => {
 
 
   return (
+    !isFetching ?
     <FormComposerV2
       label={t("Submit Bar")}
-      config={configs.map((config) => {
-        return {
-          ...config,
-          body: config.body.filter((a) => !a.hideInEmployee),
-        };
-      })}
+      config = {configs}
+      // config={configs.map((config) => {
+      //   return {
+      //     ...config,
+      //     body: config.body.filter((a) => !a.hideInEmployee),
+      //   };
+      // })}
       defaultValues={{}}
       onSubmit={onSubmit}
-      fieldStyle={{ marginRight: 0 }}
-    />
+      fieldStyle={{ marginRight: 0 , width : "30%"}}
+    />:<React.Fragment> Please Wait loading the data </React.Fragment>
   );
 };
 

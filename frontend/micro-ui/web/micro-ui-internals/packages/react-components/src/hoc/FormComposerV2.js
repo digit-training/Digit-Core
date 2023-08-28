@@ -51,6 +51,7 @@ const wrapperStyles = {
   borderColor: "#f3f3f3",
   background: "#FAFAFA",
   marginBottom: "20px",
+ 
 };
 
 /**
@@ -154,6 +155,7 @@ export const FormComposer = (props) => {
             <Controller
               defaultValue={formData?.[populators.name]}
               render={({ onChange, ref, value }) => (
+             
                 <TextInput
                   value={formData?.[populators.name]}
                   type={type}
@@ -164,12 +166,15 @@ export const FormComposer = (props) => {
                   max={populators?.validation?.max}
                   min={populators?.validation?.min}
                   disable={disable}
-                  style={type === "date" ? { paddingRight: "3px" } : ""}
+                  // style={type === "date" ? { paddingRight: "3px" } : "" }
+                
+             
                   maxlength={populators?.validation?.maxlength}
                   minlength={populators?.validation?.minlength}
                   customIcon={populators?.customIcon}
                   customClass={populators?.customClass}
                 />
+      
               )}
               name={populators.name}
               rules={!disableFormValidation ? { required: isMandatory, ...populators.validation, ...customRules } : {}}
@@ -367,6 +372,7 @@ export const FormComposer = (props) => {
       case "dropdown":
       case "radioordropdown":
         return (
+          <div className="">
           <Controller
             render={(props) => (
               <CustomDropdown
@@ -387,6 +393,7 @@ export const FormComposer = (props) => {
             name={config.key}
             control={control}
           />
+           </div>
         );
       case "component":
         return (

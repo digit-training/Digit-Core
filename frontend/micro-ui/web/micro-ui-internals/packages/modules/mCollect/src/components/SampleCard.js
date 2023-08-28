@@ -1,4 +1,4 @@
-import { HRIcon, EmployeeModuleCard, AttendanceIcon, PropertyHouse } from "@egovernments/digit-ui-react-components";
+import { HRIcon, EmployeeModuleCard, AttendanceIcon, PropertyHouse , MCollectIcon  } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -7,7 +7,7 @@ const mCollectCard = () => {
   const { t } = useTranslation();
 
   const propsForModuleCard = {
-    Icon: <PropertyHouse />,
+    Icon: <MCollectIcon />,
     moduleName: t("MCollect"),
     kpis: [
 
