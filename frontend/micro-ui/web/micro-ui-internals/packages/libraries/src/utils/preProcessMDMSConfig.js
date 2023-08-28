@@ -72,6 +72,7 @@ const translate = (config, index, inputIndex, t) => {
 
 const updateDependent = (config, index, inputIndex, inputKey, dependencyConfig) => {
     let input = config?.form[index].body[inputIndex];
+    console.log(input);
     //iterate all update options keys and add options as params
     for(let toUpdate = 0; toUpdate<config?.form[index].body[inputIndex]?.preProcess?.updateDependent?.length; toUpdate++) {
         let keyToUpdate = config?.form[index].body[inputIndex]?.preProcess?.updateDependent[toUpdate];
@@ -114,6 +115,7 @@ const transform = (preProcesses, config, index, inputIndex, inputKey, t, depende
 
 const preProcessMDMSConfig = (t, config, dependencyConfig) => {
     config?.form?.map((section, index)=>{
+        alert(section,index);
         section?.body?.map((input, inputIndex)=>{
         let preProcesses = input?.preProcess;
         if(preProcesses){

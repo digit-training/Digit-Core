@@ -126,6 +126,7 @@ const CustomDropdown = ({ t, config, inputRef, label, onChange, value, errorStyl
           optionKey={config?.optionsKey}
           value={value}
           select={(e) => {
+            console.log("SELECTED"+config.name);
             onChange(e, config.name);
           }}
           disable={disable}

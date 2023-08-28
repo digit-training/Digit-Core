@@ -112,6 +112,7 @@ export const FormComposer = (props) => {
   }, [props?.appData, formData, props?.appData?.ConnectionHolderDetails]);
 
   useEffect(() => {
+    console.log("Form DATA"+JSON.stringify(formData));
     props.getFormAccessors && props.getFormAccessors({ setValue, getValues });
   }, []);
 

@@ -2,13 +2,13 @@ import { HRIcon, EmployeeModuleCard, AttendanceIcon, PropertyHouse } from "@egov
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-const WSCard = () => {
+const TLCard = () => {
  
   const { t } = useTranslation();
 
   const propsForModuleCard = {
     Icon: <PropertyHouse />,
-    moduleName: t("Sample"),
+    moduleName: t("TL"),
     kpis: [
 
     ],
@@ -16,15 +16,15 @@ const WSCard = () => {
    
       {
         label: t("Create"),
-        link: `/${window?.contextPath}/employee/sample/create`,
+        link: `/${window?.contextPath}/employee/tl/create`,
       },
       {
         label: t("Inbox"),
-        link: `/${window?.contextPath}/employee/sample/inbox`,
+        link: `/${window?.contextPath}/employee/tl/inbox`,
       },
       {
         label: t("Search"),
-        link: `/${window?.contextPath}/employee/sample/search`,
+        link: `/${window?.contextPath}/employee/tl/search`,
       },
     ],
   };
@@ -32,4 +32,4 @@ const WSCard = () => {
   return <EmployeeModuleCard {...propsForModuleCard} />;
 };
 
-export default WSCard;
+export default TLCard;

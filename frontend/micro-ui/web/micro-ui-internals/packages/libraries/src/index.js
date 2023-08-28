@@ -37,6 +37,8 @@ import Utils from "./utils";
 import { subFormRegistry } from "./subFormRegistry";
 import AccessControlService from "./services/elements/Access";
 
+import TLService from "./services/elements/TLService";
+
 const setupLibraries = (Library, props) => {
   window.Digit = window.Digit || {};
   window.Digit[Library] = window.Digit[Library] || {};
@@ -79,6 +81,7 @@ const initLibraries = () => {
   setupLibraries("Download", Download);
 
   setupLibraries("AccessControlService", AccessControlService);
+  setupLibraries("TLService",TLService);
 
   return new Promise((resolve) => {
     initI18n(resolve);
