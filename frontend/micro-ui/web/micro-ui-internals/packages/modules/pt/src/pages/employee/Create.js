@@ -80,7 +80,7 @@ const Create = () => {
         })}
         defaultValues={{}}
         onSubmit={onSubmit}
-        fieldStyle={{ marginRight: 0 }}
+        fieldStyle={{ marginRight: 0, width: "540px" }}
       />
     </div>
   );

@@ -10,7 +10,7 @@ export const newConfig = [
         disable: false,
         populators: {
           name: "propertyType",
-          optionsKey: "name",
+          optionsKey: "code",
           error: "sample required message",
           required: true,
           mdmsConfig: {
@@ -42,7 +42,7 @@ export const newConfig = [
         disable: false,
         populators: {
           name: "propertyUsageType",
-          optionsKey: "name",
+          optionsKey: "code",
           error: "sample required message",
           required: true,
           mdmsConfig: {
@@ -107,7 +107,7 @@ export const newConfig = [
         disable: false,
         populators: {
           name: "ownerType",
-          optionsKey: "name",
+          optionsKey: "code",
           error: "sample required message",
           required: true,
           mdmsConfig: {
