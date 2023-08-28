@@ -22,7 +22,8 @@ const SearchOrganisation = () => {
       {
         name: "SearchOrganisationConfig",
       },
-    ]);
+    ],
+  );
 
   // const orgConfigs = data?.[configModuleName]?.searchOrganisationConfig?.[0]
 
