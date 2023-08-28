@@ -4,26 +4,6 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { createOrganisationConfig } from "../../configs/createOrgConfig";
 
-const navConfig = [
-  {
-    name: "location_details",
-    code: "ES_COMMON_LOCATION_DETAILS",
-  },
-  {
-    name: "contact_Details",
-    code: "ES_COMMON_CONTACT_DETAILS",
-  },
-  {
-    name: "financial_Details",
-    code: "MASTERS_FINANCIAL_DETAILS",
-  }
-];
-
-
-
-
-
-
 
 const Create = () => {
   const defaultValues = {
@@ -195,7 +175,7 @@ const Create = () => {
         defaultValues={defaultValues}
         onSubmit={onSubmit}
         onFormValueChange={onFormValueChange}
-        fieldStyle={{ marginRight: 0 }}
+        fieldStyle={{ marginRight: 0, maxWidth: '540px' }}
       />
     </div>
   );
