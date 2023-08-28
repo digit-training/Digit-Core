@@ -114,6 +114,7 @@ const transform = (preProcesses, config, index, inputIndex, inputKey, t, depende
 }
 
 const preProcessMDMSConfig = (t, config, dependencyConfig) => {
+    // debugger;
     config?.form?.map((section, index)=>{
         alert(section,index);
         section?.body?.map((input, inputIndex)=>{

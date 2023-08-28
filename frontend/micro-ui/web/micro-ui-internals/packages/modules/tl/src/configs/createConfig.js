@@ -4,23 +4,15 @@ export var newConfig = [
       head: "Trade Details",
       body: [
         {
-          // component: "CustomDropdown",
           isMandatory: true,
           key: "financialYear",
           type: "dropdown",
-          // body: [
-          //   {
-          //     key: "financialYear",
-          //     label: "Financial Year",
-          //     type: "text"
-          //   }
-          // ]
           label: "Financial Year",
           disable: false,
           populators: {
             name: "financialYear",
             optionsKey: "code",
-            error: "sample required message",
+            error: "Financial year required",
             required: true,
             mdmsConfig: {
               masterName: "FinancialYear",
@@ -38,7 +30,7 @@ export var newConfig = [
           populators: {
             name: "licenseType",
             optionsKey: "code",
-            error: "sample required message",
+            error: "License Type required",
             required: true,
             mdmsConfig: {
               masterName: "ApplicationType",
@@ -56,7 +48,6 @@ export var newConfig = [
           populators:{
              name: "tradeName",
              error: "Required",
-            //  validation: { pattern: /^[A-Za-z]+$/i }
           },
         },
         {
@@ -65,16 +56,20 @@ export var newConfig = [
           type: "radioordropdown",
           label: "Structure Type",
           disable: false,
+          preProcess : {
+            updateDependent : ["populators.options"]
+          },
           populators: {
             name: "structureType",
-            optionsKey: "name",
-            error: "sample required message",
+            optionsKey: "code",
+            error: "Structure type required",
             required: true,
+            options:[],
             mdmsConfig: {
               masterName: "StructureType",
               moduleName: "common-masters",
               localePrefix: "COMMON_STRUCTURE",
-              options:[]
+              options:[],
             },
           },
         },
@@ -89,19 +84,24 @@ export var newConfig = [
         {
           // inline: true,
           key: "structureSubType",
-          label: "Structure-------Sub-------Type",
+          label: "Structure Sub Type",
           isMandatory: false,
           type: "radioordropdown",   // check this how to change this to drop down
           disable: false,
           preProcess : {
-            // translate : ["populators.error"],
             updateDependent : ["populators.options"]
           },          
           populators:{
              name: "structureSubType", 
              optionsKey: "code",
              error: "Required",
-             options:[]
+             options:[],
+             mdmsConfig: {
+               masterName: "StructureType",
+               moduleName: "common-masters",
+               localePrefix: "COMMON_STRUCTURE",
+               options:[],
+             },
           },
         },
         {
@@ -172,12 +172,12 @@ export var newConfig = [
         },
         {
           isMandatory: true,
-          key: "genders",
+          key: "tradeSubType",
           type: "radioordropdown",
           label: "Trade Sub Type",
           disable: false,
           populators: {
-            name: "genders",
+            name: "tradeSubType",
             optionsKey: "type",
             error: "sample required message",
             required: true,
@@ -387,20 +387,38 @@ export var newConfig = [
         {
           label: "Relationship with Guardian",
           isMandatory: false,
-          key: "additionalDetails",
+          key: "guardianRelationship",
           type: "radioordropdown",
           disable: false,
-          populators: { name: "guardianRelationship", error: "sample error message", validation: { pattern: /^[A-Za-z]+$/i } },
+          populators: {
+             name: "guardianRelationship",
+             optionsKey: "code",
+             error: "Enter relationship with guardian",
+             options:[
+              {
+                code:"FATHER",
+                name:"father"
+              },
+              {
+                code:"MOTHER",
+                name:"mother"
+              },
+              // {
+              //   code:"SELF",
+              //   name:"self"
+              // }
+             ]
+            },
         },
         {
-          label: "CORE_COMMON_GENDER",
+          label: "gender",
           isMandatory: true,
           key: "basicDetails_gender",
           type: "radioordropdown",
           disable: false,
           populators: {
             name: "basicDetails_gender",
-            optionsKey: "name",
+            optionsKey: "code",
             error: "WORKS_REQUIRED_ERR",
             optionsCustomStyle : {
               top : "2.3rem"

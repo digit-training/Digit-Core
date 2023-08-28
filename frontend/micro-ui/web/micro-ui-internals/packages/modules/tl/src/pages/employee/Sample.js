@@ -12,6 +12,8 @@ const Create = () => {
   const { t } = useTranslation();
   const history = useHistory();
   var config = newConfig;
+  const [structureType,setStructureType] = useState();
+  const [tradeType,setTradeType] = useState();
 
   // Trade Details
    Digit.Hooks.useCustomMDMS(
@@ -29,6 +31,7 @@ const Create = () => {
           return tradeArr;
       }
     }
+    ,[tradeType]
   )
 
   // Structure Details
@@ -40,15 +43,18 @@ const Create = () => {
       select: (data) => {
         let arr = (data?.["common-masters"]?.["StructureType"]);
         
+        localStorage.setItem("structure_data",JSON.stringify(data));
+
         let newarr = arr.map((val)=>{
-          return val.code.split('.');
+          return val.code.split('.')[0];
         });
-
-        let formattedArr =  newarr.map((data)=>{
-          return {code:data[0],name:data[1]};
+        
+        newarr = [...new Set(newarr)]; // only unique elements
+        let structure_type =  newarr.map((data)=>{
+          return {code:data,name:data};
         })
-
-        return formattedArr;
+        // console.log(structure_type);
+        return structure_type;
       
       }
     }
@@ -60,13 +66,14 @@ const Create = () => {
       updateDependent : [
         {
           key : 'structureSubType',
-          value : [structureTypeData]
+          value : []
         },
       ]
     }),[structureTypeData]);
 
   
   const onSubmit = (data) => {
+    console.log(data);
     let licenses = 
       {
         Licenses: [
@@ -86,7 +93,7 @@ const Create = () => {
               tradeUnits: [
                 {
                   tradeType: data?.tradeType.code,
-                  uom: data?.uom,
+                  uom: data?.tradeType.uom,
                   uomValue: 12,
                 },
               ],
@@ -130,13 +137,29 @@ const Create = () => {
     console.log(JSON.stringify(data), "data");
   };
 
+  const onFormValueChange = (setValue, formData, formState, reset, setError, clearErrors, trigger, getValues) => {
+    
+    if(formData){
+      // console.log(formData);
+
+      if(formData?.tradeType){
+        setTradeType(tradeType);
+      }
+      if(formData?.structureType){
+        setStructureType(formData.structureType.code.split('.')[0]);
+        // console.log(structureType);
+        // based on the Structure Type change the options of Structure Sub Type
+      }
+    }
+  }
+
 
   /* use newConfig instead of commonFields for local development in case needed */
   // const configs = preProcessconfig ? preProcessconfig : config ;
 
   return (
     <React.Fragment>
-    {console.log(preProcessconfig)}
+    {/* {console.log(preProcessconfig)} */}
     <FormComposerV2
       label={t("Submit")}
       description={"Trade Details"}
@@ -147,8 +170,8 @@ const Create = () => {
       //     body: config.body.filter((a) => !a.hideInEmployee),
       //   };
       // })}
-      // onChange = {onChange}
       onSubmit={onSubmit}
+      onFormValueChange = {onFormValueChange}
       fieldStyle={{ marginRight: 0 }}
       />
       </React.Fragment>
@@ -156,3 +179,7 @@ const Create = () => {
 };
 
 export default Create;
+
+
+
+// structureType : filter only Movable and Immovable
