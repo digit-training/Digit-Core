@@ -32,7 +32,7 @@ const componentsToRegister = {
   MuktaCard,
   DSSCard:null,  // TO HIDE THE DSS CARD IN HOME SCREEN as per MUKTA
   AttendenceMgmtCard:null , // TO HIDE THE Attendance Mgmt CARD IN HOME SCREEN as per MUKTA
-  HRMSCard ,// Overridden the HRMS card as per MUKTA
+  // HRMSCard ,// Overridden the HRMS card as per MUKTA
   
   SampleComponent
 };

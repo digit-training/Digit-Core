@@ -114,7 +114,7 @@ const Urls = {
     search: "/egov-hrms/employees/_search",
     count: "/egov-hrms/employees/_count",
     create: "/egov-hrms/employees/_create",
-    update: "/egov-hrms/employees/_update",
+    update: "/egov-hrms/employees/_update", 
   },
   tl: {
     create: "/tl-services/v1/_create",

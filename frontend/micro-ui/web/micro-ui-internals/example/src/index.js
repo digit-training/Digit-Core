@@ -6,10 +6,10 @@ import { paymentConfigs, PaymentLinks, PaymentModule } from "@egovernments/digit
 import { DigitUI } from "@egovernments/digit-ui-module-core";
 import { initDSSComponents } from "@egovernments/digit-ui-module-dss";
 import { initEngagementComponents } from "@egovernments/digit-ui-module-engagement";
-import { initHRMSComponents } from "@egovernments/digit-ui-module-hrms";
 import { initUtilitiesComponents } from "@egovernments/digit-ui-module-utilities";
 import { initSampleComponents } from "@egovernments/digit-ui-module-sample";
 import {initWorkbenchComponents} from "@egovernments/digit-ui-module-workbench";
+import { initNewHRMSComponents } from "@egovernments/digit-ui-module-newhrms";
 
 import { initMuktaCustomisations } from "@egovernments/digit-ui-customisation-mukta";
 
@@ -28,6 +28,7 @@ const enabledModules = [
   // "FSM"
   "Mukta",
   "Sample",
+  "hrms"
   // "Workbench"
 
 ];
@@ -68,12 +69,11 @@ const initDigitUI = () => {
   });
 
   initDSSComponents();
-  initHRMSComponents();
   initEngagementComponents();
   initUtilitiesComponents();
   initSampleComponents();
   initWorkbenchComponents();
-
+  initNewHRMSComponents();
   const moduleReducers = (initData) => initData;
 
   window.Digit.Customizations = {
