@@ -157,7 +157,7 @@ const Dropdown = (props) => {
 
   return (
     <div
-      className={`${user_type === "employee" ? "employee-select-wrap" : "select-wrap"} ${props?.className ? props?.className : ""}`}
+      className={`${user_type === "employee" ? "employee-select-wrap field-container": "select-wrap"} ${props?.className ? props?.className : ""}`}
       style={{ ...props.style }}
     >
       {hasCustomSelector && (
