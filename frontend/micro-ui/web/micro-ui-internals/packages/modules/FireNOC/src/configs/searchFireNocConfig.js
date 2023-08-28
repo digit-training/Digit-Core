@@ -17,7 +17,7 @@ const searchFireNocConfig = () => {
       masterName: "commonUiConfig",
       moduleName: "SearchFireNocConfig",
       tableFormJsonPath: "requestParam",
-      filterFormJsonPath: "requestBody.FireNOCs[0]",
+      filterFormJsonPath: "requestBody.FireNOCs",
       searchFormJsonPath: "requestParam",
     },
     sections: {
@@ -33,8 +33,8 @@ const searchFireNocConfig = () => {
             fireNOCNumber: "",
             applicationStatus: "",
             mobileNumber: "",
-            createdFrom: "",
-            createdTo: "",
+            fromDate: "",
+            toDate: "",
           },
           fields: [
             {
@@ -79,11 +79,53 @@ const searchFireNocConfig = () => {
                 optionsCustomStyle: {
                   top: "2.3rem",
                 },
-                mdmsConfig: {
-                  masterName: "SocialCategory",
-                  moduleName: "common-masters",
-                  localePrefix: "MASTERS",
-                },
+                options: [
+                  {
+                    code: "Approved",
+                    name: "APPROVED",
+                  },
+                  {
+                    code: "Cancelled",
+                    name: "CANCELLED",
+                  },
+                  {
+                    code: "Citizen Action Required From DV",
+                    name: "CITIZENACTIONREQUIRED-DV",
+                  },
+                  {
+                    code: "Citizen Action Required From FI",
+                    name: "CITIZENACTIONREQUIRED",
+                  },
+                  {
+                    code: "Initiated",
+                    name: "INITIATED",
+                  },
+                  {
+                    code: "Pending for Approval",
+                    name: "PENDINGAPPROVAL",
+                  },
+                  {
+                    code: "Pending for Document Verification",
+                    name: "DOCUMENTVERIFY",
+                  },
+                  {
+                    code: "Pending for Field Inspection",
+                    name: "FIELDINSPECTION",
+                  },
+                  {
+                    code: "Pending for Payment",
+                    name: "PENDINGPAYMENT",
+                  },
+                  {
+                    code: "Rejected",
+                    name: "REJECTED",
+                  },
+                ],
+                // mdmsConfig: {
+                //   masterName: "SocialCategory",
+                //   moduleName: "common-masters",
+                //   localePrefix: "MASTERS",
+                // },
               },
             },
             {
@@ -91,12 +133,12 @@ const searchFireNocConfig = () => {
               type: "date",
               isMandatory: false,
               disable: false,
-              key: "createdFrom",
+              key: "fromDate",
               preProcess: {
                 updateDependent: ["populators.max"],
               },
               populators: {
-                name: "createdFrom",
+                name: "fromDate",
                 max: "currentDate",
               },
             },
@@ -105,18 +147,18 @@ const searchFireNocConfig = () => {
               type: "date",
               isMandatory: false,
               disable: false,
-              key: "createdTo",
+              key: "toDate",
               preProcess: {
                 updateDependent: ["populators.max"],
               },
               populators: {
-                name: "createdTo",
+                name: "toDate",
                 error: "DATE_VALIDATION_MSG",
                 max: "currentDate",
               },
               additionalValidation: {
                 type: "date",
-                keys: { start: "createdFrom", end: "createdTo" },
+                keys: { start: "fromDate", end: "toDate" },
               },
             },
           ],
@@ -142,10 +184,11 @@ const searchFireNocConfig = () => {
               label: "Status",
               jsonPath: "fireNOCDetails.status",
             },
-            //   {
-            //     label: "MASTERS_FATHER_NAME",
-            //     jsonPath: "fatherName",
-            //   },
+            {
+              label: "Applicant name",
+              jsonpath: "fireNOCDetails.applicantDetails.owners[0].name",
+              additionalCustomization: true,
+            },
             //   {
             //     label: "MASTERS_SOCIAL_CATEGORY",
             //     jsonPath: "additionalFields.fields[0].value",
