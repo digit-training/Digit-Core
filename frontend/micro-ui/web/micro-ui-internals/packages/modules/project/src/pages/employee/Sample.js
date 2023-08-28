@@ -130,17 +130,14 @@ export const newConfig = [
         key: "ulb",
         type: "radioordropdown",
         label: "ULB",
-        disable: false,
+        disable: true,
         populators: {
           name: "ulb",
           optionsKey: "name",
           error: "sample required message",
           required: true,
           options: [
-            {
-              code: "CITY A",
-              name: "CITY A",
-            },
+            { "name": "City A" }
           ],
         },
       },
@@ -203,6 +200,9 @@ export const newConfig = [
 ];
 
 const Create = () => {
+  const defaultValues = {
+    "ulb": { "name": "City A" },
+  }
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { t } = useTranslation();
   const history = useHistory();
@@ -260,7 +260,7 @@ const Create = () => {
           isTaskEnabled: false,
           parent: "",
           additionalDetails: {
-            estimatedCostInRs: "987654.99",
+            estimatedCostInRs: data?.estimatedCost,
             dateOfProposal: 1683570599000,
             locality: "SUN01",
             creator: "Jagankumar",
@@ -301,7 +301,8 @@ const Create = () => {
             body: config.body.filter((a) => !a.hideInEmployee),
           };
         })}
-        defaultValues={{}}
+        // defaultValues={{}}
+        defaultValues={defaultValues}
         onSubmit={onSubmit}
         fieldStyle={{ marginRight: 0 }}
       />
