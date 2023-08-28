@@ -259,29 +259,36 @@ export const UICustomizations = {
 
   SearchFireNocConfig: {
     preProcess: (data) => {
-      var createdFrom, createdTo, name;
-      if (data.body.FireNOCs != undefined) {
-        createdFrom = Digit.Utils.pt.convertDateToEpoch(data.body.FireNOCs[0]?.createdFrom, "daystart");
-        createdTo = Digit.Utils.pt.convertDateToEpoch(data.body.FireNOCs[0]?.createdTo);
-        name = data.body.FireNOCs[0]?.name?.trim();
-        let projectNumber = data.body.FireNOCs[0]?.projectNumber?.trim();
-        delete data.body.FireNOCs[0]?.createdFrom;
-        delete data.body.FireNOCs[0]?.createdTo;
+      // console.log(data);
 
-        data.body.FireNOCs[0] = {
-          ...data.body.FireNOCs[0],
-          tenantId: Digit.ULBService.getCurrentTenantId(),
-          projectNumber,
-          // projectType,
-          name,
-          // address: { boundary: ward },
-        };
+      // var createdFrom, createdTo, name;
+      // if (data.body.FireNOCs != undefined) {
+      console.log(data, " fffffffffffffffffffffffffffffffff");
+      if (data?.params?.toDate) {
+        data.params.toDate = Digit.Utils.pt.convertDateToEpoch(data?.params?.toDate);
       }
+      if (data?.params?.fromDate) {
+        data.params.fromDate = Digit.Utils.pt.convertDateToEpoch(data?.params?.fromDate, "daystart");
+      }
+
+      if (data?.params?.status) {
+        data.params.status =  data.params.status.name;
+      }
+      const name = data.body.FireNOCs?.name?.trim();
+      data.params = { ...data.params, tenantId: Digit.ULBService.getCurrentTenantId() };
+      console.log(data, " ffffff22222222222222222222222");
+
+      data.body.FireNOCs = {
+        ...data.body.FireNOCs,
+        tenantId: Digit.ULBService.getCurrentTenantId(),
+        name,
+        // address: { boundary: ward },
+      };
+      // }
 
       // const projectType = data.body.FireNOCs[0]?.projectType?.code;
       // const ward = data.body.FireNOCs[0]?.ward?.[0]?.code;
-      data.params = { ...data.params, tenantId: Digit.ULBService.getCurrentTenantId(), createdFrom, createdTo };
-
+      data.params = { ...data.params, tenantId: Digit.ULBService.getCurrentTenantId() };
       return data;
     },
     postProcess: (responseArray) => {
@@ -331,6 +338,8 @@ export const UICustomizations = {
       //first we can identify which column it belongs to then we can return relevant result
       console.log(searchResult, " sssssssssssssssssssssssss");
       console.log(key, " kkkkkkkkkkkkkkkkk");
+      console.log(key, value);
+      // console.log(createdFrom, "information");
 
       switch (key) {
         case "Application no.":
@@ -341,6 +350,9 @@ export const UICustomizations = {
               </Link>
             </span>
           );
+
+        case "Applicant name":
+          return <span>{_.get(row, "fireNOCDetails.applicantDetails.owners[0].name", "NA")}</span>;
 
         // case "WORKS_PARENT_PROJECT_ID":
         //   return value ? (

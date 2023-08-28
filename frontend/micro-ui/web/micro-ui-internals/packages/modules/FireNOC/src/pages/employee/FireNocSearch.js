@@ -26,22 +26,22 @@ const FireNocSearch = () => {
 
   // const indConfigs = data?.[configModuleName]?.SearchIndividualConfig?.[0]
 
-  // let configs = useMemo(
-  //   () =>
-  //     Digit.Utils.preProcessMDMSConfigInboxSearch(t, indConfigs, "sections.search.uiConfig.fields", {
-  //       updateDependent: [
-  //         {
-  //           key: "createdFrom",
-  //           value: [new Date().toISOString().split("T")[0]],
-  //         },
-  //         {
-  //           key: "createdTo",
-  //           value: [new Date().toISOString().split("T")[0]],
-  //         },
-  //       ],
-  //     }),
-  //   [indConfigs]
-  // );
+  let configs = useMemo(
+    () =>
+      Digit.Utils.preProcessMDMSConfigInboxSearch(t, indConfigs, "sections.search.uiConfig.fields", {
+        updateDependent: [
+          {
+            key: "createdFrom",
+            value: [new Date().toISOString().split("T")[0]],
+          },
+          {
+            key: "createdTo",
+            value: [new Date().toISOString().split("T")[0]],
+          },
+        ],
+      }),
+    [indConfigs]
+  );
 
   useEffect(() => {
     if (!window.location.href.includes("modify-firenoc") && sesionFormData && Object.keys(sesionFormData) != 0) {
@@ -55,21 +55,21 @@ const FireNocSearch = () => {
   return (
     <React.Fragment>
       <div className="jk-header-btn-wrapper">
-        <Header className="works-header-search">{t(indConfigs?.label)}</Header>
-        {Digit.Utils.didEmployeeHasRole(indConfigs?.actionRole) && (
+        <Header className="works-header-search">{t(configs?.label)}</Header>
+        {Digit.Utils.didEmployeeHasRole(configs?.actionRole) && (
           <Button
-            label={t(indConfigs?.actionLabel)}
+            label={t(configs?.actionLabel)}
             variation="secondary"
             icon={<AddFilled />}
             onButtonClick={() => {
-              history.push(`/${window?.contextPath}/employee/${indConfigs?.actionLink}`);
+              history.push(`/${window?.contextPath}/employee/${configs?.actionLink}`);
             }}
             type="button"
           />
         )}
       </div>
       <div className="inbox-search-wrapper">
-        <InboxSearchComposer configs={indConfigs}></InboxSearchComposer>
+        <InboxSearchComposer configs={configs}></InboxSearchComposer>
       </div>
     </React.Fragment>
   );
