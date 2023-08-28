@@ -180,7 +180,7 @@ const Create = () => {
       <h1 style={{ fontSize: "35px", fontWeight: "bold", margin: "10px" }}>Create Organisation</h1>
       <FormComposerV2
         // heading={t("Application Heading")}
-        label={t("Submit Bar")}
+        label={t("Submit Application")}
         config={configs.map((config) => {
           if (config.head === "Functional Details") {
             // Update the max value for "Valid From" field
