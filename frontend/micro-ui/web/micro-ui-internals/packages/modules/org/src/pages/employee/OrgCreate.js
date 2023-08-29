@@ -1,4 +1,4 @@
-import { Loader, FormComposerV2 } from "@egovernments/digit-ui-react-components";
+import { Loader, FormComposerV2, Header } from "@egovernments/digit-ui-react-components";
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
@@ -153,25 +153,13 @@ const Create = () => {
       localStorage.setItem('selectedWard', selectedWardKey);
     }
   }
-
-
   return (
     <div>
-      <h1 style={{ fontSize: "35px", fontWeight: "bold", margin: "10px" }}>Create Organisation</h1>
+      <Header className="works-header-create">{"Create Organisation"}</Header>
       <FormComposerV2
         // heading={t("Application Heading")}
         label={t("Submit Application")}
-        config={configs.map((config) => {
-          if (config.head === "Functional Details") {
-            // Update the max value for "Valid From" field
-            const validFromField = config.body.find(
-              (field) => field.key === "funDetails_validFrom"
-            );
-          }
-          return {
-            ...config,
-          };
-        })}
+        config={configs}
         defaultValues={defaultValues}
         onSubmit={onSubmit}
         onFormValueChange={onFormValueChange}

@@ -7,10 +7,8 @@ import { useHistory, useLocation } from "react-router-dom";
 const SearchOrganisation = () => {
   const { t } = useTranslation();
   const history = useHistory()
-  const location = useLocation()
 
-  const orgSession = Digit.Hooks.useSessionStorage("ORG_CREATE", {});
-  const [sessionFormData, clearSessionFormData] = orgSession;
+
 
   const orgConfigs = searchOrganisationConfig();
   const configModuleName = Digit.Utils.getConfigModuleName()
@@ -25,28 +23,8 @@ const SearchOrganisation = () => {
     ],
   );
 
-  // const orgConfigs = data?.[configModuleName]?.searchOrganisationConfig?.[0]
+  let configs = orgConfigs;
 
-  let configs = useMemo(
-    () => Digit.Utils.preProcessMDMSConfigInboxSearch(t, orgConfigs, "sections.search.uiConfig.fields", {
-      updateDependent: [
-        {
-          key: "createdFrom",
-          value: [new Date().toISOString().split("T")[0]]
-        },
-        {
-          key: "createdTo",
-          value: [new Date().toISOString().split("T")[0]]
-        }
-      ]
-    }
-    ), [orgConfigs]);
-
-  useEffect(() => {
-    if (!window.location.href.includes("create-organization") && sessionFormData && Object.keys(sessionFormData) != 0) {
-      clearSessionFormData();
-    }
-  }, [location]);
 
   if (isLoading) return <Loader />;
   return (
@@ -55,7 +33,7 @@ const SearchOrganisation = () => {
         <Header className="works-header-search">{t(configs?.label)}</Header>
         {Digit.Utils.didEmployeeHasRole(configs?.actionRole) && (
           <Button
-            label={t(configs?.actionLabel)}
+            label={"Create Organisation"}
             variation="secondary"
             icon={<AddFilled />}
             onButtonClick={() => {
@@ -66,7 +44,7 @@ const SearchOrganisation = () => {
         )}
       </div>
       <div className="inbox-search-wrapper">
-        <InboxSearchComposer configs={configs}></InboxSearchComposer>
+        <InboxSearchComposer configs={orgConfigs}></InboxSearchComposer>
       </div>
     </React.Fragment>
   );
