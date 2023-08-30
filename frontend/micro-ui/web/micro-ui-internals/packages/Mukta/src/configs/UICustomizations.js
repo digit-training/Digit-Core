@@ -336,66 +336,23 @@ export const UICustomizations = {
       //here we can add multiple conditions
       //like if a cell is link then we return link
       //first we can identify which column it belongs to then we can return relevant result
-      console.log(searchResult, " sssssssssssssssssssssssss");
-      console.log(key, " kkkkkkkkkkkkkkkkk");
+      console.log(searchResult);
+      console.log(key);
       console.log(key, value);
       // console.log(createdFrom, "information");
 
       switch (key) {
-        case "Application no.":
-          return (
-            <span className="link">
-              <Link to={`/${window.contextPath}/employee/project/project-details?tenantId=${row?.tenantId}&projectNumber=${value}`}>
-                {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
-              </Link>
-            </span>
-          );
+        // case "Application no.":
+        //   return (
+        //     <span className="link">
+        //       <Link to={`/${window.contextPath}/employee/project/project-details?tenantId=${row?.tenantId}&projectNumber=${value}`}>
+        //         {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+        //       </Link>
+        //     </span>
+        //   );
 
         case "Applicant name":
           return <span>{_.get(row, "fireNOCDetails.applicantDetails.owners[0].name", "NA")}</span>;
-
-        // case "WORKS_PARENT_PROJECT_ID":
-        //   return value ? (
-        //     <span className="link">
-        //       <Link to={`/${window.contextPath}/employee/project/project-details?tenantId=${row?.tenantId}&projectNumber=${value}`}>
-        //         {String(value ? value : t("ES_COMMON_NA"))}
-        //       </Link>
-        //     </span>
-        //   ) : (
-        //     t("ES_COMMON_NA")
-        //   );
-
-        // case "WORKS_PROJECT_NAME": {
-        //   let currentProject = searchResult?.filter((result) => result?.id === row?.id)[0];
-        //   return (
-        //     <div class="tooltip">
-        //       <span class="textoverflow" style={{ "--max-width": `${column?.maxLength}ch` }}>
-        //         {String(t(value))}
-        //       </span>
-        //       {/* check condtion - if length greater than 20 */}
-        //       <span class="tooltiptext" style={{ whiteSpace: "nowrap" }}>
-        //         {currentProject?.description}
-        //       </span>
-        //     </div>
-        //   );
-        // }
-
-        // case "PROJECT_ESTIMATED_COST_IN_RS":
-        //   return <Amount customStyle={{ textAlign: "right" }} value={value} t={t}></Amount>;
-
-        // case "ES_COMMON_LOCATION": {
-        //   let currentProject = searchResult?.filter((result) => result?.id === row?.id)[0];
-        //   const headerLocale = Digit.Utils.locale.getTransformedLocale(row?.tenantId);
-        //   if (currentProject) {
-        //     let locality = currentProject?.address?.boundary ? t(`${headerLocale}_ADMIN_${currentProject?.address?.boundary}`) : "";
-        //     let ward = currentProject?.additionalDetails?.ward ? t(`${headerLocale}_ADMIN_${currentProject?.additionalDetails?.ward}`) : "";
-        //     let city = currentProject?.address?.city
-        //       ? t(`TENANT_TENANTS_${Digit.Utils.locale.getTransformedLocale(currentProject?.address?.city)}`)
-        //       : "";
-        //     return <p>{`${locality ? locality + ", " : ""}${ward ? ward + ", " : ""}${city}`}</p>;
-        //   }
-        //   return <p>{"NA"}</p>;
-        // }
 
         default:
           return t("ES_COMMON_NA");
@@ -409,8 +366,9 @@ export const UICustomizations = {
     MobileDetailsOnClick: (row, tenantId) => {
       let link;
       Object.keys(row).map((key) => {
-        if (key === "WORKS_PROJECT_ID")
-          link = `/${window.contextPath}/employee/project/project-details?tenantId=${tenantId}&projectNumber=${row[key]}`;
+        if (key === "Applicant name")
+          link = `/${window.contextPath}/employee`;
+        // link = "test"
       });
       return link;
     },
