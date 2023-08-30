@@ -1,75 +1,112 @@
 import { Loader, FormComposerV2, Header } from "@egovernments/digit-ui-react-components";
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { createOrganisationConfig } from "../../configs/createOrgConfig";
 
 
 const Create = () => {
+  var Digit = window.Digit || {};
+  const tenantId = Digit.ULBService.getCurrentTenantId();
   const defaultValues = {
     "locDetails_city": { "i18nKey": "City A" },
   }
   const [selectedWard, setSelectedWard] = useState('default');
-  const localityOptionsByWard = {
-    "default": [],
-    "Ward 1": [
-      {
-        i18nKey: "Ajit Nagar - Area1"
-      },
-      {
-        i18nKey: "Back Side 33 KVA Grid Patiala Road"
-      },
-      {
-        i18nKey: "Bharath Colony"
-      }
-    ],
-    "Ward 2": [
-      {
-        i18nKey: "Backside Brijbala Hospital - Area3"
-      },
-      {
-        i18nKey: "Bigharwal Chowk to Railway Station - Area2"
-      },
-      {
-        i18nKey: "Chandar Colony Biggarwal Road - Area2"
-      }
-    ],
-    "Ward 3": [
-      {
-        i18nKey: "Aggarsain Chowk to Mal Godown - Both Sides - Area3"
-      },
-      {
-        i18nKey: "ATAR SINGH COLONY - Area2"
-      },
-      {
-        i18nKey: "Back Side Naina Devi Mandir - Area2"
-      }
-    ],
-    "Ward 4": [
-      {
-        i18nKey: "Aggarsain Chowk to Mal Godown - Both Sides - Area3"
-      },
-      {
-        i18nKey: "ATAR SINGH COLONY - Area2"
-      },
-      {
-        i18nKey: "Back Side Naina Devi Mandir - Area2"
-      }
-    ]
-  };
-  var Digit = window.Digit || {};
-  const tenantId = Digit.ULBService.getCurrentTenantId();
+  const headerLocale = Digit.Utils.locale.getTransformedLocale(tenantId)
   const { t } = useTranslation();
   const history = useHistory();
-  var newLocalityOptions = localityOptionsByWard[selectedWard];
-  const onSubmit = (input_data) => {
-    // Handle form submission
-    const ward_mapping = {
-      "Ward 1": "B1",
-      "Ward 2": "B2",
-      "Ward 3": "B3",
-      "Ward 4": "B4"
+
+  const { isLoading: locationDataFetching, data: wardsAndLocalities } = Digit.Hooks.useLocation(
+    tenantId, 'Ward',
+    {
+      select: (data) => {
+        var wards = []
+        var localities = {}
+        data?.TenantBoundary[0]?.boundary.forEach((item) => {
+          localities[item?.code] = item?.children.map(item => ({ code: item.code, name: item.name, i18nKey: `${headerLocale}_ADMIN_${item?.code}`, label: item?.label }))
+          wards.push({ code: item.code, name: item.name, i18nKey: `${headerLocale}_ADMIN_${item?.code}` })
+        });
+        return {
+          wards, localities
+        }
+      }
+    });
+
+  const newLocalityOptions = wardsAndLocalities?.localities[selectedWard];
+
+  const stateTenant = Digit.ULBService.getStateId();
+
+  const { isLoading: orgDataFetching, data: orgData } = Digit.Hooks.useCustomMDMS(
+    stateTenant,
+    "common-masters",
+    [{ "name": "OrgType" }, { name: "OrgFunctionCategory" }],
+    {
+      select: (data) => {
+        let orgTypes = []
+        let orgSubTypes = {}
+        let orgFunCategories = {}
+        data?.["common-masters"]?.OrgType?.forEach(item => {
+          if (!item?.active) return
+          const orgType = item?.code?.split('.')?.[0]
+          const orgSubType = item?.code?.split('.')?.[1]
+          if (!orgTypes.includes(orgType)) orgTypes.push(orgType)
+          if (orgSubTypes[orgType]) {
+            orgSubTypes[orgType].push({ code: orgSubType, name: `COMMON_MASTERS_SUBORG_${orgSubType}` })
+          } else {
+            orgSubTypes[orgType] = [{ code: orgSubType, name: `COMMON_MASTERS_SUBORG_${orgSubType}` }]
+          }
+        })
+        data?.["common-masters"]?.OrgFunctionCategory?.forEach(item => {
+          if (!item?.active) return
+          const orgType = item?.code?.split('.')?.[0]
+          const orgFunCategory = item?.code?.split('.')?.[1]
+          if (orgFunCategories[orgType]) {
+            orgFunCategories[orgType].push({ code: orgFunCategory, name: `COMMON_MASTERS_FUNCATEGORY_${orgFunCategory}` })
+          } else {
+            orgFunCategories[orgType] = [{ code: orgFunCategory, name: `COMMON_MASTERS_FUNCATEGORY_${orgFunCategory}` }]
+          }
+        })
+        orgTypes = orgTypes.map(item => ({ code: item, name: `COMMON_MASTERS_ORG_${item}` }))
+        return {
+          orgTypes,
+          orgSubTypes,
+          orgFunCategories
+        }
+      }
     }
+  );
+
+  const configs = createOrganisationConfig(wardsAndLocalities, newLocalityOptions)
+
+  const config = useMemo(
+    () => Digit.Utils.preProcessMDMSConfig(t, configs, {
+      updateDependent: [
+        {
+          key: "basicDetails_dateOfIncorporation",
+          value: [new Date().toISOString().split("T")[0]]
+        },
+        {
+          key: "funDetails_orgType",
+          value: [orgData?.orgTypes]
+        },
+        {
+          key: "funDetails_validFrom",
+          value: [new Date().toISOString().split("T")[0]]
+        },
+        {
+          key: 'locDetails_ward',
+          value: [wardsAndLocalities?.wards]
+        },
+        {
+          key: 'locDetails_locality',
+          value: [newLocalityOptions]
+        }
+      ]
+    }),
+    [orgData, wardsAndLocalities, newLocalityOptions]);
+
+
+  const onSubmit = (input_data) => {
 
     var transformed_data = {
       "organisations": [{
@@ -81,14 +118,14 @@ const Create = () => {
           {
             "tenantId": Digit.ULBService.getCurrentTenantId(),
             "city": input_data["locDetails_city"]["i18nKey"],
-            "district": ward_mapping[input_data["locDetails_ward"]["i18nKey"].toLowerCase()] || "",
             "state": "Punjab",
             "country": "India",
             "pincode": "",
             "street": input_data["locDetails_streetName"] || "",
+            "doorNo": input_data["locDetails_houseName"],
             "boundaryType": "WARD",
-            "locality": input_data["locDetails_locality"]["i18nKey"] || "",
-            "boundaryCode": ward_mapping[input_data["locDetails_ward"]["i18nKey"]] || "",
+            "locality": input_data["locDetails_locality"]["name"] || "",
+            "boundaryCode": input_data["ward"]["code"] || "",
             "geoLocation": {
               "latitude": 0,
               "longitude": 0,
@@ -114,7 +151,7 @@ const Create = () => {
           }
         ],
         "additionalDetails": {
-          "locality": input_data["locDetails_locality"]["i18nKey"] || "",
+          "locality": input_data["locDetails_locality"]["name"] || "",
           "registeredByDept": "",
           "deptRegistrationNum": ""
         },
@@ -123,7 +160,6 @@ const Create = () => {
       ]
     };
 
-
     /* use customiseCreateFormData hook to make some chnages to the Employee object */
     Digit.ORGService.create(transformed_data, tenantId).then((result, err) => {
       let getdata = { ...transformed_data, get: result }
@@ -131,35 +167,36 @@ const Create = () => {
         pathname: "/works-ui/employee/works/response",
         state: { responseData: getdata }, // Pass the responseData to the state
       });
-
     })
+      .catch((err) => {
+        let getdata = { ...transformed_data, get: err }
+        history.push({
+          pathname: "/works-ui/employee/works/response",
+          state: { responseData: getdata }, // Pass the responseData to the state
+        });
+      })
   };
-  const configs = createOrganisationConfig(newLocalityOptions)
+
   const onFormValueChange = (setValue, formData, formState, reset, setError, clearErrors, trigger, getValues) => {
-    if (formData.locDetails_ward) {
-      const selectedWardKey = formData.locDetails_ward.i18nKey;
-
-      // Get the previously stored selected ward value from local storage
+    if (formData.ward) {
+      const selectedWardKey = formData?.ward?.code
+      setSelectedWard(selectedWardKey);
       const previouslySelectedWard = localStorage.getItem('selectedWard');
-
-      // Compare with the current value and print a message if changed
       if (previouslySelectedWard !== selectedWardKey) {
         setValue("locDetails_locality", '');
       }
-
-      setSelectedWard(selectedWardKey);
-
-      // Save the selectedWardKey in local storage
       localStorage.setItem('selectedWard', selectedWardKey);
     }
   }
+
+
   return (
     <div>
       <Header className="works-header-create">{"Create Organisation"}</Header>
       <FormComposerV2
         // heading={t("Application Heading")}
         label={t("Submit Application")}
-        config={configs}
+        config={config}
         defaultValues={defaultValues}
         onSubmit={onSubmit}
         onFormValueChange={onFormValueChange}

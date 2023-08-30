@@ -1,19 +1,16 @@
-import React, { useEffect, useMemo } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { Header, InboxSearchComposer, Loader, Button, AddFilled } from "@egovernments/digit-ui-react-components";
 import searchOrganisationConfig from "../../configs/SearchOrganisationConfig";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const SearchOrganisation = () => {
   const { t } = useTranslation();
   const history = useHistory()
-
-
-
   const orgConfigs = searchOrganisationConfig();
   const configModuleName = Digit.Utils.getConfigModuleName()
   const tenant = Digit.ULBService.getStateId();
-  const { isLoading, data } = Digit.Hooks.useCustomMDMS(
+  const { isLoading } = Digit.Hooks.useCustomMDMS(
     tenant,
     configModuleName,
     [
@@ -24,7 +21,7 @@ const SearchOrganisation = () => {
   );
 
   let configs = orgConfigs;
-
+  // console.log(configs?.label, " ccccccccccc");
 
   if (isLoading) return <Loader />;
   return (

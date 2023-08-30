@@ -7,8 +7,10 @@ const OrgResponse = ({ location }) => {
     const { t } = useTranslation();
     const responseData = location?.state?.responseData;
     const isApplicationSubmitted = responseData?.get?.ResponseInfo?.status === "successful";
-    const applicationNumber = responseData?.get?.organisations[0]?.applicationNumber;
-
+    var applicationNumber = "";
+    if (isApplicationSubmitted) {
+        applicationNumber = responseData?.get?.organisations[0]?.applicationNumber;
+    }
     // Customize the message based on success or failure
     const message = isApplicationSubmitted
         ? t("Application Submitted Successfully")
@@ -20,7 +22,7 @@ const OrgResponse = ({ location }) => {
                 successful={isApplicationSubmitted}
                 message={message}
                 // customText={customText}
-                applicationNumber={isApplicationSubmitted ? "Application number : " + applicationNumber : ""}
+                applicationNumber={isApplicationSubmitted ? "Application number : " + applicationNumber : "There is some error while submitting application"}
                 multipleResponseIDs={isApplicationSubmitted ? null : [responseData?.get?.resMsgId]}
             />
         </div>
