@@ -2,7 +2,7 @@ import { Loader, FormComposerV2, Header } from "@egovernments/digit-ui-react-com
 import React, { useState, useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { createOrganisationConfig } from "../../configs/createOrgConfig";
+import { configs } from "../../configs/createOrgConfig";
 
 
 const Create = () => {
@@ -36,58 +36,60 @@ const Create = () => {
 
   const stateTenant = Digit.ULBService.getStateId();
 
-  const { isLoading: orgDataFetching, data: orgData } = Digit.Hooks.useCustomMDMS(
-    stateTenant,
-    "common-masters",
-    [{ "name": "OrgType" }, { name: "OrgFunctionCategory" }],
-    {
-      select: (data) => {
-        let orgTypes = []
-        let orgSubTypes = {}
-        let orgFunCategories = {}
-        data?.["common-masters"]?.OrgType?.forEach(item => {
-          if (!item?.active) return
-          const orgType = item?.code?.split('.')?.[0]
-          const orgSubType = item?.code?.split('.')?.[1]
-          if (!orgTypes.includes(orgType)) orgTypes.push(orgType)
-          if (orgSubTypes[orgType]) {
-            orgSubTypes[orgType].push({ code: orgSubType, name: `COMMON_MASTERS_SUBORG_${orgSubType}` })
-          } else {
-            orgSubTypes[orgType] = [{ code: orgSubType, name: `COMMON_MASTERS_SUBORG_${orgSubType}` }]
-          }
-        })
-        data?.["common-masters"]?.OrgFunctionCategory?.forEach(item => {
-          if (!item?.active) return
-          const orgType = item?.code?.split('.')?.[0]
-          const orgFunCategory = item?.code?.split('.')?.[1]
-          if (orgFunCategories[orgType]) {
-            orgFunCategories[orgType].push({ code: orgFunCategory, name: `COMMON_MASTERS_FUNCATEGORY_${orgFunCategory}` })
-          } else {
-            orgFunCategories[orgType] = [{ code: orgFunCategory, name: `COMMON_MASTERS_FUNCATEGORY_${orgFunCategory}` }]
-          }
-        })
-        orgTypes = orgTypes.map(item => ({ code: item, name: `COMMON_MASTERS_ORG_${item}` }))
-        return {
-          orgTypes,
-          orgSubTypes,
-          orgFunCategories
-        }
-      }
-    }
-  );
 
-  const configs = createOrganisationConfig(wardsAndLocalities, newLocalityOptions)
-
+  // const { isLoading: orgDataFetching, data: orgData } = Digit.Hooks.useCustomMDMS(
+  //   stateTenant,
+  //   "common-masters",
+  //   [{ "name": "OrgType" }, { name: "OrgFunctionCategory" }],
+  //   {
+  //     select: (data) => {
+  //       let orgTypes = []
+  //       let orgSubTypes = {}
+  //       let orgFunCategories = {}
+  //       data?.["common-masters"]?.OrgType?.forEach(item => {
+  //         if (!item?.active) return
+  //         const orgType = item?.code?.split('.')?.[0]
+  //         const orgSubType = item?.code?.split('.')?.[1]
+  //         if (!orgTypes.includes(orgType)) orgTypes.push(orgType)
+  //         if (orgSubTypes[orgType]) {
+  //           orgSubTypes[orgType].push({ code: orgSubType, name: `COMMON_MASTERS_SUBORG_${orgSubType}` })
+  //         } else {
+  //           orgSubTypes[orgType] = [{ code: orgSubType, name: `COMMON_MASTERS_SUBORG_${orgSubType}` }]
+  //         }
+  //       })
+  //       data?.["common-masters"]?.OrgFunctionCategory?.forEach(item => {
+  //         if (!item?.active) return
+  //         const orgType = item?.code?.split('.')?.[0]
+  //         const orgFunCategory = item?.code?.split('.')?.[1]
+  //         if (orgFunCategories[orgType]) {
+  //           orgFunCategories[orgType].push({ code: orgFunCategory, name: `COMMON_MASTERS_FUNCATEGORY_${orgFunCategory}` })
+  //         } else {
+  //           orgFunCategories[orgType] = [{ code: orgFunCategory, name: `COMMON_MASTERS_FUNCATEGORY_${orgFunCategory}` }]
+  //         }
+  //       })
+  //       orgTypes = orgTypes.map(item => ({ code: item, name: `COMMON_MASTERS_ORG_${item}` }))
+  //       return {
+  //         orgTypes,
+  //         orgSubTypes,
+  //         orgFunCategories
+  //       }
+  //     }
+  //   }
+  // );
+  // const filteredOrgSubTypes = orgData?.orgSubTypes[selectedOrg]
+  // const filteredOrgFunCategories = orgData?.orgFunCategories[selectedOrg]
+  const convertToDependenyConfig = (config = []) => {
+    const newConfig = {
+      form: [...config],
+    };
+    return newConfig;
+  };
   const config = useMemo(
-    () => Digit.Utils.preProcessMDMSConfig(t, configs, {
+    () => Digit.Utils.preProcessMDMSConfig(t, convertToDependenyConfig(configs), {
       updateDependent: [
         {
           key: "basicDetails_dateOfIncorporation",
           value: [new Date().toISOString().split("T")[0]]
-        },
-        {
-          key: "funDetails_orgType",
-          value: [orgData?.orgTypes]
         },
         {
           key: "funDetails_validFrom",
@@ -103,11 +105,10 @@ const Create = () => {
         }
       ]
     }),
-    [orgData, wardsAndLocalities, newLocalityOptions]);
+    [wardsAndLocalities, newLocalityOptions]);
 
 
   const onSubmit = (input_data) => {
-
     var transformed_data = {
       "organisations": [{
         "tenantId": Digit.ULBService.getCurrentTenantId(),
@@ -125,7 +126,7 @@ const Create = () => {
             "doorNo": input_data["locDetails_houseName"],
             "boundaryType": "WARD",
             "locality": input_data["locDetails_locality"]["name"] || "",
-            "boundaryCode": input_data["ward"]["code"] || "",
+            "boundaryCode": input_data["locDetails_ward"]["code"] || "",
             "geoLocation": {
               "latitude": 0,
               "longitude": 0,
@@ -177,9 +178,9 @@ const Create = () => {
       })
   };
 
-  const onFormValueChange = (setValue, formData, formState, reset, setError, clearErrors, trigger, getValues) => {
-    if (formData.ward) {
-      const selectedWardKey = formData?.ward?.code
+  const onFormValueChange = (setValue, formData) => {
+    if (formData.locDetails_ward) {
+      const selectedWardKey = formData?.locDetails_ward?.code
       setSelectedWard(selectedWardKey);
       const previouslySelectedWard = localStorage.getItem('selectedWard');
       if (previouslySelectedWard !== selectedWardKey) {
@@ -190,13 +191,14 @@ const Create = () => {
   }
 
 
+
   return (
     <div>
       <Header className="works-header-create">{"Create Organisation"}</Header>
       <FormComposerV2
         // heading={t("Application Heading")}
         label={t("Submit Application")}
-        config={config}
+        config={config?.form}
         defaultValues={defaultValues}
         onSubmit={onSubmit}
         onFormValueChange={onFormValueChange}
