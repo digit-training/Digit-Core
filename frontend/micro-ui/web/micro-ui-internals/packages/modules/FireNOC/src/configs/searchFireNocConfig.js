@@ -54,7 +54,6 @@ const searchFireNocConfig = () => {
               disable: false,
               populators: {
                 name: "fireNOCNumber",
-                validation: { minlength: 2 },
               },
             },
             {
