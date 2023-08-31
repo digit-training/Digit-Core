@@ -33,11 +33,11 @@ export const configs = [
                 "key": "basicDetails_dateOfIncorporation",
                 "type": "date",
                 "disable": false,
-                "preProcess": {
-                    "updateDependent": [
-                        "populators.validation.max"
-                    ]
-                },
+                // "preProcess": {
+                //     "updateDependent": [
+                //         "populators.validation.max"
+                //     ]
+                // },
                 "populators": {
                     "name": "basicDetails_dateOfIncorporation",
                     "error": "WORKS_REQUIRED_ERR",
@@ -115,11 +115,11 @@ export const configs = [
                 "key": "funDetails_validFrom",
                 "type": "date",
                 "disable": false,
-                "preProcess": {
-                    "updateDependent": [
-                        "populators.validation.max"
-                    ]
-                },
+                // "preProcess": {
+                //     "updateDependent": [
+                //         "populators.validation.max"
+                //     ]
+                // },
                 "populators": {
                     "name": "funDetails_validFrom",
                     "error": "WORKS_REQUIRED_ERR",
@@ -134,11 +134,11 @@ export const configs = [
                 "key": "funDetails_validTo",
                 "type": "date",
                 "disable": false,
-                "preProcess": {
-                    "updateDependent": [
-                        "populators.validation.min"
-                    ]
-                },
+                // "preProcess": {
+                //     "updateDependent": [
+                //         "populators.validation.min"
+                //     ]
+                // },
                 "populators": {
                     "name": "funDetails_validTo",
                     "validation": {
