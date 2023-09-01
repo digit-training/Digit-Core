@@ -3,8 +3,8 @@ import React, { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { newConfig1 } from "../../configs/createFirenocConfig";
+import { newConfig2 } from "../../configs/newCreateFireNocConfig";
 import useCustomMDMS from "../../../../../libraries/src/hooks/useMDMS";
-
 
 const Create = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -12,19 +12,27 @@ const Create = () => {
   const history = useHistory();
   const [selectedBuildingType, setSelectedBuildingType] = useState("");
 
-  let demoOptions = Digit.Hooks.useCustomMDMS(
+  const { isLoading, data: filteredData } = Digit.Hooks.useCustomMDMS(
     tenantId,
     "firenoc",
     [{ name: "BuildingType", filter: "[?(@.active == true)]" }, { name: "FireStations" }],
     {
       // all configs supported by the usequery
-      default: (data) => {
-        format;
-        return formattedData;
+      select: (data) => {
+        // console.log(data?.firenoc, "something");
+        // const btype = selectedBuildingType; // Assuming you have selectedBuildingType defined
+        // let modifiedData = getop2(data);
+        // console.log(modifiedData, "modified array should come");
+        // return modifiedData;
+        return data;
+
+        // Check if the btype exists in the data object
       },
     }
   );
-  console.log(demoOptions.data, "demooptions");
+  console.log(filteredData, " ffffdddddddddddddddddddd");
+  // console.log(demoOptions, "demooptions");
+  // console.log(something, "data")
   function getop1(data) {
     const buildingTypes = data?.firenoc?.BuildingType;
     if (buildingTypes) {
@@ -43,7 +51,7 @@ const Create = () => {
           });
         }
       });
-
+      console.log(op1Array, " ooooooooooooooooo");
       return op1Array;
     }
     return [];
@@ -54,9 +62,13 @@ const Create = () => {
     // Check if the btype exists in the data object
     if (data?.firenoc && data?.firenoc?.BuildingType) {
       const buildingTypeArray = data.firenoc.BuildingType;
+      console.log(data?.firenoc);
+      console.log(data?.firenoc?.BuildingType);
+      console.log(btype, "btype");
 
       // Filter elements based on the condition
       const filteredElements = buildingTypeArray.filter((element) => {
+        console.log(element.code.startsWith("GROUP" + "."));
         return element.code.startsWith(btype + ".");
       });
 
@@ -66,7 +78,7 @@ const Create = () => {
         // name: element.code.split(".")[1],
         name: element.code, // You can change this as needed
       }));
-
+      console.log(resultArray);
       return resultArray;
     } else {
       // Handle the case where data is missing or doesn't have the expected structure
@@ -74,23 +86,39 @@ const Create = () => {
     }
   }
 
-  var op1 = getop1(demoOptions.data);
-  var op2 = getop2(demoOptions.data);
-  // const demoConfig = useMemo(
-  //   () => Digit.Utils.preProcessMDMSConfig(t, newConfig1, {
-  //     updateDependent : [
-  //       {
-  //         key : 'noSubProject_ward',
-  //         value : [wardsAndLocalities?.wards]
-  //       }
-  //     ]
-  //   }),
-  //   [ wardsAndLocalities]);
+  var op1 = getop1(filteredData);
+  var op2 = getop2(filteredData);
+
+  const convertToDependenyConfig = (config = []) => {
+    const newConfig = {
+      form: [...config],
+    };
+    return newConfig;
+  };
+
+  const demoConfig = useMemo(
+    () =>
+      Digit.Utils.preProcessMDMSConfig(t, convertToDependenyConfig(newConfig2), {
+        updateDependent: [
+          {
+            key: "usageType",
+            value: [op1],
+          },
+          {
+            key: "subUsageType",
+            value: [op2],
+          },
+        ],
+      }),
+    [filteredData, op2]
+  );
+
   const onFormValueChange = (setValue, formData) => {
     console.log(formData, " ffffffffffffffffff");
     if (formData.usageType) {
       const selectedBuildingKey = formData?.usageType?.code;
       setSelectedBuildingType(selectedBuildingKey);
+      console.log(selectedBuildingType);
       const previouslySelectedBuIlding = localStorage.getItem("selectedBuilding");
       if (previouslySelectedBuIlding !== selectedBuildingKey) {
         setValue("subUsageType", "");
@@ -196,19 +224,25 @@ const Create = () => {
         },
       ],
     };
-
+    debugger;
     Digit.FireNOCService.create(formData, tenantId)
       .then((result, err) => {
         let getdata = { ...data, get: result };
         onSelect("", getdata, "", true);
         console.log("daaaa", getdata);
         console.log(result);
+        history.push({
+          pathname: "/digit-ui/employee/noc/response",
+          state: getdata,
+        });
       })
       .catch((e) => {
         console.log("err");
+        history.push({
+          pathname: "/digit-ui/employee/noc/response",
+          // state: getdata,
+        });
       });
-
-    history.push("/digit-ui/employee/noc/response");
 
     console.log("getting data", formData);
     console.log(data, "data");
@@ -216,7 +250,8 @@ const Create = () => {
 
   /* use newConfig instead of commonFields for local development in case needed */
 
-  const configs = newConfig1(op1, op2);
+  // const configs = newConfig1(op1, op2);
+  const configs = newConfig2;
 
   return (
     <FormComposerV2
@@ -224,12 +259,8 @@ const Create = () => {
       label={t("Submit")}
       // description={"Description"}
       // text={"Sample Text if required"}
-      config={configs.map((config) => {
-        return {
-          ...config,
-          body: config.body.filter((a) => !a.hideInEmployee),
-        };
-      })}
+      config={demoConfig.form}
+      // config = {configs}
       defaultValues={{}}
       onSubmit={onSubmit}
       onFormValueChange={onFormValueChange}
