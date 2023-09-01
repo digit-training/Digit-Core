@@ -5,6 +5,8 @@ import { Route, Switch } from "react-router-dom";
 import Sample from "./Sample";
 import SampleInbox from "./SampleInbox";
 import SampleSearch from "./SampleSearch";
+import AdvancedCreate from "./AdvancedForm";
+import Response from "./Response";
 
 const ProjectBreadCrumb = ({ location }) => {
   const { t } = useTranslation();
@@ -33,8 +35,10 @@ const App = ({ path, stateCode, userType, tenants }) => {
           <ProjectBreadCrumb location={location} />
         </React.Fragment>
         <PrivateRoute path={`${path}/create`} component={() => <Sample></Sample>} />
+        <PrivateRoute path={`${path}/advanced`} component={() => <AdvancedCreate></AdvancedCreate>} />
         <PrivateRoute path={`${path}/inbox`} component={() => <SampleInbox></SampleInbox>} />
         <PrivateRoute path={`${path}/search`} component={() => <SampleSearch></SampleSearch>} />
+        <PrivateRoute path={`${path}/response`} component={() => <Response></Response>} />
       </AppContainer>
     </Switch>
   );
