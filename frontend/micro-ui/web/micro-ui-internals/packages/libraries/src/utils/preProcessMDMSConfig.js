@@ -70,18 +70,29 @@ const translate = (config, index, inputIndex, t) => {
     return config;
 }
 
+// const updateDependent = (config, index, inputIndex, inputKey, dependencyConfig) => {
+//     let input = config?.form[index].body[inputIndex];
+//     console.log("UPDATE_DEPENDENT_RUNNING");
+//     //iterate all update options keys and add options as params
+//     for(let toUpdate = 0; toUpdate<config?.form[index].body[inputIndex]?.preProcess?.updateDependent?.length; toUpdate++) {
+//         let keyToUpdate = config?.form[index].body[inputIndex]?.preProcess?.updateDependent[toUpdate];
+//         _.set(input, keyToUpdate, (dependencyConfig?.updateDependent?.filter(dependent=>dependent?.key === inputKey)?.[0]?.value?.[toUpdate]));    
+//     }
+//     return config;
+// }
+
 const updateDependent = (config, index, inputIndex, inputKey, dependencyConfig) => {
-    let input = config?.form[index].body[inputIndex];
-    console.log(input);
+    let input = config?.[index]?.body[inputIndex];
+    // console.log("UPDATE_DEPENDENT_RUNNING");
+    // console.log(config?.[index]?.body[inputIndex]);
     //iterate all update options keys and add options as params
-    for(let toUpdate = 0; toUpdate<config?.form[index].body[inputIndex]?.preProcess?.updateDependent?.length; toUpdate++) {
-        let keyToUpdate = config?.form[index].body[inputIndex]?.preProcess?.updateDependent[toUpdate];
+    for(let toUpdate = 0; toUpdate<config?.[index]?.body[inputIndex]?.preProcess?.updateDependent?.length; toUpdate++) {
+        let keyToUpdate = config?.[index]?.body[inputIndex]?.preProcess?.updateDependent[toUpdate];
         _.set(input, keyToUpdate, (dependencyConfig?.updateDependent?.filter(dependent=>dependent?.key === inputKey)?.[0]?.value?.[toUpdate]));    
     }
 
     return config;
 }
-
 const convertStringToRegEx = (config, index, inputIndex) => {
 
     let input = config?.form[index].body[inputIndex];
@@ -101,29 +112,42 @@ const convertStringToRegEx = (config, index, inputIndex) => {
 const transform = (preProcesses, config, index, inputIndex, inputKey, t, dependencyConfig) => {
     //Do not loop preProcess object, to avoid unnecessary 'translate' and 'updateDependent' calls
     //To add any new transform object, simply add a new if statement
-    if(preProcesses?.translate) {
-        config = translate(config, index, inputIndex, t);
-    }
+    // if(preProcesses?.translate) {
+    //     config = translate(config, index, inputIndex, t);
+    // }
     if(preProcesses?.updateDependent) {
+        // console.log(inputKey);
         config = updateDependent(config, index, inputIndex, inputKey, dependencyConfig);
     }
-    if(preProcesses?.convertStringToRegEx) {
-        config = convertStringToRegEx(config, index, inputIndex, inputKey);
-    }
+    // if(preProcesses?.convertStringToRegEx) {
+    //     config = convertStringToRegEx(config, index, inputIndex, inputKey);
+    // }
     return config;  
 }
 
 const preProcessMDMSConfig = (t, config, dependencyConfig) => {
-    // debugger;
-    config?.form?.map((section, index)=>{
-        alert(section,index);
-        section?.body?.map((input, inputIndex)=>{
-        let preProcesses = input?.preProcess;
-        if(preProcesses){
-            config = transform(preProcesses, config, index, inputIndex, input?.key, t, dependencyConfig);
-        }
-       })
+    // console.log("preProcessMDMSConfig");
+    config.map((section,index)=>{
+        section?.body?.map((input,inputIndex)=>{
+            let preProcesses = input?.preProcess;
+            if(preProcesses){
+                // console.log(section,inputIndex);
+                // console.log(config);
+                config = transform(preProcesses, config, index, inputIndex, input?.key, t, dependencyConfig);
+                // console.log(preProcesses?.updateDependent);
+            }
+            // console.log(preProcesses);
+        })
     })
+    // config?.form?.map((section, index)=>{
+    //     section?.body?.map((input, inputIndex)=>{
+    //     let preProcesses = input?.preProcess;
+    //     if(preProcesses){
+    //         config = transform(preProcesses, config, index, inputIndex, input?.key, t, dependencyConfig);
+    //     }
+    //    })
+    // })
+
     return config;
 }
 

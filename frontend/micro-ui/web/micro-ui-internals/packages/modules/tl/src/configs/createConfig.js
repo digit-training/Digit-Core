@@ -56,9 +56,9 @@ export var newConfig = [
           type: "radioordropdown",
           label: "Structure Type",
           disable: false,
-          preProcess : {
-            updateDependent : ["populators.options"]
-          },
+          // preProcess : {
+          //   updateDependent : ["populators.options"]
+          // },
           populators: {
             name: "structureType",
             optionsKey: "code",
@@ -85,23 +85,25 @@ export var newConfig = [
           // inline: true,
           key: "structureSubType",
           label: "Structure Sub Type",
-          isMandatory: false,
-          type: "radioordropdown",   // check this how to change this to drop down
+          isMandatory: true,
+          type: "dropdown",   // check this how to change this to drop down
           disable: false,
           preProcess : {
-            updateDependent : ["populators.options"]
+            updateDependent : [
+              "populators.options"
+            ]
           },          
           populators:{
              name: "structureSubType", 
              optionsKey: "code",
              error: "Required",
              options:[],
-             mdmsConfig: {
-               masterName: "StructureType",
-               moduleName: "common-masters",
-               localePrefix: "COMMON_STRUCTURE",
-               options:[],
-             },
+            //  mdmsConfig: {
+            //    masterName: "StructureType",
+            //    moduleName: "common-masters",
+            //    localePrefix: "COMMON_MASTERS",
+            //    options:[],
+            //  },
           },
         },
         {
@@ -140,16 +142,20 @@ export var newConfig = [
           type: "radioordropdown",
           label: "Trade Category",
           disable: false,
+          preProcess:{
+            updateDependent:["populators.options"]
+          },
           populators: {
             name: "tradeCategory",
             optionsKey: "name",
             error: "sample required message",
             required: true,
-            mdmsConfig: {
-              masterName: "AccessoriesCategory",
-              moduleName: "TradeLicense",
-              localePrefix: "COMMON_CATEGORY",
-            },
+            options:[]
+            // mdmsConfig: {
+            //   masterName: "AccessoriesCategory",
+            //   moduleName: "TradeLicense",
+            //   localePrefix: "COMMON_CATEGORY",
+            // },
           },
         },
         {
@@ -158,16 +164,20 @@ export var newConfig = [
           type: "radioordropdown",
           label: "Trade Type",
           disable: false,
+          preProcess:{
+            updateDependent:["populators.options"]
+          },
           populators: {
             name: "tradeType",
-            optionsKey: "name",
+            optionsKey: "code",
             error: "sample required message",
             required: true,
-            mdmsConfig: {
-              masterName: "TradeType",
-              moduleName: "TradeLicense",   
-              localePrefix: "TRADE_TYPE",
-            },
+            options:[],
+            // mdmsConfig: {
+            //   masterName: "TradeType",
+            //   moduleName: "TradeLicense",   
+            //   localePrefix: "TRADE_TYPE",
+            // },
           },
         },
         {
@@ -176,16 +186,20 @@ export var newConfig = [
           type: "radioordropdown",
           label: "Trade Sub Type",
           disable: false,
+          preProcess:{
+            updateDependent:["populators.options"]
+          },
           populators: {
             name: "tradeSubType",
-            optionsKey: "type",
+            optionsKey: "code",
             error: "sample required message",
             required: true,
-            mdmsConfig: {
-              masterName: "TradeType",
-              moduleName: "TradeLicense",
-              localePrefix: "COMMON_GENDER",
-            },
+            options:[]
+            // mdmsConfig: {
+            //   masterName: "TradeType",
+            //   moduleName: "TradeLicense",
+            //   localePrefix: "COMMON_GENDER",
+            // },
           },
         },
         {
@@ -194,10 +208,13 @@ export var newConfig = [
           isMandatory: false,
           type: "text",
           disable: false,
+          preProcess : {
+            updateDependent:["populators.options"]
+          },
           populators: { 
             name: "uom", 
             error: "Required", 
-            validation: { pattern: /^[A-Za-z]+$/i } 
+            // validation: { pattern: /^[A-Za-z]+$/i } 
           },
         },
         {
@@ -295,9 +312,9 @@ export var newConfig = [
           key: "locDetails_city",
           type: "radioordropdown",
           disable: false,
-          preProcess : {
-            updateDependent : ["populators.options"]
-          },
+          // preProcess : {
+          //   updateDependent : ["populators.options"]
+          // },
           populators: {
              name: "locDetails_city",
             //  optionsKey: "i18nKey",

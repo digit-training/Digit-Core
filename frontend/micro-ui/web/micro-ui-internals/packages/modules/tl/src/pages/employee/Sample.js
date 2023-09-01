@@ -12,26 +12,54 @@ const Create = () => {
   const { t } = useTranslation();
   const history = useHistory();
   var config = newConfig;
-  const [structureType,setStructureType] = useState();
-  const [tradeType,setTradeType] = useState();
+  const [structureType,setStructureType] = useState("");
+  const [tradeCategory,setTradeCategory] = useState();
+  const [tradeType,setTradeType] = useState("");
 
   // Trade Details
-   Digit.Hooks.useCustomMDMS(
+   const {isLoading:tradeIsFetching,data:tradeData} = Digit.Hooks.useCustomMDMS(
     tenantId,
     "TradeLicense",
     [{name:"TradeType"}],
     {
       select: (data) => {
-          // console.log(data?.["TradeLicense"]?.["TradeType"][0]);
           let tradeArr = data?.["TradeLicense"]?.["TradeType"];
+          console.log(tradeArr);
           let newArr = tradeArr.map((data)=>{
-            return data.code.split('.');
+            let arr = data.code.split('.');
+            arr.push(data.uom);
+            return arr;
           })
           // console.log(newArr);
-          return tradeArr;
+          var trade = [];
+          var tradeCategory = { };
+          var tradeSubType = {};
+          newArr.map((data)=>{
+            tradeCategory[data[0]] = [];
+            tradeSubType[data[1]] = [];
+            trade.push({code:data[0],name:data[0],uom:data[3]});
+          })
+          console.log(trade);
+          trade = [... new Set(trade)];
+
+          newArr.map((data)=>{
+            tradeCategory[data[0]].push({
+              code:data[1],
+              name:data[1]
+            })
+            tradeSubType[data[1]].push({
+              code:data[2],
+              name:data[2]
+            })
+          })
+          return {
+            trade,
+            tradeCategory,
+            tradeSubType
+          };
+          // return newArr;
       }
     }
-    ,[tradeType]
   )
 
   // Structure Details
@@ -43,34 +71,59 @@ const Create = () => {
       select: (data) => {
         let arr = (data?.["common-masters"]?.["StructureType"]);
         
-        localStorage.setItem("structure_data",JSON.stringify(data));
+        // localStorage.setItem("structure_data",JSON.stringify(data));
 
         let newarr = arr.map((val)=>{
-          return val.code.split('.')[0];
+          return val.code.split('.');
         });
-        
-        newarr = [...new Set(newarr)]; // only unique elements
-        let structure_type =  newarr.map((data)=>{
-          return {code:data,name:data};
+
+        let structure_type = {};
+        // console.log(newarr);
+        newarr.map((data)=>{
+          structure_type[data[0]] = [];
         })
-        // console.log(structure_type);
+
+        newarr.map((data)=>{
+          structure_type[data[0]].push({code:data[1],name:data[1]});
+        })
         return structure_type;
       
       }
     }
   )
-
+  
   // use hook to fetch the data and then configure the config
   const preProcessconfig = useMemo(
-    () => Digit.Utils.preProcessMDMSConfig(t, newConfig, {
+    () =>{ 
+      // console.log("PRE-PROCESSING-MDMS-CONFIG")
+      // console.log(structureTypeData);
+      // if(!structureTypeDataFetching) console.log(structureTypeData[structureType]);
+      console.log(tradeData);
+      // console.log(tradeType);
+      let val = Digit.Utils.preProcessMDMSConfig(t, newConfig, {
       updateDependent : [
         {
           key : 'structureSubType',
-          value : []
+          value : [structureTypeData?.[structureType]]
+        },
+        {
+          key : 'tradeCategory',
+          value : [tradeData?.trade]
+        },
+        {
+          key : 'tradeType',
+          value : [tradeData?.tradeCategory?.[tradeCategory]]
+        },
+        {
+          key : 'tradeSubType',
+          value : [tradeData?.tradeSubType?.[tradeType]]
         },
       ]
-    }),[structureTypeData]);
-
+    })
+    return val;
+  }
+  ,[structureType,tradeCategory,tradeType]
+);
   
   const onSubmit = (data) => {
     console.log(data);
@@ -92,8 +145,8 @@ const Create = () => {
               additionalDetail: {},
               tradeUnits: [
                 {
-                  tradeType: data?.tradeType.code,
-                  uom: data?.tradeType.uom,
+                  tradeType: data?.tradeCategory.code+'.'+data?.tradeType.code+'.'+data?.tradeSubType.code,
+                  uom: data?.tradeCategory.uom || "GROSSUNITS",
                   uomValue: 12,
                 },
               ],
@@ -132,23 +185,23 @@ const Create = () => {
         console.log(e);
       });
 
-    history.push("/digit-ui/citizen/tl/response");
+    history.push("/digit-ui/employee");
 
     console.log(JSON.stringify(data), "data");
   };
 
   const onFormValueChange = (setValue, formData, formState, reset, setError, clearErrors, trigger, getValues) => {
-    
-    if(formData){
-      // console.log(formData);
 
-      if(formData?.tradeType){
-        setTradeType(tradeType);
+    if(formData){
+
+      if(formData?.tradeCategory && formData?.tradeCategory?.code != tradeCategory){
+        setTradeCategory(formData?.tradeCategory?.code);
       }
-      if(formData?.structureType){
+      if(formData?.structureType && formData.structureType.code.split('.')[0]!=structureType){
         setStructureType(formData.structureType.code.split('.')[0]);
-        // console.log(structureType);
-        // based on the Structure Type change the options of Structure Sub Type
+      }
+      if(formData?.tradeType && formData?.tradeType?.code != tradeType){
+        setTradeType(formData?.tradeType?.code);
       }
     }
   }
@@ -159,7 +212,7 @@ const Create = () => {
 
   return (
     <React.Fragment>
-    {/* {console.log(preProcessconfig)} */}
+    {console.log("RENDERING")}
     <FormComposerV2
       label={t("Submit")}
       description={"Trade Details"}
@@ -172,14 +225,10 @@ const Create = () => {
       // })}
       onSubmit={onSubmit}
       onFormValueChange = {onFormValueChange}
-      fieldStyle={{ marginRight: 0 }}
+      fieldStyle={{ marginRight: 0 , width: "30%"}}
       />
-      </React.Fragment>
+    </React.Fragment>
   );
 };
 
 export default Create;
-
-
-
-// structureType : filter only Movable and Immovable
