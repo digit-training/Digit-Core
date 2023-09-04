@@ -4,20 +4,21 @@
   justify-content: space-between;
 
   .sideContent {
-    @apply flex justify-around items-center ;
+    @apply flex justify-around items-center;
 
   }
 }
 
 .searchInput {
   @apply mr-lg;
-  input{
+
+  input {
     margin-bottom: 0;
     @apply pr-xl;
   }
 }
 
-.signature-img{
+.signature-img {
   top: 8px;
   right: 8px;
   fill: theme(colors.text.secondary);
@@ -35,6 +36,7 @@
 
 .chart-row {
   @apply flex justify-between flex-wrap;
+
   .chart-item {
     flex-grow: 1;
     margin-bottom: 15px;
@@ -52,6 +54,7 @@
 
 .options {
   @apply flex justify-between items-center;
+
   div {
     display: none;
   }
@@ -72,11 +75,12 @@
     @apply flex;
   }
 }
+
 .no-data {
   @apply flex justify-center items-center;
   height: 90%;
   margin-bottom: 40px;
-  white-space:pre;
+  white-space: pre;
 }
 
 @screen dt {
@@ -88,12 +92,14 @@
       margin-right: 25px !important;
       margin-bottom: 25px !important;
       margin-left: 0 !important;
-      width: 31%;
+      width: auto;
     }
   }
+
   .column-direction {
     flex-direction: row;
   }
+
   .options-m {
     display: none;
   }
@@ -110,77 +116,83 @@
   color: theme(colors.primary.main);
 }
 
-@media (max-width: 420px) { 
+@media (max-width: 420px) {
   .recharts-default-tooltip {
     width: 85%;
+
     ul {
       width: 100% !important;
     }
+
     ul li {
       width: 100%;
       display: flex !important;
       flex-wrap: wrap;
     }
-  }  
+  }
 }
 
 
-@media print{
+@media print {
   .page-break {
     margin-top: 1rem;
     display: block;
     page-break-before: auto;
   }
+
   .chart-wrapper {
-   @media print{
-    .chart-row {
-      @media print{
-      @apply flex justify-between flex-wrap;
-        .chart-item {
-          @media print{
-            flex-grow: 1;
-            margin-right: 25px;
-            margin-bottom: 25px;
-            width: 31%;
-        
-            &:last-child {
-              margin-right: 0px;
-            }
-            .chartHeader {
-              display: flex;
-              justify-content: space-between;
-            
-              .sideContent {
-                @apply flex justify-around items-center ;
-            
-                .searchInput {
-                  @apply mr-lg;
-                  input{
-                    margin-bottom: 0;
-                    @apply pr-xl;
+    @media print {
+      .chart-row {
+        @media print {
+          @apply flex justify-between flex-wrap;
+
+          .chart-item {
+            @media print {
+              flex-grow: 1;
+              margin-right: 25px;
+              margin-bottom: 25px;
+              width: auto;
+
+              &:last-child {
+                margin-right: 0px;
+              }
+
+              .chartHeader {
+                display: flex;
+                justify-content: space-between;
+
+                .sideContent {
+                  @apply flex justify-around items-center;
+
+                  .searchInput {
+                    @apply mr-lg;
+
+                    input {
+                      margin-bottom: 0;
+                      @apply pr-xl;
+                    }
                   }
-                }
-            
-                .signature-img{
-                  top: 8px;
-                  right: 8px;
-                  fill: theme(colors.text.secondary);
-                  @apply absolute;
+
+                  .signature-img {
+                    top: 8px;
+                    right: 8px;
+                    fill: theme(colors.text.secondary);
+                    @apply absolute;
+                  }
                 }
               }
             }
           }
         }
       }
-    }
-        
-    .options {
-      @apply flex justify-end;
-    }
 
-    .options-m {
-      display: none;
+      .options {
+        @apply flex justify-end;
+      }
+
+      .options-m {
+        display: none;
+      }
     }
   }
-}
 }

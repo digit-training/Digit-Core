@@ -12,7 +12,7 @@ const CustomFilter = ({
   closeFilters
 }) => {
   const { value, setValue } = useContext(FilterContext);
-  const [ backupDate, setBackupDate ] = useState({});
+  const [backupDate, setBackupDate] = useState({});
 
   const [selected, setSelected] = useState({});
 
@@ -24,22 +24,22 @@ const CustomFilter = ({
         window.alert(`Invalid date, please do not select date more then ${numberOfDays}.`);
         setValue({ ...value, ...backupDate });
       } else {
-        setBackupDate({...data})
+        setBackupDate({ ...data })
         setValue({ ...value, ...data });
       }
     } else {
-      setBackupDate({...data})
+      setBackupDate({ ...data })
       setValue({ ...value, ...data });
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     handleClear();
   }, [])
 
-  const { data: updatedFilterConfig, isLoading: isFilterGetValLoading } = Digit.Hooks.dss.useGetCustomFilterRequestValues(filterConfig,{});
+  const { data: updatedFilterConfig, isLoading: isFilterGetValLoading } = Digit.Hooks.dss.useGetCustomFilterRequestValues(filterConfig, {});
 
-  const { data: filterConfigResp, isLoading: isFilterDataLoading } = Digit.Hooks.dss.useGetCustomFilterValues(updatedFilterConfig, {enabled: !isFilterGetValLoading ? true : false});
+  const { data: filterConfigResp, isLoading: isFilterDataLoading } = Digit.Hooks.dss.useGetCustomFilterValues(updatedFilterConfig, { enabled: !isFilterGetValLoading ? true : false });
 
   const [appliedFilterChips, setAppliedFilterChips] = useState([]);
   useEffect(() => {
@@ -71,14 +71,14 @@ const CustomFilter = ({
     } else {
       setAppliedFilterChips([]);
     }
-  },[selected])
+  }, [selected])
 
 
   const selectFilters = (filter) => {
-    return (e, data)=> {
+    return (e, data) => {
       let filterObj, selectedFilter = {};
       if (filter?.type == "MultiSelectDropdown" && e) {
-        let obj =  getMultiSelectAppliedFilterObj(filter, e)
+        let obj = getMultiSelectAppliedFilterObj(filter, e)
         filterObj = obj.filterObj;
         selectedFilter[filter.id] = obj.selectedFilter;
       } else if (filter?.type == "Dropdown" && e) {
@@ -86,8 +86,8 @@ const CustomFilter = ({
         filterObj = obj.filterObj;
         selectedFilter[filter.id] = obj.selectedFilter;
       }
-      setValue({...value, ...filterObj});
-      setSelected({...selected, ...selectedFilter});
+      setValue({ ...value, ...filterObj });
+      setSelected({ ...selected, ...selectedFilter });
     }
   };
 
@@ -98,26 +98,26 @@ const CustomFilter = ({
     let selectedValues = _.get(value, filter.appliedFilterPath);
     if (selectedFilter) {
       if (_.isArray(selectedFilter)) {
-        selectedFilter = _.filter(selectedFilter, (sf)=> { return sf.value != chipData.value });
-        selectedValues = _.filter(selectedValues, (sf)=> { return sf != chipData.value });
+        selectedFilter = _.filter(selectedFilter, (sf) => { return sf.value != chipData.value });
+        selectedValues = _.filter(selectedValues, (sf) => { return sf != chipData.value });
       } else {
         selectedFilter = null;
         selectedValues = null;
       }
-      let nSelectedFilter = {[filter.id]:selectedFilter};
-      let nSelectedValues = {...value}
+      let nSelectedFilter = { [filter.id]: selectedFilter };
+      let nSelectedValues = { ...value }
       if (selectedValues == null || _.isEmpty(selectedValues)) {
         nSelectedValues = _.omit(nSelectedValues, filter.appliedFilterPath);
       } else {
         _.set(nSelectedValues, filter.appliedFilterPath, selectedValues);
       }
-      setSelected({...selected, ...nSelectedFilter});
+      setSelected({ ...selected, ...nSelectedFilter });
       setValue(nSelectedValues);
     }
   }
 
   const getMultiSelectAppliedFilterObj = (filter, event) => {
-    let filterObj = {...value};
+    let filterObj = { ...value };
     let selectedMultiFiltersArr = []
     if (event && event.length) {
       let values = event.map((allEventsData) => allEventsData?.[1]?.value)
@@ -126,17 +126,17 @@ const CustomFilter = ({
     } else {
       _.set(filterObj, filter.appliedFilterPath, [])
     }
-    return {filterObj, selectedFilter: selectedMultiFiltersArr }
+    return { filterObj, selectedFilter: selectedMultiFiltersArr }
   }
 
   const getSingleSelectAppliedFilterObj = (filter, event) => {
-    let filterObj = {...value};
+    let filterObj = { ...value };
     if (event && event.value && filter.appliedFilterPath) {
       _.set(filterObj, filter.appliedFilterPath, event.value)
     } else {
       _.set(filterObj, filter.appliedFilterPath, null)
     }
-    return {filterObj, selectedFilter: event};
+    return { filterObj, selectedFilter: event };
   }
 
 
@@ -157,12 +157,12 @@ const CustomFilter = ({
   }
 
   const getFilter = (filter) => {
-    switch(filter.type) {
-      case "DateRange": 
+    switch (filter.type) {
+      case "DateRange":
         return dateRangeFilter(filter);
-      case "Dropdown": 
+      case "Dropdown":
         return dropdownFilter(filter);
-      case "MultiSelectDropdown": 
+      case "MultiSelectDropdown":
         return multiSelectFilter(filter);
       default:
         return '';
@@ -217,9 +217,9 @@ const CustomFilter = ({
     <div>
       <div className={`filters-wrapper ${isOpen ? "filters-modal" : ""}`} style={{
         justifyContent: window.location.href.includes("dss/dashboard/finance") && !isOpen ? "space-between" : "unset",
-        paddingRight: window.location.href.includes("dss/dashboard/finance") && !isOpen? "24px" : "0px",
-        paddingBottom: window.location.href.includes("dss/dashboard/finance") && !isOpen? "20px" : "unset"
-        }}>
+        paddingRight: window.location.href.includes("dss/dashboard/finance") && !isOpen ? "24px" : "0px",
+        paddingBottom: window.location.href.includes("dss/dashboard/finance") && !isOpen ? "20px" : "unset"
+      }}>
         <span className="filter-close" onClick={() => closeFilters()}>
           <CloseSvg />
         </span>
@@ -239,16 +239,16 @@ const CustomFilter = ({
         }
       </div>
       <div>
-      {appliedFilterChips?.length > 0 && (
+        {appliedFilterChips?.length > 0 && (
           <div className="tag-container">
             {appliedFilterChips
-                .map((filter, id) => (
-                  <RemoveableTag
-                    key={id}
-                    text={`${t(filter?.label)}: ${t(filter?.name)}`}
-                    onClick={() => removeFilter(id)}
-                  />
-                ))}
+              .map((filter, id) => (
+                <RemoveableTag
+                  key={id}
+                  text={`${t(filter?.label)}: ${t(filter?.name)}`}
+                  onClick={() => removeFilter(id)}
+                />
+              ))}
             <p className="clearText cursorPointer" onClick={handleClear}>
               {t(`DSS_FILTER_CLEAR`)}
             </p>

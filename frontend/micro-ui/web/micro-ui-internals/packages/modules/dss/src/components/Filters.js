@@ -28,7 +28,7 @@ const Filters = ({
     setSelected(ulbTenants?.ulb?.filter((tenant) => value?.filters?.tenantId?.find((selectedTenant) => selectedTenant === tenant?.code)));
   }, [value?.filters?.tenantId]);
 
-  const [selectService, setSelectedService] = useState(() => 
+  const [selectService, setSelectedService] = useState(() =>
     services?.filter((module) => value?.moduleLevel === module?.code)
   )
 
@@ -74,8 +74,8 @@ const Filters = ({
   return (
     <div className={`filters-wrapper ${isOpen ? "filters-modal" : ""}`} style={{
       justifyContent: window.location.href.includes("dss/dashboard/finance") && !isOpen ? "space-between" : "unset",
-      paddingRight: window.location.href.includes("dss/dashboard/finance") && !isOpen? "24px" : "0px",
-      paddingBottom: window.location.href.includes("dss/dashboard/finance") && !isOpen? "20px" : "unset"
+      paddingRight: window.location.href.includes("dss/dashboard/finance") && !isOpen ? "24px" : "0px",
+      paddingBottom: window.location.href.includes("dss/dashboard/finance") && !isOpen ? "20px" : "unset"
     }}>
       <span className="filter-close" onClick={() => closeFilters()}>
         <CloseSvg />

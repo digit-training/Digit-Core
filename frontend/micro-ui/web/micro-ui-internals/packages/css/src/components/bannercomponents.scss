@@ -66,8 +66,10 @@
       @apply text-heading-xl-dt;
     }
   }
+
   .emp-success-wrap {
     width: calc(100%);
+
     header {
       @apply text-heading-xl-dt;
     }
@@ -75,6 +77,7 @@
 
   .error-wrap {
     width: 100%;
+
     header {
       @apply text-heading-xl-dt;
     }
@@ -82,6 +85,7 @@
 
   .emp-error-wrap {
     width: calc(100%);
+
     header {
       @apply text-heading-xl-dt;
     }
@@ -115,6 +119,7 @@
   .bannerCard {
     min-width: 400px;
   }
+
   .bannerLogo {
     width: 80px;
     height: 40px;
@@ -123,6 +128,7 @@
     margin-right: 10px;
     border-right: 1px solid theme(colors.text.primary);
   }
+
   .bannerHeader {
     @apply flex justify-center items-center;
     margin-bottom: 24px;

@@ -29,7 +29,7 @@ const GenericChart = ({
   chip = [],
   updateChip,
   value = {},
-  iconName=""
+  iconName = ""
 }) => {
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -85,7 +85,7 @@ const GenericChart = ({
         <div>
           {showHeader && (
             <CardLabel className={"dss-header-label"}>
-              {iconName&&IconComp&&<span><IconComp  className={"dss-primary"} /></span>}
+              {iconName && IconComp && <span><IconComp className={"dss-primary"} /></span>}
               <span className={`tooltip ${headerName?.length < (isMobile ? 20 : 30) ? "dss-white-pre" : "dss-white-pre-line"}`}>
                 {headerName}
                 {chartDenomination?.toLowerCase() === "amount" && (

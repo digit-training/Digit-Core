@@ -324,7 +324,7 @@ const CustomTable = ({ data = {}, onSearch, setChartData, setChartDenomination }
                 style={{ color: "#F47738", cursor: "pointer" }}
                 onClick={() =>
                   getDrilldownCharts(
-                    cellValue?.includes("DSS_TB_")?row?.original?.key:cellValue,
+                    cellValue?.includes("DSS_TB_") ? row?.original?.key : cellValue,
                     filter?.key,
                     t(`DSS_HEADER_${Digit.Utils.locale.getTransformedLocale(plot?.name)}`),
                     response?.responseData?.filter

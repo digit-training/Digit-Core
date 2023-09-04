@@ -12,16 +12,16 @@ const nationalScreenURLs = {
   ws: { key: "national-ws", stateKey: "ws", label: "NURT_WATER_SEWERAGE", active: true, nActive: true },
   obps: { key: "nss-obps", stateKey: "obps", label: "DSS_BUILDING_PERMISSION", active: true, nActive: true },
   noc: { key: "national-firenoc", stateKey: "noc", label: "NURT_FIRENOC", active: true, nActive: true },
-  bnd: {key:"nss-birth-death",stateKey:"birth-death",label:"BIRTH_AND_DEATH",active:true,nActive:true},
-  faqs: {key:"national-faqs",stateKey:"national-faqs",label:"DSS_FAQS",active:false,nActive:true,others:true},
-  finance: {key:"national-finance",stateKey:"finance",label:"DSS_FINANCE",active:true,nActive:false},
-  about: {key:"national-about",stateKey:"national-about",label:"DSS_ABOUT_DASHBOARD",active:false,nActive:true,others:true},
+  bnd: { key: "nss-birth-death", stateKey: "birth-death", label: "BIRTH_AND_DEATH", active: true, nActive: true },
+  faqs: { key: "national-faqs", stateKey: "national-faqs", label: "DSS_FAQS", active: false, nActive: true, others: true },
+  finance: { key: "national-finance", stateKey: "finance", label: "DSS_FINANCE", active: true, nActive: false },
+  about: { key: "national-about", stateKey: "national-about", label: "DSS_ABOUT_DASHBOARD", active: false, nActive: true, others: true },
 };
 
 export const checkCurrentScreen = () => {
   const moduleName = Digit.Utils.dss.getCurrentModuleName();
   const nationalURLS = Object.keys(nationalScreenURLs).map((key) => nationalScreenURLs[key].key);
-  return nationalURLS.filter(ele=>ele!=="fsm").some((e) => moduleName?.includes(e));
+  return nationalURLS.filter(ele => ele !== "fsm").some((e) => moduleName?.includes(e));
 };
 
 const NDSSCard = () => {
@@ -37,7 +37,7 @@ const NDSSCard = () => {
     .map((obj) => ({
       label: t(obj?.label),
       link: `/${window?.contextPath}/employee/dss/dashboard/${obj?.key}`,
-      link: obj?.others?`/${window?.contextPath}/employee/dss/${obj?.key}`:`/${window?.contextPath}/employee/dss/dashboard/${obj?.key}`,
+      link: obj?.others ? `/${window?.contextPath}/employee/dss/${obj?.key}` : `/${window?.contextPath}/employee/dss/dashboard/${obj?.key}`,
     }));
 
   const propsForModuleCard = {
@@ -64,7 +64,7 @@ const DSSCard = () => {
     .filter((ele) => ele["active"] === true)
     .map((obj) => ({
       label: t(obj?.label),
-      link: obj.active?`/${window?.contextPath}/employee/dss/dashboard/${obj?.stateKey}`:`/employee/integration/dss/${obj?.stateKey}`,
+      link: obj.active ? `/${window?.contextPath}/employee/dss/dashboard/${obj?.stateKey}` : `/employee/integration/dss/${obj?.stateKey}`,
     }));
 
   const propsForModuleCard = {
