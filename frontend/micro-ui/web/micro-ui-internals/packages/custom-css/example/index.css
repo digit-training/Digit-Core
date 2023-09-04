@@ -1212,6 +1212,9 @@ img, video {
     vertical-align: middle;
     text-align: left; }
     .table thead th:first-child {
+      position: sticky;
+  left: 0;
+  background-color: #ffffff;
       min-width: 256px; }
   .table tbody {
     border: none;
@@ -1223,7 +1226,15 @@ img, video {
       border-color: rgba(214, 213, 212, var(--border-opacity));
       text-align: left;
       vertical-align: middle;
-      padding: "20px 18px"; }
+      padding: "20px 18px"; 
+      
+    
+    }
+    .table tbody td:first-child {
+      position: sticky;
+  left: 0;
+  background-color: #ffffff;
+      min-width: 256px; }
 
 .pagination {
   display: -webkit-box;
