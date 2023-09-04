@@ -65,8 +65,8 @@ const DashBoard = ({ stateCode }) => {
     select: (data) => {
       let screenConfig = data?.["dss-dashboard"]["dashboard-config"][0].MODULE_LEVEL;
       let reduced_array = [];
-      for(let i = 0 ; i < screenConfig.length ; i++){
-        if(screenConfig[i].dashboard !== null ){
+      for (let i = 0; i < screenConfig.length; i++) {
+        if (screenConfig[i].dashboard !== null) {
           reduced_array.push(screenConfig[i]);
         }
       }
@@ -76,7 +76,7 @@ const DashBoard = ({ stateCode }) => {
           code: obj[Object.keys(obj)[0]].filterKey,
           name: Digit.Utils.locale.getTransformedLocale(`DSS_${obj[Object.keys(obj)[0]].services_name}`)
         }
-      }) ;
+      });
       return serviceJS
     }
   });
@@ -153,7 +153,7 @@ const DashBoard = ({ stateCode }) => {
   const removeService = () => {
     handleFilters({
       ...filters,
-      moduleLevel: "" ,
+      moduleLevel: "",
     });
   }
 
@@ -303,12 +303,12 @@ const DashBoard = ({ stateCode }) => {
             isNational={isNational}
           />
         ) : dashboardConfig[0]?.filter == 'CustomFilter' && dashboardConfig[0]?.filterConfig ? (
-        <CustomFilter
-          t={t}
-          filterConfig={dashboardConfig[0]?.filterConfig}
-          isOpen={isFilterModalOpen}
-          closeFilters={() => setIsFilterModalOpen(false)}
-        />) : (
+          <CustomFilter
+            t={t}
+            filterConfig={dashboardConfig[0]?.filterConfig}
+            isOpen={isFilterModalOpen}
+            closeFilters={() => setIsFilterModalOpen(false)}
+          />) : (
           <Filters
             t={t}
             showModuleFilter={!isNational && dashboardConfig?.[0]?.name.includes("OVERVIEW") ? true : false}
@@ -317,7 +317,7 @@ const DashBoard = ({ stateCode }) => {
             isOpen={isFilterModalOpen}
             closeFilters={() => setIsFilterModalOpen(false)}
             isNational={isNational}
-            showDateRange= {dashboardConfig?.[0]?.name.includes("DSS_FINANCE_DASHBOARD") ? false : true}
+            showDateRange={dashboardConfig?.[0]?.name.includes("DSS_FINANCE_DASHBOARD") ? false : true}
           />
         )}
         {filters?.filters?.tenantId?.length > 0 && (
@@ -480,7 +480,9 @@ const DashBoard = ({ stateCode }) => {
         {dashboardConfig?.[0]?.visualizations
           .filter((row) => row.name === tabState)
           .map((row, key) => {
-            return <Layout rowData={row} key={key} />;
+            return <Layout
+              rowData={row} key={key}
+            />;
           })}
       </div>
     </FilterContext.Provider>

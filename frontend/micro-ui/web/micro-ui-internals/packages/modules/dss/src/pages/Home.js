@@ -11,7 +11,7 @@ import {
   WhatsappIcon,
 } from "@egovernments/digit-ui-react-components";
 import { format } from "date-fns";
-import React, { useMemo, useRef, useState, useContext } from "react";
+import React, { useMemo, useRef, useState, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import FilterContext from "../components/FilterContext";
@@ -214,7 +214,7 @@ const HorBarChart = ({ data, setselectState = "" }) => {
 const Home = ({ stateCode }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { t } = useTranslation();
-  const [filters, setFilters] = useState(() => {});
+  const [filters, setFilters] = useState(() => { });
   const { moduleCode } = useParams();
   const language = Digit.StoreData.getCurrentLanguage();
   const { isLoading: localizationLoading, data: store } = Digit.Services.useStore({ stateCode, moduleCode, language });
@@ -224,6 +224,89 @@ const Home = ({ stateCode }) => {
   const [drillDownId, setdrillDownId] = useState("none");
   const [totalCount, setTotalCount] = useState("");
   const [liveCount, setLiveCount] = useState("");
+  const [renderHorBarChart, setRenderHorBarChart] = useState(() => {
+    const storedHorBarChartVisibility = JSON.parse(sessionStorage.getItem('HorBarChartVisibility')) || false;
+    return storedHorBarChartVisibility;
+  });
+  const [chartVisibilityFlags, setChartVisibilityFlags] = useState({});
+
+  const [currentClassName, setCurrentClassName] = useState("");
+  const horBarChartRef = useRef(null);
+  const chartRefs = useRef({});
+
+  const isElementInViewport = (el) => {
+    const rect = el.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    const windowWidth = window.innerWidth || document.documentElement.clientWidth;
+    return (
+      rect.bottom > 0 &&
+      rect.right > 0 &&
+      rect.top < windowHeight &&
+      rect.left < windowWidth
+    );
+  };
+
+
+  const handleScroll = () => {
+    // Check if the HorBarChart is in the viewport
+    const horBarChartElement = horBarChartRef.current;
+    const isHorBarChartVisible = horBarChartElement && isElementInViewport(horBarChartElement);
+
+    // Retrieve the visibility from sessionStorage
+    // Update the visibility in the state if it's not already in sessionStorage
+    if (isHorBarChartVisible != renderHorBarChart && isHorBarChartVisible == true) {
+      sessionStorage.setItem('HorBarChartVisibility', JSON.stringify(true));
+      setRenderHorBarChart(true);
+      // Store the visibility in sessionStorage
+    }
+
+    // Retrieve stored keys from sessionStorage
+    const storedKeys = JSON.parse(sessionStorage.getItem('chartVisibilityKeys')) || {};
+
+    // Check if each Chart component is in the viewport and update flags in the state accordingly
+    let change = false;
+
+    Object.keys(chartRefs.current).forEach((chartKey) => {
+      const chartElement = chartRefs.current[chartKey];
+      const isChartVisible = chartElement && isElementInViewport(chartElement);
+
+      if (!storedKeys[chartKey] && isChartVisible) {
+        storedKeys[chartKey] = true; // Store the key in sessionStorage
+        change = true;
+      }
+    });
+
+    // Save the updated keys to sessionStorage
+    sessionStorage.setItem('chartVisibilityKeys', JSON.stringify(storedKeys));
+
+    if (change) {
+      setChartVisibilityFlags(storedKeys);
+    }
+  };
+
+
+
+
+  useEffect(() => {
+    handleScroll();
+  });
+
+  useEffect(() => {
+    // Add a scroll event listener when the component mounts
+    window.addEventListener("scroll", handleScroll);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.addEventListener('beforeunload', () => {
+        // Clear the 'chartVisibilityKeys' from sessionStorage when the page is about to unload
+        sessionStorage.removeItem('chartVisibilityKeys');
+        sessionStorage.removeItem('HorBarChartVisibility');
+      });
+    };
+  }, []);
+
+
 
   const handleFilters = (data) => {
     Digit.SessionStorage.set(key, data);
@@ -249,67 +332,67 @@ const Home = ({ stateCode }) => {
 
   const shareOptions = navigator.share
     ? [
-        {
-          label: t("ES_DSS_SHARE_PDF"),
-          onClick: () => {
-            setShowOptions(!showOptions);
-            setTimeout(() => {
-              return Digit.ShareFiles.PDF(tenantId, fullPageRef, t(dashboardConfig?.[0]?.name));
-            }, 500);
-          },
+      {
+        label: t("ES_DSS_SHARE_PDF"),
+        onClick: () => {
+          setShowOptions(!showOptions);
+          setTimeout(() => {
+            return Digit.ShareFiles.PDF(tenantId, fullPageRef, t(dashboardConfig?.[0]?.name));
+          }, 500);
         },
-        {
-          label: t("ES_DSS_SHARE_IMAGE"),
-          onClick: () => {
-            setShowOptions(!showOptions);
-            setTimeout(() => {
-              return Digit.ShareFiles.Image(tenantId, fullPageRef, t(dashboardConfig?.[0]?.name));
-            }, 500);
-          },
+      },
+      {
+        label: t("ES_DSS_SHARE_IMAGE"),
+        onClick: () => {
+          setShowOptions(!showOptions);
+          setTimeout(() => {
+            return Digit.ShareFiles.Image(tenantId, fullPageRef, t(dashboardConfig?.[0]?.name));
+          }, 500);
         },
-      ]
+      },
+    ]
     : [
-        {
-          icon: <EmailIcon />,
-          label: t("ES_DSS_SHARE_PDF"),
-          onClick: () => {
-            setShowOptions(!showOptions);
-            setTimeout(() => {
-              return Digit.ShareFiles.PDF(tenantId, fullPageRef, t(dashboardConfig?.[0]?.name), "mail");
-            }, 500);
-          },
+      {
+        icon: <EmailIcon />,
+        label: t("ES_DSS_SHARE_PDF"),
+        onClick: () => {
+          setShowOptions(!showOptions);
+          setTimeout(() => {
+            return Digit.ShareFiles.PDF(tenantId, fullPageRef, t(dashboardConfig?.[0]?.name), "mail");
+          }, 500);
         },
-        {
-          icon: <WhatsappIcon />,
-          label: t("ES_DSS_SHARE_PDF"),
-          onClick: () => {
-            setShowOptions(!showOptions);
-            setTimeout(() => {
-              return Digit.ShareFiles.PDF(tenantId, fullPageRef, t(dashboardConfig?.[0]?.name), "whatsapp");
-            }, 500);
-          },
+      },
+      {
+        icon: <WhatsappIcon />,
+        label: t("ES_DSS_SHARE_PDF"),
+        onClick: () => {
+          setShowOptions(!showOptions);
+          setTimeout(() => {
+            return Digit.ShareFiles.PDF(tenantId, fullPageRef, t(dashboardConfig?.[0]?.name), "whatsapp");
+          }, 500);
         },
-        {
-          icon: <EmailIcon />,
-          label: t("ES_DSS_SHARE_IMAGE"),
-          onClick: () => {
-            setShowOptions(!showOptions);
-            setTimeout(() => {
-              return Digit.ShareFiles.Image(tenantId, fullPageRef, t(dashboardConfig?.[0]?.name), "mail");
-            }, 500);
-          },
+      },
+      {
+        icon: <EmailIcon />,
+        label: t("ES_DSS_SHARE_IMAGE"),
+        onClick: () => {
+          setShowOptions(!showOptions);
+          setTimeout(() => {
+            return Digit.ShareFiles.Image(tenantId, fullPageRef, t(dashboardConfig?.[0]?.name), "mail");
+          }, 500);
         },
-        {
-          icon: <WhatsappIcon />,
-          label: t("ES_DSS_SHARE_IMAGE"),
-          onClick: () => {
-            setShowOptions(!showOptions);
-            setTimeout(() => {
-              return Digit.ShareFiles.Image(tenantId, fullPageRef, t(dashboardConfig?.[0]?.name), "whatsapp");
-            }, 500);
-          },
+      },
+      {
+        icon: <WhatsappIcon />,
+        label: t("ES_DSS_SHARE_IMAGE"),
+        onClick: () => {
+          setShowOptions(!showOptions);
+          setTimeout(() => {
+            return Digit.ShareFiles.Image(tenantId, fullPageRef, t(dashboardConfig?.[0]?.name), "whatsapp");
+          }, 500);
         },
-      ];
+      },
+    ];
 
   if (isLoading || localizationLoading) {
     return <Loader />;
@@ -369,13 +452,12 @@ const Home = ({ stateCode }) => {
                 } else if (item?.charts?.[0]?.chartType == "map") {
                   return (
                     <div
-                      className={`dss-card-parent  ${
-                        item.vizType == "collection"
-                          ? "w-100"
-                          : item.name.includes("PROJECT_STAUS") || item.name.includes("LIVE_ACTIVE_ULBS")
+                      className={`dss-card-parent  ${item.vizType == "collection"
+                        ? "w-100"
+                        : item.name.includes("PROJECT_STAUS") || item.name.includes("LIVE_ACTIVE_ULBS")
                           ? "dss-h-100"
                           : ""
-                      }`}
+                        }`}
                       style={item.vizType == "collection" ? { backgroundColor: "#fff", height: "600px" } : { backgroundColor: colors[index].light }}
                       key={index}
                     >
@@ -408,7 +490,7 @@ const Home = ({ stateCode }) => {
                           </div>
                         )}
                       </div>
-                      <div className="dss-card-body">
+                      <div ref={horBarChartRef} className="dss-card-body">
                         {item?.charts?.[0]?.chartType == "map" &&
                           (selectedState != "" ? (
                             <MapDrillChart
@@ -429,22 +511,23 @@ const Home = ({ stateCode }) => {
                               setliveCount={setLiveCount}
                             />
                           ))}
-                        {item?.charts?.[0]?.chartType == "map" && (
+                        {(JSON.parse(sessionStorage.getItem('HorBarChartVisibility')) && item?.charts?.[0]?.chartType == "map") && (
                           <HorBarChart data={row.vizArray?.[1]?.charts?.[0]} setselectState={selectedState}></HorBarChart>
                         )}
+
+
                       </div>
                     </div>
                   );
                 } else {
                   return (
                     <div
-                      className={`dss-card-parent  ${
-                        item.vizType == "collection"
-                          ? "dss-w-100"
-                          : item.name.includes("PROJECT_STAUS") || item.name.includes("LIVE_ACTIVE_ULBS")
+                      className={`dss-card-parent  ${item.vizType == "collection"
+                        ? "dss-w-100"
+                        : item.name.includes("PROJECT_STAUS") || item.name.includes("LIVE_ACTIVE_ULBS")
                           ? "h-100"
                           : ""
-                      }`}
+                        }`}
                       style={
                         item.vizType == "collection" || item.name.includes("PROJECT_STAUS") || item.name.includes("LIVE_ACTIVE_ULBS")
                           ? { backgroundColor: "#fff" }
@@ -481,8 +564,17 @@ const Home = ({ stateCode }) => {
 
                       <div className="dss-card-body">
                         {item.charts.map((chart, key) => (
-                          <div style={item.vizType == "collection" ? { width: Digit.Utils.browser.isMobile() ? "50%" : "25%" } : { width: "50%" }}>
-                            <Chart data={chart} key={key} moduleLevel={item.moduleLevel} overview={item.vizType === "collection"} />
+                          <div
+                            style={item.vizType === "collection" ? { width: Digit.Utils.browser.isMobile() ? "50%" : "25%" } : { width: "50%" }}
+                            key={key}
+                            ref={(el) => {
+                              // Store a reference to the Chart component
+                              chartRefs.current[chart.id] = el;
+                            }}
+                          >
+                            {chartVisibilityFlags[chart.id] && (
+                              <Chart data={chart} key={key} moduleLevel={item.moduleLevel} overview={item.vizType === "collection"} />
+                            )}
                           </div>
                         ))}
                       </div>
