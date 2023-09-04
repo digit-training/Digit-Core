@@ -172,8 +172,7 @@ const Create = () => {
             },
           },
         ],
-      }
-    ;
+      };
 
     Digit.TLService.create(licenses, tenantId)
       .then((result, err) => {

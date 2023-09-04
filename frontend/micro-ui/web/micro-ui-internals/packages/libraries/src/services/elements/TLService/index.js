@@ -13,15 +13,14 @@ const TLService = {
       userService: true,
       params: { tenantId },
     }),
-    get: (data, tenantId) =>
+    get: (params) =>
     Request({
-      data: data,
-      url: Urls.tl.get,
+      url: Urls.tl.search,
       useCache: false,
-      method: "GET",
+      method: "POST",
       auth: true,
       userService: true,
-      params: { tenantId },
+      params: params,
     }),
 };
 

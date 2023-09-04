@@ -5,7 +5,7 @@ import { Route, Switch } from "react-router-dom";
 import Sample from "./Sample";
 import SampleInbox from "./SampleInbox";
 import SampleSearch from "./SampleSearch";
-
+import SampleView  from "./SampleView";
 const ProjectBreadCrumb = ({ location }) => {
   const { t } = useTranslation();
   const crumbs = [
@@ -35,6 +35,7 @@ const App = ({ path, stateCode, userType, tenants }) => {
         <PrivateRoute path={`${path}/create`} component={() => <Sample></Sample>} />
           <PrivateRoute path={`${path}/inbox`} component={() => <SampleInbox></SampleInbox>} />
           <PrivateRoute path={`${path}/search`} component={() => <SampleSearch></SampleSearch>} />
+          <PrivateRoute path={`${path}/view*`} component={() => <SampleView></SampleView>} />
         </AppContainer>
     </Switch>
   );

@@ -18,14 +18,18 @@ const TLCard = () => {
         label: t("Create"),
         link: `/${window?.contextPath}/employee/tl/create`,
       },
-      {
-        label: t("Inbox"),
-        link: `/${window?.contextPath}/employee/tl/inbox`,
-      },
+      // {
+      //   label: t("Inbox"),
+      //   link: `/${window?.contextPath}/employee/tl/inbox`,
+      // },
       {
         label: t("Search"),
         link: `/${window?.contextPath}/employee/tl/search`,
       },
+      // {
+      //   label: t("View"),
+      //   link: `/${window?.contextPath}/employee/tl/search`,
+      // },
     ],
   };
 

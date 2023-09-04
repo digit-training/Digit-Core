@@ -481,11 +481,22 @@ export const UICustomizations = {
       //here we can add multiple conditions
       //like if a cell is link then we return link
       //first we can identify which column it belongs to then we can return relevant result
+      console.log(key);
+      // PB-TL-2023-09-04-051642
       switch (key) {
         case "MASTERS_WAGESEEKER_ID":
           return (
             <span className="link">
               <Link to={`/${window.contextPath}/employee/masters/view-wageseeker?tenantId=${row?.tenantId}&individualId=${value}`}>
+                 {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+              </Link>
+            </span>
+          );
+
+        case "Application Number":
+          return (
+            <span className="link">
+              <Link to={`/${window.contextPath}/employee/tl/view?tenantId=${row?.tenantId}&applicationNumber=${value}`}>
                  {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
               </Link>
             </span>
