@@ -50,7 +50,7 @@ const colors = [
   { dark: "rgba(183, 165, 69, 0.85)", light: "rgba(222, 188, 11, 0.24)" },
 ];
 
-const Chart = ({ data, moduleLevel, overview = false }) => {
+const Chart = ({ data, moduleLevel, overview = false , Refetch , setRefetch}) => {
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { id, chartType } = data;
@@ -61,18 +61,27 @@ const Chart = ({ data, moduleLevel, overview = false }) => {
     interval: interval,
     title: "home",
   };
-
-  const { isLoading, data: response } = Digit.Hooks.dss.useGetChart({
+  // pass refetchInterval to set an autoRefresh time in ms
+  const { isLoading, data: response ,refetch} = Digit.Hooks.dss.useGetChart({
     key: id,
     type: chartType,
     tenantId,
     requestDate,
     moduleLevel: moduleLevel,
+    // refetchInterval: 60000,
   });
 
   if (isLoading) {
     return <Loader />;
   }
+
+  if(Refetch)
+  {
+    console.log("refetching ... ")
+    refetch();
+    setRefetch(0);
+  }
+
   const insight = response?.responseData?.data?.[0]?.insight?.value?.replace(/[+-]/g, "")?.split("%");
   return (
     <div className={"dss-insight-card"} style={overview ? {} : { margin: "0px" }}>
@@ -86,7 +95,7 @@ const Chart = ({ data, moduleLevel, overview = false }) => {
             whiteSpace: "normal",
           }}
         >
-          <span style={{ fontSize: "14px", fontWeight: "400px", color: "white" }}>{t(`TIP_${data.name}`)}</span>
+        <span style={{ fontSize: "14px", fontWeight: "400px", color: "white" }}>{t(`TIP_${data.name}`)}</span>
         </span>
       </div>
       <p className="p2">
@@ -102,7 +111,7 @@ const Chart = ({ data, moduleLevel, overview = false }) => {
   );
 };
 
-const HorBarChart = ({ data, setselectState = "" }) => {
+const HorBarChart = ({ data, setselectState = "" ,Refetch,setRefetch}) => {
   const barColors = ["#298CFF", "#54D140"];
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -120,14 +129,18 @@ const HorBarChart = ({ data, setselectState = "" }) => {
     title: "home",
   };
 
-  const { isLoading, data: response } = Digit.Hooks.dss.useGetChart({
+  const { isLoading, data: response,refetch } = Digit.Hooks.dss.useGetChart({
     key: id,
     type: chartType,
     tenantId,
     requestDate,
     filters: filters,
+    refetchInterval: 6000,
   });
-
+  if(Refetch){
+    refetch();
+    setRefetch(0);
+  }
   const constructChartData = (data) => {
     let result = {};
     for (let i = 0; i < data?.length; i++) {
@@ -165,6 +178,8 @@ const HorBarChart = ({ data, setselectState = "" }) => {
         bottom: 5,
       }}
     >
+      {/* <button onClick={refetch}>Refetch query</button> */}
+      {/* {console.log(refetch)} */}
       {chartData?.length === 0 || !chartData ? (
         <NoData t={t} />
       ) : (
@@ -221,10 +236,14 @@ const Home = ({ stateCode }) => {
   const { data: response, isLoading } = Digit.Hooks.dss.useDashboardConfig(moduleCode);
   const [showOptions, setShowOptions] = useState(false);
   const [selectedState, setselectedState] = useState("");
-  const [drillDownId, setdrillDownId] = useState("none");
+  const [drillDownId, setdrillDownId] = useState("none"); 
   const [totalCount, setTotalCount] = useState("");
   const [liveCount, setLiveCount] = useState("");
-
+  const [refetch,setRefetch] = useState(0);
+  const triggerRefetch = () => {
+    console.log("Triggered Refetched")
+    setRefetch(1)
+  };
   const handleFilters = (data) => {
     Digit.SessionStorage.set(key, data);
     setFilters(data);
@@ -362,11 +381,14 @@ const Home = ({ stateCode }) => {
         ) : null}
         {dashboardConfig?.[0]?.visualizations.map((row, key) => {
           return (
+            <React.Fragment>
+            <button onClick={triggerRefetch}>Refetch Details</button>
             <div className="dss-card" key={key}>
               {row.vizArray.map((item, index) => {
                 if (item?.charts?.[0]?.chartType == "bar") {
                   return null;
-                } else if (item?.charts?.[0]?.chartType == "map") {
+                } 
+                else if (item?.charts?.[0]?.chartType == "map") {
                   return (
                     <div
                       className={`dss-card-parent  ${
@@ -430,13 +452,16 @@ const Home = ({ stateCode }) => {
                             />
                           ))}
                         {item?.charts?.[0]?.chartType == "map" && (
-                          <HorBarChart data={row.vizArray?.[1]?.charts?.[0]} setselectState={selectedState}></HorBarChart>
+                          // here 
+                          <HorBarChart setRefetch = {setRefetch} Refetch = {refetch} data={row.vizArray?.[1]?.charts?.[0]} setselectState={selectedState}></HorBarChart>
                         )}
                       </div>
                     </div>
                   );
-                } else {
+                } 
+                else {
                   return (
+                    <React.Fragment>
                     <div
                       className={`dss-card-parent  ${
                         item.vizType == "collection"
@@ -478,19 +503,21 @@ const Home = ({ stateCode }) => {
                           </div>
                         ) : null}
                       </div>
-
                       <div className="dss-card-body">
                         {item.charts.map((chart, key) => (
+                          // here
                           <div style={item.vizType == "collection" ? { width: Digit.Utils.browser.isMobile() ? "50%" : "25%" } : { width: "50%" }}>
-                            <Chart data={chart} key={key} moduleLevel={item.moduleLevel} overview={item.vizType === "collection"} />
+                            <Chart setRefetch = {setRefetch} Refetch = {refetch} data={chart} key={key} moduleLevel={item.moduleLevel} overview={item.vizType === "collection"} />
                           </div>
                         ))}
                       </div>
                     </div>
+                    </React.Fragment>
                   );
                 }
               })}
             </div>
+            </React.Fragment>
           );
         })}
       </div>

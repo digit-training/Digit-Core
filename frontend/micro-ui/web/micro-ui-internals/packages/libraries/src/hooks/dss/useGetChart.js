@@ -37,7 +37,8 @@ const defaultSelect = (data) => {
 };
 
 const useGetChart = (args) => {
-  const { key, type, tenantId, requestDate, filters, moduleLevel, addlFilter } = args;
+  const { key, type, tenantId, requestDate, filters, moduleLevel, addlFilter} = args;
+  // console.log(args.refetchInterval);
   return useQuery(
     [args],
     () =>
@@ -49,6 +50,7 @@ const useGetChart = (args) => {
       }),
     {
       select: defaultSelect,
+      refetchInterval: args?.refetchInterval
     }
   );
 };
