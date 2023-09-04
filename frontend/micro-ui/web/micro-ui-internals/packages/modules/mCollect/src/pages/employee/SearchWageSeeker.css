@@ -1,0 +1,50 @@
+/* SearchWageSeeker.css */
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100% !important;
+    background-color: #f0f0f0;
+  }
+  .head{
+    font-size: large;
+  }
+  
+  .card {
+    max-width: 400px;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .card-header {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    margin: -20px -20px 20px -20px;
+  }
+  
+  .card-header h2 {
+    margin: 0;
+    font-size: 18px;
+  }
+  
+  .card-body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .card-body p {
+    margin: 10px 0;
+    font-size: 16px;
+  }
+  

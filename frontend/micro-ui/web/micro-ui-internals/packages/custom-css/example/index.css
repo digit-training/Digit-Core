@@ -2026,6 +2026,11 @@ img, video {
 .resend-otp {
   cursor: pointer; }
 
+.links-wrapper {
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between; }
+
 .upload-wrap {
   display: -webkit-box;
   display: -ms-flexbox;

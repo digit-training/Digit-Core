@@ -18,6 +18,7 @@ const searchWageSeekerConfig = () => {
       tableFormJsonPath: "requestParam",
       filterFormJsonPath: "requestBody.Individual",
       searchFormJsonPath: "requestParam",
+
     },
     sections: {
       search: {
@@ -39,20 +40,7 @@ const searchWageSeekerConfig = () => {
             ReceiptNumber: "",
           },
           fields: [
-          //   {
-          //     "label": "COMMON_WARD",
-          //     "type": "locationdropdown",
-          //     "isMandatory": false,
-          //     "disable": false,
-          //     "populators": {
-          //         "name": "wardCode",
-          //         "type": "ward",
-          //       "optionsKey": "i18nKey",
-          //         "defaultText": "COMMON_SELECT_WARD",
-          //         "selectedText": "COMMON_SELECTED",
-          //         "allowMultiSelect": false
-          //     }
-          // },
+       
             {
               label: "Challan Number",
               type: "text",
@@ -86,24 +74,7 @@ const searchWageSeekerConfig = () => {
               },
             },
          
-            // {
-            //   label: "MASTERS_SOCIAL_CATEGORY",
-            //   type: "dropdown",
-            //   isMandatory: false,
-            //   disable: false,
-            //   populators: {
-            //     name: "socialCategory",
-            //     optionsKey: "code",
-            //     optionsCustomStyle: {
-            //       top: "2.3rem",
-            //     },
-            //     mdmsConfig: {
-            //       masterName: "SocialCategory",
-            //       moduleName: "common-masters",
-            //       localePrefix: "MASTERS",
-            //     },
-            //   },
-            // },
+         
          
           
           ],
@@ -113,13 +84,21 @@ const searchWageSeekerConfig = () => {
         show: true,
       },
       searchResult: {
+
         label: "",
         uiConfig: {
           columns: [
+
+            {
+              label: "Action",
+              jsonPath: "",
+              additionalCustomization: true,
+            },
          
             {
               label: "Challan Number",
               jsonPath: "challanNo",
+              additionalCustomization:true,
               // additionalCustomization: true,
             },
             {
@@ -142,10 +121,13 @@ const searchWageSeekerConfig = () => {
               jsonPath: "applicationStatus",
               // additionalCustomization: true,
             },
+
+
           ],
           enableGlobalSearch: false,
           enableColumnSort: true,
           resultsJsonPath: "challans",
+          isEdit: true,
         },
         children: {},
         show: true,

@@ -42,6 +42,7 @@
     .link {
       padding: 0 !important;
       padding-bottom: 4px !important;
+      display: flex !important;
       svg {
         @apply ml-sm;
       }

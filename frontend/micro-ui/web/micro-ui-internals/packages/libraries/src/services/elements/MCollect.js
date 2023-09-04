@@ -2,14 +2,14 @@ import Urls from "../atoms/urls";
 import { Request } from "../atoms/Utils/Request";
 
 export const MCollectService = {
-  search: ({ tenantId, filters }) =>
+  search: (searchParams) =>
     Request({
       url: Urls.mcollect.search,
       useCache: false,
       method: "POST",
       auth: true,
       userService: true,
-      params: { tenantId, ...filters },
+      params: searchParams,
     }),
   create: (details, tenantId) =>
     Request({

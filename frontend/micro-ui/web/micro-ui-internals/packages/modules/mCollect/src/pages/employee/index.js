@@ -6,6 +6,7 @@ import Create from "./Create";
 import SampleInbox from "./SampleInbox";
 import SampleSearch from "./SampleSearch";
 import SampleResponse from "./SampleResponse";
+import MCollectViewPage from "./MCollectViewPage"
 
 const ProjectBreadCrumb = ({ location }) => {
   const { t } = useTranslation();
@@ -37,6 +38,7 @@ const App = ({ path, stateCode, userType, tenants }) => {
           <PrivateRoute path={`${path}/inbox`} component={() => <SampleInbox></SampleInbox>} />
           <PrivateRoute path={`${path}/search`} component={() => <SampleSearch></SampleSearch>} />
           <PrivateRoute path={`${path}/response`} component={() => <SampleResponse></SampleResponse>} />
+          <PrivateRoute path={`${path}/challanNo=*`} component={() => <MCollectViewPage></MCollectViewPage>} />
 
           
         </AppContainer>

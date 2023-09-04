@@ -15,6 +15,8 @@ const ResultsTable = ({ tableContainerClass, config,data,isLoading,isFetching,fu
     const {apiDetails} = fullConfig
     const { t } = useTranslation();
     const resultsKey = config.resultsJsonPath
+    console.log(resultsKey );
+    const isEdit= config.isEdit
     
     // let searchResult = data?.[resultsKey]?.length>0 ? data?.[resultsKey] : []
     let searchResult = _.get(data,resultsKey,[])
@@ -55,7 +57,20 @@ const ResultsTable = ({ tableContainerClass, config,data,isLoading,isFetching,fu
                     }
                 }
             }
+            // else if(isEdit){
+            //     return {
+
+            //         Header:t("Hello Buddy"),
+            //         accessor: column.jsonPath,
+            //         headerAlign: column?.headerAlign,
+            //         Cell: ({ value, col, row }) => {
+            //             return String(value ? column.translate? t(column.prefix?`${column.prefix}${value}`:value) : value : t("ES_COMMON_NA"));
+            //         }
+            //     }
+            // }
+
             return {
+
                 Header: t(column?.label) || t("ES_COMMON_NA"),
                 accessor: column.jsonPath,
                 headerAlign: column?.headerAlign,
