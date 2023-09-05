@@ -49,13 +49,13 @@ export const PGRService = {
     });
   },
 
-  PGROpensearch: ({ tenantId, filters }) =>
+  PGROpensearch: (params) =>
     Request({
      url: Urls.pgr_search,
      useCache: false,
      method: "POST",
      auth: false ,
      userService: false,
-     params: { tenantId, ...filters },
+     params:params,
    }),
 };

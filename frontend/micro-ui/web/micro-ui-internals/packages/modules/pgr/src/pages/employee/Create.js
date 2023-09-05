@@ -21,6 +21,24 @@ export const newConfig = [
     head: "Complaint Details",
     body: [
       {
+        inline: true,
+        label: "Name",
+        isMandatory: true,
+        type: "text",
+        disable: false,
+        populators: { name: "name", error: "Required", validation: { pattern: /^[\s\S]*$/ } },
+      },
+
+      {
+        inline: true,
+        label: "Mobile Number",
+        isMandatory: true,
+        type: "mobileNumber",
+        disable: false,
+        populators: { name: "mobileNumber", error: "sample error message", validation: { min: 5999999999, max: 9999999999 } },
+      },
+
+      {
         label: "Service Code",
         type: "dropdown",
         isMandatory: true,
@@ -62,22 +80,8 @@ export const newConfig = [
         disable: false,
         populators: { name: "additionalDetail", error: "Required", validation: { pattern: /^[\s\S]*$/ } },
       },
-      {
-        inline: true,
-        label: "Mobile Number",
-        isMandatory: true,
-        type: "mobileNumber",
-        disable: false,
-        populators: { name: "mobileNumber", error: "sample error message", validation: { min: 5999999999, max: 9999999999 } },
-      },
-      {
-        inline: true,
-        label: "Name",
-        isMandatory: true,
-        type: "text",
-        disable: false,
-        populators: { name: "name", error: "Required", validation: { pattern: /^[\s\S]*$/ } },
-      },
+      
+      
       {
         label: "Action",
         type: "dropdown",
@@ -182,7 +186,7 @@ export const newConfig = [
           isMandatory: false,
           type: "text",
           disable: false,
-          populators: { name: "buildingName", error: "Required", validation: { pattern: /^[0-9]{1,10}$/ } },
+          populators: { name: "buildingName", error: "Required", validation: { pattern: /^[\s\S]*$/ } },
         },
         {
           inline: true,
@@ -210,17 +214,6 @@ export const newConfig = [
         },
 
     ]
-  },
-  {
-    head: "Complaint Summary",
-    body: [
-      {
-        "type": "component",
-        "component": "SampleComponent",
-        "withoutLabel": true,
-        "key": "comments"
-      },
-    ],
   },
 ];
 
@@ -292,12 +285,12 @@ const Create = () => {
       config={configs.map((config) => {
         return {
           ...config,
-          body: config.body.filter((a) => !a.hideInEmployee),
+          // body: config.body.filter((a) => !a.hideInEmployee),
         };
       })}
       defaultValues={{}}
       onSubmit={onSubmit}
-      fieldStyle={{ marginRight: 0 }}
+      fieldStyle={{ marginRight: 0, width: '30%'}}
     />
   );
 };

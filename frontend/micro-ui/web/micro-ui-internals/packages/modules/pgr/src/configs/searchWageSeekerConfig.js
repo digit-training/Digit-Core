@@ -22,8 +22,8 @@ const searchPGRConfig = () => {
       minParametersForSearchForm: 1,
       masterName: "commonUiConfig",
       moduleName: "searchPGRConfig",
-      tableFormJsonPath: "requestParam",
-      filterFormJsonPath: "requestBody.Individual",
+      // tableFormJsonPath: "requestParam",
+      // filterFormJsonPath: "requestBody.Individual",
       searchFormJsonPath: "requestParam",
     },
     sections: {
@@ -34,15 +34,6 @@ const searchPGRConfig = () => {
           primaryLabel: "ES_COMMON_SEARCH",
           secondaryLabel: "ES_COMMON_CLEAR_SEARCH",
           minReqFields: 1,
-          defaultValues: {
-            wardCode: "",
-            individualId: "",
-            name: "",
-            socialCategory: "",
-            mobileNumber: "",
-            createdFrom: "",
-            createdTo: "",
-          },
           fields: [
             {
               label: "tenantId",
@@ -66,7 +57,7 @@ const searchPGRConfig = () => {
           ],
         },
         label: "",
-        children: {},
+        // children: {},
         show: true,
       },
       searchResult: {
@@ -108,7 +99,13 @@ const searchPGRConfig = () => {
               jsonPath: "ServiceWrappers.workflow.action",
               additionalCustomization: true,
             },
-            
+            {
+              inline:true,
+              label: "View Details",
+              isMandatory: false,
+              disable:false,
+              additionalCustomization: true,
+            },  
             
           ],
           enableGlobalSearch: false,
