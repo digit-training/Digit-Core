@@ -9,10 +9,10 @@ export const newConfig2 = [
         key: "nameofbuilding",
         type: "text",
         disable: false,
-        populators: { name: "nameofbuilding", error: "sample error message", validation: { pattern: /^[A-Za-z]+$/i } },
+        populators: { name: "nameofbuilding", error: "This is a mandatory field"},
       },
       {
-        isMandatory: false,
+        isMandatory: true,
         type: "dropdown",
         key: "usageType",
         label: "Building Usage Type as per NBC",
@@ -41,7 +41,7 @@ export const newConfig2 = [
         },
       },
       {
-        isMandatory: false,
+        isMandatory: true,
         type: "dropdown",
         key: "subUsageType",
         label: "Building Usage Subtype as per NBC",
