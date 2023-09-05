@@ -272,7 +272,7 @@ export const UICustomizations = {
       }
 
       if (data?.params?.status) {
-        data.params.status =  data.params.status.name;
+        data.params.status = data.params.status.name;
       }
       const name = data.body.FireNOCs?.name?.trim();
       data.params = { ...data.params, tenantId: Digit.ULBService.getCurrentTenantId() };
@@ -342,14 +342,14 @@ export const UICustomizations = {
       // console.log(createdFrom, "information");
 
       switch (key) {
-        // case "Application no.":
-        //   return (
-        //     <span className="link">
-        //       <Link to={`/${window.contextPath}/employee/project/project-details?tenantId=${row?.tenantId}&projectNumber=${value}`}>
-        //         {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
-        //       </Link>
-        //     </span>
-        //   );
+        case "Application no.":
+          return (
+            <span className="link">
+              <Link to={`/${window.contextPath}/employee/noc/view?tenantId=${row?.tenantId}&applicationNumber=${value}`}>
+                {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+              </Link>
+            </span>
+          );
 
         case "Applicant name":
           return <span>{_.get(row, "fireNOCDetails.applicantDetails.owners[0].name", "NA")}</span>;
@@ -366,8 +366,7 @@ export const UICustomizations = {
     MobileDetailsOnClick: (row, tenantId) => {
       let link;
       Object.keys(row).map((key) => {
-        if (key === "Applicant name")
-          link = `/${window.contextPath}/employee`;
+        if (key === "Applicant name") link = `/${window.contextPath}/employee`;
         // link = "test"
       });
       return link;
