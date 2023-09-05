@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { newConfig1 } from "../../configs/createFirenocConfig";
 import { newConfig2 } from "../../configs/newCreateFireNocConfig";
 import useCustomMDMS from "../../../../../libraries/src/hooks/useMDMS";
+import { get } from "lodash";
 
 const Create = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -19,14 +20,7 @@ const Create = () => {
     {
       // all configs supported by the usequery
       select: (data) => {
-        // console.log(data?.firenoc, "something");
-        // const btype = selectedBuildingType; // Assuming you have selectedBuildingType defined
-        // let modifiedData = getop2(data);
-        // console.log(modifiedData, "modified array should come");
-        // return modifiedData;
         return data;
-
-        // Check if the btype exists in the data object
       },
     }
   );
@@ -112,7 +106,7 @@ const Create = () => {
       }),
     [filteredData, op2]
   );
-
+  
   const onFormValueChange = (setValue, formData) => {
     console.log(formData, " ffffffffffffffffff");
     if (formData.usageType) {
@@ -227,20 +221,21 @@ const Create = () => {
     debugger;
     Digit.FireNOCService.create(formData, tenantId)
       .then((result, err) => {
-        let getdata = { ...data, get: result };
-        onSelect("", getdata, "", true);
+        let getdata = { ...formData, get: result };
+        // onSelect("", getdata, "", true);
         console.log("daaaa", getdata);
         console.log(result);
         history.push({
           pathname: "/digit-ui/employee/noc/response",
-          state: getdata,
+          state: {responseData : getdata}
         });
       })
-      .catch((e) => {
+      .catch((err) => {
+        let getdata = { ...formData, get: err };
         console.log("err");
         history.push({
           pathname: "/digit-ui/employee/noc/response",
-          // state: getdata,
+          state: {responseData : getdata}
         });
       });
 
