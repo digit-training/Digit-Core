@@ -5,6 +5,7 @@ import { Route, Switch } from "react-router-dom";
 import Create from "./Create";
 import Search from "./Search";
 import Response from "./Response";
+import PtView from "./View";
 
 const ProjectBreadCrumb = ({ location }) => {
   const { t } = useTranslation();
@@ -37,6 +38,7 @@ const App = ({ path, stateCode, userType, tenants }) => {
         <PrivateRoute path={`${path}/response`} component={() => <Response />} />
         {/* <PrivateRoute path={`${path}/inbox`} component={() => <SampleInbox></SampleInbox>} /> */}
         <PrivateRoute path={`${path}/search`} component={() => <Search />} />
+        <PrivateRoute path={`${path}/view`} component={() => <PtView />} />
       </AppContainer>
     </Switch>
   );

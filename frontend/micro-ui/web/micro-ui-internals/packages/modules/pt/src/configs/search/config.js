@@ -1,4 +1,4 @@
-const searchWageSeekerConfig = () => {
+const SearchWageSeekerConfig = () => {
   return {
     label: "QA_SEARCH_PROPERTY",
     type: "search",
@@ -16,7 +16,7 @@ const searchWageSeekerConfig = () => {
       },
       minParametersForSearchForm: 1,
       masterName: "commonUiConfig",
-      moduleName: "SearchWageSeekerConfig",
+      moduleName: "SearchWageSeekerConfig2",
       tableFormJsonPath: "requestParam",
       filterFormJsonPath: "requestParam",
       searchFormJsonPath: "requestParam",
@@ -98,6 +98,7 @@ const searchWageSeekerConfig = () => {
               label: "MOBILE_NUMBER",
               jsonPath: "owners[0].mobileNumber",
             },
+            { label: "View", additionalCustomization: true },
           ],
           enableGlobalSearch: false,
           enableColumnSort: true,
@@ -111,4 +112,4 @@ const searchWageSeekerConfig = () => {
   };
 };
 
-export default searchWageSeekerConfig;
+export default SearchWageSeekerConfig;
