@@ -209,9 +209,9 @@ const Urls = {
     }
   },
 
-  firenoc : {
-    create : "/firenoc-services/v1/_create",
-    search : "/firenoc-services/v1/_search?tenantId=pg.citya&applicationNumber=PB-FN-2021-06-01-002305&mobileNumber=9965664222&fireNOCNumber=PB-FN-2022-03-30-000881"
+  firenoc: {
+    create: "/firenoc-services/v1/_create",
+    search: "/firenoc-services/v1/_search",
   },
 
   noc: {
