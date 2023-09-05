@@ -6,6 +6,7 @@ import Create from "./FireNocCreate";
 import SampleInbox from "./SampleInbox";
 import FireNocSearch from "./FireNocSearch";
 import FireNocResponse from "./FireNocResponse";
+import FireNocView from "./FireNocView";
 
 const ProjectBreadCrumb = ({ location }) => {
   const { t } = useTranslation();
@@ -37,6 +38,7 @@ const App = ({ path, stateCode, userType, tenants }) => {
         <PrivateRoute path={`${path}/inbox`} component={() => <SampleInbox></SampleInbox>} />
         <PrivateRoute path={`${path}/search`} component={() => <FireNocSearch></FireNocSearch>} />
         <PrivateRoute path={`${path}/response`} component={() => <FireNocResponse></FireNocResponse>} />
+        <PrivateRoute path={`${path}/view`} component={() => <FireNocView></FireNocView>} />
       </AppContainer>
     </Switch>
   );

@@ -173,7 +173,7 @@ const searchFireNocConfig = () => {
             {
               label: "Application no.",
               jsonPath: "fireNOCDetails.applicationNumber",
-              //   additionalCustomization: true,
+              additionalCustomization: true,
             },
             {
               label: "Fire NOC no.",
