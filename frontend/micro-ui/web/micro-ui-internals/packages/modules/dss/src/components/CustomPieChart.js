@@ -63,7 +63,10 @@ const CustomPieChart = ({ dataKey = "value", data, setChartDenomination,variant=
       );
     }
 
-    return  <span style={{ fontSize: "14px", color: "#505A5F" }}>{t(`COMMON_MASTERS_${value && Digit.Utils.locale.getTransformedLocale(value)}`)}</span>
+    return  <span 
+    style={{ fontSize: "14px", color: "#505A5F" }}>
+      {/* {t(`COMMON_MASTERS_${value && Digit.Utils.locale.getTransformedLocale(value)}`)} */}
+    </span>
   }
 
   const renderCustomLabel = (args) => {
