@@ -1,5 +1,5 @@
 import { Loader } from "@egovernments/digit-ui-react-components";
-import React, { Fragment, useContext, useEffect, useMemo } from "react";
+import React, { Fragment, useContext, useEffect, useMemo, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis, LabelList } from "recharts";
@@ -48,13 +48,37 @@ const CustomHorizontalBarChart = ({
   const history = useHistory();
   const { value } = useContext(FilterContext);
   const tenantId = Digit.ULBService.getCurrentTenantId();
+  const [isVisible, setisVisible] = useState(false);
+  const chartRef = useRef();
+  useEffect(() => {
+    const handleScroll = () => {
+      if (chartRef.current) {
+        const chartRect = chartRef.current.getBoundingClientRect();
+        const isChartInViewport = chartRect.top < window.innerHeight && chartRect.bottom >= 0;
+
+        if (isChartInViewport) {
+          setisVisible(true);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    setTimeout(() => {
+      handleScroll(); // Call the handler initially to render the visible components
+    }, 100);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   const { isLoading, data: response } = Digit.Hooks.dss.useGetChart({
     key: id,
     type: "metric",
     tenantId,
     requestDate: { ...value?.requestDate, startDate: value?.range?.startDate?.getTime(), endDate: value?.range?.endDate?.getTime() },
     filters: value?.filters,
-    moduleLevel: value?.moduleLevel
+    moduleLevel: value?.moduleLevel,
+    isVisible: isVisible
   });
 
   const constructChartData = (data, denomination) => {
@@ -122,125 +146,127 @@ const CustomHorizontalBarChart = ({
     })
   }
   return (
-    <Fragment>
-      {horizontalBarv2 ?
-        <ResponsiveContainer
-          width="100%"
-          height={chartData?.length === 0 ? 250 : chartData?.length === 1 ? 40 : chartData?.length * 28 + 10}
-          margin={{
-            top: 5,
-            right: 8,
-            left: 0,
-            bottom: 0,
-          }}
-        >
-          {chartData?.length === 0 || !chartData ? (
-            <NoData t={t} />
-          ) : (
-            <BarChart
-              width="100%"
-              height="90%"
-              margin={{
-                top: 0,
-                right: 24,
-                left: 0,
-                bottom: -32,
-              }}
-              layout={layout}
-              data={chartData}
-              barCategoryGap={10}
-              barGap={0}
-            >
-              <CartesianGrid display={"none"} strokeDasharray="2 2" />
-              <YAxis
-                dataKey={yDataKey}
-                type={yAxisType}
-                axisLine={true}
-                tickLine={false}
-                //  domain={[-100, 'dataMax']}
-                tick={{ fontSize: "14px" }}
-                label={{
-                  value: yAxisLabel,
-                  angle: 90,
-                  position: "left",
-                  fontSize: "14px",
-                  fill: "#505A5F",
+    <div ref={chartRef}>
+      <Fragment>
+        {horizontalBarv2 ?
+          <ResponsiveContainer
+            width="100%"
+            height={chartData?.length === 0 ? 250 : chartData?.length === 1 ? 40 : chartData?.length * 28 + 10}
+            margin={{
+              top: 5,
+              right: 8,
+              left: 0,
+              bottom: 0,
+            }}
+          >
+            {chartData?.length === 0 || !chartData ? (
+              <NoData t={t} />
+            ) : (
+              <BarChart
+                width="100%"
+                height="90%"
+                margin={{
+                  top: 0,
+                  right: 24,
+                  left: 0,
+                  bottom: -32,
                 }}
-                tickCount={10}
-                tickFormatter={tickFormatter}
-                unit={id === "fsmCapacityUtilization" ? "%" : ""}
-                width={layout === "vertical" ? 78 : 60}
-              />
-              <XAxis display={"none"} dataKey={xDataKey} type={xAxisType} tick={{ fontSize: "14px", fill: "#505A5F" }} tickCount={10} tickFormatter={tickFormatter} />
-              {bars?.map((bar, idx) => (<Bar key={idx} dataKey={t(bar)} fill={barColors[idx]} stackId={bars?.length > 2 ? 1 : idx} barSize={22} >
-                <LabelList dataKey={t(bar)} position={"right"} offset={"3"} fill={"#828282"} />
-              </Bar>
-              ))}
-              {/* <Legend formatter={renderLegend} iconType="circle" /> */}
-              <Tooltip cursor={false} formatter={tooltipFormatter} />
-            </BarChart>
-          )}
-        </ResponsiveContainer>
-        :
-        <ResponsiveContainer
-          width="94%"
-          height={450}
-          margin={{
-            top: 5,
-            right: 5,
-            left: 5,
-            bottom: 5,
-          }}
-        >
-          {chartData?.length === 0 || !chartData ? (
-            <NoData t={t} />
-          ) : (
-            <BarChart
-              width="100%"
-              height="100%"
-              margin={{
-                top: 5,
-                right: 5,
-                left: 5,
-                bottom: 5,
-              }}
-              layout={layout}
-              data={chartData}
-              barGap={12}
-              barSize={12}
-            >
-              <CartesianGrid strokeDasharray="2 2" />
-              <YAxis
-                dataKey={yDataKey}
-                type={yAxisType}
-                tick={{ fontSize: "12px", fill: "#505A5F" }}
-                label={{
-                  value: yAxisLabel,
-                  angle: -90,
-                  position: "insideLeft",
-                  dy: 50,
-                  fontSize: "12px",
-                  fill: "#505A5F",
+                layout={layout}
+                data={chartData}
+                barCategoryGap={10}
+                barGap={0}
+              >
+                <CartesianGrid display={"none"} strokeDasharray="2 2" />
+                <YAxis
+                  dataKey={yDataKey}
+                  type={yAxisType}
+                  axisLine={true}
+                  tickLine={false}
+                  //  domain={[-100, 'dataMax']}
+                  tick={{ fontSize: "14px" }}
+                  label={{
+                    value: yAxisLabel,
+                    angle: 90,
+                    position: "left",
+                    fontSize: "14px",
+                    fill: "#505A5F",
+                  }}
+                  tickCount={10}
+                  tickFormatter={tickFormatter}
+                  unit={id === "fsmCapacityUtilization" ? "%" : ""}
+                  width={layout === "vertical" ? 78 : 60}
+                />
+                <XAxis display={"none"} dataKey={xDataKey} type={xAxisType} tick={{ fontSize: "14px", fill: "#505A5F" }} tickCount={10} tickFormatter={tickFormatter} />
+                {bars?.map((bar, idx) => (<Bar key={idx} dataKey={t(bar)} fill={barColors[idx]} stackId={bars?.length > 2 ? 1 : idx} barSize={22} >
+                  <LabelList dataKey={t(bar)} position={"right"} offset={"3"} fill={"#828282"} />
+                </Bar>
+                ))}
+                {/* <Legend formatter={renderLegend} iconType="circle" /> */}
+                <Tooltip cursor={false} formatter={tooltipFormatter} />
+              </BarChart>
+            )}
+          </ResponsiveContainer>
+          :
+          <ResponsiveContainer
+            width="94%"
+            height={450}
+            margin={{
+              top: 5,
+              right: 5,
+              left: 5,
+              bottom: 5,
+            }}
+          >
+            {chartData?.length === 0 || !chartData ? (
+              <NoData t={t} />
+            ) : (
+              <BarChart
+                width="100%"
+                height="100%"
+                margin={{
+                  top: 5,
+                  right: 5,
+                  left: 5,
+                  bottom: 5,
                 }}
-                tickCount={10}
-                tickFormatter={tickFormatter}
-                unit={id === "fsmCapacityUtilization" ? "%" : ""}
-                width={layout === "vertical" ? 120 : 60}
-              />
-              <XAxis dataKey={xDataKey} type={xAxisType} tick={{ fontSize: "14px", fill: "#505A5F" }} tickCount={10} tickFormatter={tickFormatter} />
-              {bars?.map((bar, id) => (<Bar key={id} dataKey={t(bar)} fill={barColors[id]} stackId={bars?.length > 2 ? 1 : id} />
-              ))}
-              <Legend formatter={renderLegend} iconType="circle" />
-              <Tooltip cursor={false} formatter={tooltipFormatter} />
-            </BarChart>
-          )}
-        </ResponsiveContainer>}
-      {showDrillDown && (
-        <p className="showMore" onClick={goToDrillDownCharts}>
-          {t("DSS_SHOW_MORE")}
-        </p>
-      )}
-    </Fragment>
+                layout={layout}
+                data={chartData}
+                barGap={12}
+                barSize={12}
+              >
+                <CartesianGrid strokeDasharray="2 2" />
+                <YAxis
+                  dataKey={yDataKey}
+                  type={yAxisType}
+                  tick={{ fontSize: "12px", fill: "#505A5F" }}
+                  label={{
+                    value: yAxisLabel,
+                    angle: -90,
+                    position: "insideLeft",
+                    dy: 50,
+                    fontSize: "12px",
+                    fill: "#505A5F",
+                  }}
+                  tickCount={10}
+                  tickFormatter={tickFormatter}
+                  unit={id === "fsmCapacityUtilization" ? "%" : ""}
+                  width={layout === "vertical" ? 120 : 60}
+                />
+                <XAxis dataKey={xDataKey} type={xAxisType} tick={{ fontSize: "14px", fill: "#505A5F" }} tickCount={10} tickFormatter={tickFormatter} />
+                {bars?.map((bar, id) => (<Bar key={id} dataKey={t(bar)} fill={barColors[id]} stackId={bars?.length > 2 ? 1 : id} />
+                ))}
+                <Legend formatter={renderLegend} iconType="circle" />
+                <Tooltip cursor={false} formatter={tooltipFormatter} />
+              </BarChart>
+            )}
+          </ResponsiveContainer>}
+        {showDrillDown && (
+          <p className="showMore" onClick={goToDrillDownCharts}>
+            {t("DSS_SHOW_MORE")}
+          </p>
+        )}
+      </Fragment>
+    </div>
   );
 };
 

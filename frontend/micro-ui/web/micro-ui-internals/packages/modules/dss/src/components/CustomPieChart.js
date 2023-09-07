@@ -1,5 +1,5 @@
 import { Loader, RemoveableTag } from "@egovernments/digit-ui-react-components";
-import React, { useContext, useMemo, useState, Fragment, useEffect } from "react";
+import React, { useContext, useMemo, useState, Fragment, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, Label } from "recharts";
 import FilterContext from "./FilterContext";
@@ -16,13 +16,39 @@ const CustomPieChart = ({ dataKey = "value", data, setChartDenomination, variant
   const [isPieClicked, setIsPieClicked] = useState(false);
   const [pieSelected, setPieSelected] = useState(null);
   const [drillDownId, setdrillDownId] = useState(null);
+  const [isVisible, setisVisible] = useState(false);
+  const chartRef = useRef();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (chartRef.current) {
+        const chartRect = chartRef.current.getBoundingClientRect();
+        const isChartInViewport = chartRect.top < window.innerHeight && chartRect.bottom >= 0;
+
+        if (isChartInViewport) {
+          setisVisible(true);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    setTimeout(() => {
+      handleScroll(); // Call the handler initially to render the visible components      
+    }, 100);
+
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   const { isLoading, data: response } = Digit.Hooks.dss.useGetChart({
     key: isPieClicked ? drillDownId : id,
     type: "metric",
     tenantId,
     requestDate: { ...value?.requestDate, startDate: value?.range?.startDate?.getTime(), endDate: value?.range?.endDate?.getTime() },
     filters: isPieClicked ? { ...value?.filters, selectedType: pieSelected } : value?.filters,
-    moduleLevel: value?.moduleLevel
+    moduleLevel: value?.moduleLevel,
+    isVisible: isVisible
   });
 
   const chartData = useMemo(() => {
@@ -171,7 +197,7 @@ const CustomPieChart = ({ dataKey = "value", data, setChartDenomination, variant
     return <Loader />;
   }
   return (
-    <Fragment>
+    <div ref={chartRef}>
       {(id === "deathByCategory") && (  //|| id === "nssNumberOfDeathsByCategory") && ( 
         <span className={"dss-pie-subheader"} style={{ position: "sticky", left: 0 }}>
           {t('DSS_CMN_PIE_INFO')}
@@ -301,7 +327,7 @@ const CustomPieChart = ({ dataKey = "value", data, setChartDenomination, variant
           {t(Digit.Utils.locale.getTransformedLocale(`${response?.responseData?.data?.[0]?.headerName}_${pieSelected}`))}
         </div>
       )}
-    </Fragment>
+    </div>
   );
 };
 

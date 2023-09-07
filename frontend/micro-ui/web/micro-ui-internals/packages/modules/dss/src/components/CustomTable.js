@@ -1,6 +1,6 @@
 import { DownwardArrow, Loader, Rating, RemoveableTag, Table, UpwardArrow } from "@egovernments/digit-ui-react-components";
 import { differenceInCalendarDays, subYears } from "date-fns";
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import FilterContext from "./FilterContext";
 import NoData from "./NoData";
@@ -35,12 +35,35 @@ const CustomTable = ({ data = {}, onSearch, setChartData, setChartDenomination }
   const { value, setValue, ulbTenants, fstpMdmsData } = useContext(FilterContext);
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const dssTenants = Digit.SessionStorage.get("DSS_TENANTS");
+  const chartRef = useRef();
+  const [isVisible, setisVisible] = useState(false);
   const lastYearDate = {
     startDate: subYears(value?.range?.startDate, 1).getTime(),
     endDate: subYears(value?.range?.endDate, 1).getTime(),
     interval: "month",
     title: "",
   };
+  useEffect(() => {
+    const handleScroll = () => {
+      if (chartRef.current) {
+        const chartRect = chartRef.current.getBoundingClientRect();
+        const isChartInViewport = chartRect.top < window.innerHeight && chartRect.bottom >= 0;
+
+        if (isChartInViewport) {
+          setisVisible(true);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Call the handler initially to render the visible components
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [
+    chartRef,
+  ]);
   const { isLoading: isRequestLoading, data: lastYearResponse } = Digit.Hooks.dss.useGetChart({
     key: chartKey,
     type: "metric",
@@ -52,6 +75,7 @@ const CustomTable = ({ data = {}, onSearch, setChartData, setChartDenomination }
         : { ...value?.filters, [filterStack[filterStack.length - 1]?.filterKey]: filterStack[filterStack.length - 1]?.filterValue },
     addlFilter: filterStack[filterStack.length - 1]?.addlFilter,
     moduleLevel: value?.moduleLevel,
+    isVisible: isVisible,
   });
   const { isLoading, data: response } = Digit.Hooks.dss.useGetChart({
     key: chartKey,
@@ -64,6 +88,7 @@ const CustomTable = ({ data = {}, onSearch, setChartData, setChartDenomination }
         : { ...value?.filters, [filterStack[filterStack.length - 1]?.filterKey]: filterStack[filterStack.length - 1]?.filterValue },
     addlFilter: filterStack[filterStack.length - 1]?.addlFilter,
     moduleLevel: value?.moduleLevel,
+    isVisible: isVisible,
   });
   useEffect(() => {
     const { id } = data;
@@ -374,7 +399,7 @@ const CustomTable = ({ data = {}, onSearch, setChartData, setChartDenomination }
     return <Loader />;
   }
   return (
-    <div style={{ width: "100%" }}>
+    <div ref={chartRef} style={{ width: "100%" }}>
       <span className={"dss-table-subheader"} style={{ position: "sticky", left: 0 }}>
         {t("DSS_CMN_TABLE_INFO")}
       </span>

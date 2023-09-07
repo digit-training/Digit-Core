@@ -1,6 +1,6 @@
 import { Loader } from "@egovernments/digit-ui-react-components";
 import { getDaysInMonth } from "date-fns";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Area, AreaChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import FilterContext from "./FilterContext";
@@ -62,6 +62,30 @@ const CustomAreaChart = ({ xDataKey = "name", yDataKey = getValue, data, setChar
   const [totalCapacity, setTotalCapacity] = useState(0);
   const [totalWaste, setTotalWaste] = useState(0);
   const [keysArr, setKeysArr] = useState([]);
+  const [isVisible, setisVisible] = useState(false);
+  const chartRef = useRef();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (chartRef.current) {
+        const chartRect = chartRef.current.getBoundingClientRect();
+        const isChartInViewport = chartRect.top < window.innerHeight && chartRect.bottom >= 0;
+
+        if (isChartInViewport) {
+          setisVisible(true);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    setTimeout(() => {
+      handleScroll();
+    }, 100);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const [manageChart, setmanageChart] = useState("Area");
   const stateTenant = Digit.ULBService.getStateId();
@@ -74,7 +98,8 @@ const CustomAreaChart = ({ xDataKey = "name", yDataKey = getValue, data, setChar
     tenantId,
     requestDate: { ...value?.requestDate, startDate: value?.range?.startDate?.getTime(), endDate: value?.range?.endDate?.getTime() },
     filters: value?.filters,
-    moduleLevel: value?.moduleLevel
+    moduleLevel: value?.moduleLevel,
+    isVisible: isVisible
   });
 
   useEffect(() => {
@@ -234,7 +259,7 @@ const CustomAreaChart = ({ xDataKey = "name", yDataKey = getValue, data, setChar
     return <Loader />;
   }
   return (
-    <div
+    <div ref={chartRef}
       style={
         variant === "fsmAreaPercentage"
           ? { display: "flex", flexDirection: "column", height: "100%" }

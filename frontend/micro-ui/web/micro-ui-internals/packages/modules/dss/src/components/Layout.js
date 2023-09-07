@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState, useRef } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CustomAreaChart from "./CustomAreaChart";
 import CustomBarChart from "./CustomBarChart";
@@ -26,9 +26,6 @@ const Layout = ({ rowData, forHome = false }) => {
   const { value } = useContext(FilterContext);
   const [searchQuery, onSearch] = useState("");
   const [chip, updateChip] = useState({});
-  const [renderedCharts, setRenderedCharts] = useState({});
-  const [chartRefs, setChartRefs] = useState({}); // Store chart refs by name
-  const scrollContainerRef = useRef(null);
 
   const renderChart = (chart, title) => {
     switch (chart.chartType) {
@@ -118,7 +115,6 @@ const Layout = ({ rowData, forHome = false }) => {
         return null;
     }
   };
-
   useEffect(() => {
     let chipData = {};
     rowData.vizArray.map((chart) => {
@@ -128,66 +124,25 @@ const Layout = ({ rowData, forHome = false }) => {
     });
     updateChip({ ...chipData });
   }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const chartsToRender = {};
-
-      rowData.vizArray.forEach((chart, key) => {
-        const chartName = chart.name;
-        const chartRef = chartRefs[chartName];
-
-        if (chartRef) {
-
-          const rect = chartRef.getBoundingClientRect();
-          // Adjust the threshold as needed to control when the component should render
-          if (rect.top < window.innerHeight) {
-            chartsToRender[chartName] = true;
-          }
-        }
-      });
-
-      setRenderedCharts((prevRenderedCharts) => ({
-        ...prevRenderedCharts,
-        ...chartsToRender,
-      }));
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Call the handler initially to render the visible components
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [rowData.vizArray]);
-
   return (
-    <div className="chart-row" ref={scrollContainerRef} style={{ minHeight: "400px" }}>
-      {rowData.vizArray.map((chart, key) => {
-        return (
-          <div style={{ // Apply your custom inline styles here
-            margin: 0, // Override margin
-            padding: 0, // Override padding
-            width: "100%"
-            // Add any other style properties you want to override
-          }} key={key} ref={(ref) => (chartRefs[chart.name] = ref)}>
-            {renderedCharts[chart.name] && (
-              <div className="chart nowidth31">
-                {renderVisualizer(chart, key, chip?.[chart.name], (index) =>
-                  updateChip((oldState) => {
-                    let prevChip = oldState[chart.name];
-                    oldState[chart.name] = prevChip.map((ele) => ({ ...ele, active: ele.index === index }));
-                    return { ...oldState };
-                  })
-                )}
-              </div>
-            )}
-          </div>
-        );
-      })}
+    <div className="chart-row">
+      {rowData.vizArray.map(
+        useCallback(
+          (chart, key) => {
+            let chipData = chip?.[chart.name];
+            let onChipChange = (index) =>
+              updateChip((oldState) => {
+                let prevChip = oldState[chart.name];
+                oldState[chart.name] = prevChip.map((ele) => ({ ...ele, active: ele.index === index }));
+                return { ...oldState };
+              });
+            return renderVisualizer(chart, key, chipData, onChipChange);
+          },
+          [renderVisualizer, chip]
+        )
+      )}
     </div>
   );
 };
 
 export default Layout;
-
